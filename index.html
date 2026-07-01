@@ -1,891 +1,479 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Sistema de Embalagens - Cássia</title>
-
-
-<style>
-
-body{
-font-family:Arial;
-margin:0;
-background:#f3f5f7;
-padding:18px;
-}
-
-
-.inicio{
-
-background:white;
-min-height:80vh;
-border-radius:22px;
-padding:30px 20px;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-box-shadow:0 3px 12px rgba(0,0,0,.1);
-
-}
-
-
-.logo{
-font-size:70px;
-}
-
-
-#saudacao{
-
-font-size:30px;
-font-weight:bold;
-
-}
-
-
-#data{
-
-font-size:22px;
-color:#555;
-
-}
-
-
-.subtitulo{
-
-font-size:22px;
-font-weight:bold;
-margin:25px;
-
-}
-
-
-
-.card{
-
-background:white;
-padding:18px;
-border-radius:18px;
-box-shadow:0 2px 8px rgba(0,0,0,.08);
-margin-bottom:16px;
-
-}
-
-
-
-.item{
-
-margin-bottom:20px;
-
-}
-
-
-
-input{
-
-width:100%;
-padding:14px;
-font-size:18px;
-border:1px solid #ccc;
-border-radius:10px;
-box-sizing:border-box;
-
-}
-
-
-
-.total{
-
-background:#e9f9ec;
-border:2px solid #36a248;
-border-radius:12px;
-text-align:center;
-padding:10px;
-margin-top:8px;
-
-}
-
-
-
-.total span{
-
-font-size:38px;
-font-weight:bold;
-color:#17782c;
-
-}
-
-
-
-button{
-
-width:100%;
-padding:18px;
-font-size:18px;
-font-weight:bold;
-border:none;
-border-radius:12px;
-background:#0b5ed7;
-color:white;
-margin-top:10px;
-
-}
-
-
-
-.verde{
-
-background:#198754;
-
-}
-
-.voltar{
-
-background:#6c757d;
-
-}
-
-
-.sec{
-
-display:none;
-
-}
-
-
-</style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sistema de Embalagens - Cassia</title>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f3f5f7;
+      padding: 18px;
+      color: #1f2933;
+    }
+
+    .inicio {
+      background: white;
+      min-height: 80vh;
+      border-radius: 22px;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, .1);
+    }
+
+    .logo {
+      font-size: 70px;
+    }
+
+    #saudacao {
+      font-size: 30px;
+      font-weight: bold;
+      margin: 16px 0 8px;
+    }
+
+    #data {
+      font-size: 22px;
+      color: #555;
+      margin: 0;
+    }
+
+    .subtitulo {
+      font-size: 22px;
+      font-weight: bold;
+      margin: 25px;
+    }
+
+    .card {
+      background: white;
+      padding: 18px;
+      border-radius: 18px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+      margin-bottom: 16px;
+    }
+
+    .item {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      font-size: 18px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+
+    .total {
+      background: #e9f9ec;
+      border: 2px solid #36a248;
+      border-radius: 12px;
+      text-align: center;
+      padding: 10px;
+      margin-top: 8px;
+    }
+
+    .total span {
+      font-size: 38px;
+      font-weight: bold;
+      color: #17782c;
+    }
+
+    button {
+      width: 100%;
+      padding: 18px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      background: #0b5ed7;
+      color: white;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: wait;
+      opacity: .65;
+    }
+
+    .verde {
+      background: #198754;
+    }
+
+    .voltar {
+      background: #6c757d;
+    }
+
+    .erro {
+      color: #b42318;
+      background: #fff3f1;
+      border: 1px solid #f2b8b5;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    .sec {
+      display: none;
+    }
+  </style>
 </head>
-
-
 <body>
-
-
-
-<div id="inicio" class="inicio">
-
-
-<div class="logo">
-📦
-</div>
-
-
-<h1 id="saudacao"></h1>
-
-
-<h2 id="data"></h2>
-
-
-<p class="subtitulo">
-
-Sistema de Embalagens
-
-</p>
-
-
-<button onclick="abrirDia()">
-
-▶ INICIAR CONTAGEM
-
-</button>
-
-
-</div>
-
-
-
-
-
-
-
-<div id="contagem" class="card sec">
-
-
-<h2 id="titulo"></h2>
-
-
-<div id="campos"></div>
-
-
-<button class="verde" onclick="abrirNota()">
-
-FINALIZAR CONTAGEM
-
-</button>
-
-
-</div>
-
-
-
-
-
-
-
-<div id="nota" class="card sec">
-
-
-<h2>
-📄 NOTA FISCAL
-</h2>
-
-
-<div id="camposNota"></div>
-
-
-<button class="verde" onclick="mostrarResumo()">
-
-CONFERIR RESULTADO
-
-</button>
-
-<button class="voltar" onclick="voltarContagem()">
-
-⬅️ VOLTAR PARA CONTAGEM
-
-</button>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-<div id="resumo" class="card sec">
-
-
-<h2>
-📋 RESUMO FINAL
-</h2>
-
-
-<div id="resultado"></div>
-
-
-<button class="verde" onclick="finalizarDia()">
-📌 FINALIZAR DIA
-</button>
-
-
-
-
-
-<button class="voltar" onclick="voltarContagem()">
-
-⬅️ VOLTAR PARA CONTAGEM
-
-</button>
-
-
-</div>
-
-
-
-
-
-
-<script>
-
-async function enviarEmailAPI(dados) {
-
-  try {
-
-    await fetch("https://embalagens-api-rho.vercel.app/api/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
+  <div id="inicio" class="inicio">
+    <div class="logo">📦</div>
+    <h1 id="saudacao"></h1>
+    <h2 id="data"></h2>
+    <p class="subtitulo">Sistema de Embalagens</p>
+    <button type="button" onclick="abrirDia()">▶ INICIAR CONTAGEM</button>
+  </div>
+
+  <div id="contagem" class="card sec">
+    <h2 id="titulo"></h2>
+    <div id="campos"></div>
+    <button type="button" class="verde" onclick="abrirNota()">FINALIZAR CONTAGEM</button>
+  </div>
+
+  <div id="nota" class="card sec">
+    <h2>📄 NOTA FISCAL</h2>
+    <div id="camposNota"></div>
+    <button type="button" class="verde" onclick="mostrarResumo()">CONFERIR RESULTADO</button>
+    <button type="button" class="voltar" onclick="voltarContagem()">⬅ VOLTAR PARA CONTAGEM</button>
+  </div>
+
+  <div id="resumo" class="card sec">
+    <h2>📋 RESUMO FINAL</h2>
+    <div id="resultado"></div>
+    <button type="button" id="btnFinalizar" class="verde" onclick="finalizarDia()">📌 FINALIZAR DIA</button>
+    <button type="button" class="voltar" onclick="voltarContagem()">⬅ VOLTAR PARA CONTAGEM</button>
+    <div id="mensagemErro" class="erro"></div>
+  </div>
+
+  <script>
+    const dias = {
+      1: {
+        nome: "SEGUNDA",
+        campos: [
+          "MUBEIA - CAIXA",
+          "MUBEIA - PALLET",
+          "MUBEIA - TAMPA",
+          "NIGTERRA - CAIXA",
+          "NIGTERRA - PALLET",
+          "CIEE AZUL - PALLET",
+          "CIEE AZUL - TAMPA",
+          "CIEE AZUL - BANDEIJA (6)",
+          "CIEE CINZA - PALLET",
+          "CIEE CINZA - TAMPA",
+          "CIEE CINZA - BANDEIJA (7)"
+        ]
       },
-      body: JSON.stringify({
-        itens: dados
-      })
-    });
-
-    console.log("Email enviado");
-
-  } catch (err) {
-    console.error("Erro ao enviar email:", err);
-  }
-
-}
-
-const dias={
-
-
-1:{
-nome:"SEGUNDA",
-campos:[
-
-"MUBEIA - CAIXA",
-"MUBEIA - PALLET",
-"MUBEIA - TAMPA",
-
-"NIGTERRA - CAIXA",
-"NIGTERRA - PALLET",
-
-"CIEE AZUL - PALLET",
-"CIEE AZUL - TAMPA",
-"CIEE AZUL - BANDEIJA (6)",
-
-"CIEE CINZA - PALLET",
-"CIEE CINZA - TAMPA",
-"CIEE CINZA - BANDEIJA (7)"
-
-]
-
-},
-
-
-
-2:{
-nome:"TERÇA",
-campos:[
-
-"BLEISTAHL - CAIXA",
-"BLEISTAHL - PALLET",
-"BLEISTAHL - TAMPA",
-
-"PUREM - CAIXA",
-"PUREM - BANDEIJA (4)",
-
-"CIEE AZUL - PALLET",
-"CIEE AZUL - TAMPA",
-"CIEE AZUL - BANDEIJA (6)",
-
-"CIEE CINZA - PALLET",
-"CIEE CINZA - TAMPA",
-"CIEE CINZA - BANDEIJA (7)"
-
-]
-
-},
-
-
-
-
-3:{
-nome:"QUARTA",
-campos:[
-
-"CESTARI - CAIXA",
-"CESTARI - BANDEIJA (13)",
-
-"MALHE - CAIXA",
-
-"PROMETAL - CAIXA",
-
-"CIEE AZUL - PALLET",
-"CIEE AZUL - TAMPA",
-"CIEE AZUL - BANDEIJA (6)",
-
-"CIEE CINZA - PALLET",
-"CIEE CINZA - TAMPA",
-"CIEE CINZA - BANDEIJA (7)"
-
-]
-
-},
-
-
-
-
-4:{
-nome:"QUINTA FEIRA",
-campos:[
-
-"PINHA - CAIXA",
-
-"MUVIC - CAIXA",
-"MUVIC - PALLET",
-"MUVIC - BANDEIJA",
-
-"CIEE AZUL - PALLET",
-"CIEE AZUL - TAMPA",
-"CIEE AZUL - BANDEIJA (6)",
-
-"CIEE CINZA - PALLET",
-"CIEE CINZA - TAMPA",
-"CIEE CINZA - BANDEIJA (7)"
-
-]
-
-},
-
-
-
-
-5:{
-nome:"SEXTA",
-campos:[
-
-"BIELA - CAIXA",
-"BIELA - TAMPA",
-"BIELA - PALLET",
-"BIELA - BANDEIJA (2)",
-
-"VETORE - CAIXA",
-"VETORE - PALLET",
-"VETORE - TAMPA",
-"VETORE - BANDEIJA (5)",
-
-"VALEO - CAIXA",
-
-
-"CIEE AZUL - PALLET",
-"CIEE AZUL - TAMPA",
-"CIEE AZUL - BANDEIJA (6)",
-
-"CIEE CINZA - PALLET",
-"CIEE CINZA - TAMPA",
-"CIEE CINZA - BANDEIJA (7)"
-
-]
-
-}
-
-};
-
-
-
-
-
-
-const hoje=new Date();
-
-let dia = hoje.getDay();
-if (dia === 0 || dia === 6) dia = 1; // força segunda-feira
-
-
-
-const diasNome={
-
-1:"SEGUNDA-FEIRA",
-2:"TERÇA-FEIRA",
-3:"QUARTA-FEIRA",
-4:"QUINTA-FEIRA",
-5:"SEXTA-FEIRA"
-
-};
-
-
-
-
-document.getElementById("saudacao").innerHTML=
-
-hoje.getHours()<12 ?
-
-"👋 Bom dia, Cássia!" :
-
-"☀️ Boa tarde, Cássia!";
-
-
-
-
-
-document.getElementById("data").innerHTML=
-
-"📅 "+diasNome[dia]+
-"<br>"+
-hoje.toLocaleDateString("pt-BR");
-
-
-
-
-
-
-
-
-
-
-function abrirDia(){
-
-
-document.getElementById("inicio").style.display = "none";
-
-contagem.style.display="block";
-
-
-titulo.innerHTML="📦 "+dias[dia].nome;
-
-
-
-let html="";
-
-
-
-dias[dia].campos.forEach((item,i)=>{
-
-
-html+=`
-
-<div class="item">
-
-<label>${i+1}. ${item}</label>
-
-
-<input
-
-id="c${i}"
-
-type="tel"
-
-inputmode="numeric"
-
-placeholder="Ex: 2+4+7"
-
-oninput="calcular(${i})">
-
-
-
-<div class="total">
-
-TOTAL ${item}
-
-<br>
-
-<span id="t${i}">
-
-0
-
-</span>
-
-</div>
-
-</div>
-
-`;
-
-});
-
-
-campos.innerHTML=html;
-
-
-}
-
-
-
-
-
-
-
-
-function soma(valor){
-
-if(!valor)return 0;
-
-
-return valor.split("+")
-.reduce((a,b)=>a+(Number(b)||0),0);
-
-}
-
-
-let notasSalvas = [];
-
-let historico = JSON.parse(localStorage.getItem("historico")) || [];
-
-
-
-
-
-function calcular(i){
-
-
-let valor=soma(
-document.getElementById("c"+i).value
-);
-
-
-let nome=dias[dia].campos[i];
-
-
-
-
-document.getElementById("t"+i).innerHTML=valor;
-
-
-}
-
-
-
-
-
-
-
-
-
-function abrirNota(){
-
-
-contagem.style.display="none";
-
-nota.style.display="block";
-
-
-
-let html="";
-
-
-
-dias[dia].campos.forEach((item,i)=>{
-
-
-html+=`
-
-<div class="item">
-
-<label>${item} - NOTA</label>
-
-<input
-id="n${i}"
-placeholder="Ex: 50+40+20"
-value="${notasSalvas[i] || ''}"
-oninput="calcularNota(${i})">
-
-<div class="total">
-TOTAL NOTA ${item}
-<br>
-<span id="tn${i}">0</span>
-</div>
-
-</div>
-
-`;
-
-
-});
-
-
-camposNota.innerHTML=html;
-
-
-}
-
-
-
-
-
-
-
-
-
-function mostrarResumo(){
-
-dias[dia].campos.forEach((_, i) => {
-notasSalvas[i] = document.getElementById("n"+i).value;
-});
-nota.style.display="none";
-
-resumo.style.display="block";
-
-
-
-let html="";
-
-
-
-dias[dia].campos.forEach((item,i)=>{
-
-
-let cont=soma(
-document.getElementById("c"+i).value
-);
-
-
-
-if(item.includes("AZUL - BANDEIJA"))
-
-cont*=6;
-
-
-
-if(item.includes("CINZA - BANDEIJA"))
-
-cont*=7;
-
-
-
-let nf=soma(
-document.getElementById("n"+i).value
-);
-
-
-
-let status = "";
-
-if(cont == nf){
-
-status = "✅ CONFERIDO";
-
-}else{
-
-status = "❌ DIVERGÊNCIA";
-
-}
-
-
-
-html+=`
-
-<div class="card">
-
-
-<b>${item}</b>
-
-<br><br>
-
-
-<h2>${status}</h2>
-
-
-Contagem: ${cont}
-
-<br>
-
-Nota: ${nf}
-
-<br>
-
-Diferença: ${cont-nf}
-
-
-</div>
-
-`;
-
-});
-
-
-resultado.innerHTML=html;
-
-
-}
-
-function voltarContagem(){
-
-nota.style.display="none";
-
-resumo.style.display="none";
-
-contagem.style.display="block";
-
-}
-
-
-
-
-function finalizarDia(){
-
-  salvarDia();
-
-  let dadosEmail = historico[historico.length - 1]?.itens || [];
-
-  enviarEmailAPI(dadosEmail);
-
-  alert("Dia finalizado e enviado por email!");
-
-}
-
-
-
-function salvarDia(){
-
-let hojeStr = new Date().toLocaleDateString("pt-BR");
-
-let diaAtual = {
-data: hojeStr,
-itens: []
-};
-
-
-dias[dia].campos.forEach((item, i) => {
-
-let cont = soma(document.getElementById("c"+i).value);
-
-if(item.includes("AZUL - BANDEIJA")) cont *= 6;
-if(item.includes("CINZA - BANDEIJA")) cont *= 7;
-
-let nf = soma(document.getElementById("n"+i)?.value || "");
-
-
-diaAtual.itens.push({
-
-item,
-contagem: cont,
-nota: nf,
-diferenca: cont - nf
-
-});
-
-
-});
-
-
-historico.push(diaAtual);
-
-
-localStorage.setItem(
-"historico",
-JSON.stringify(historico)
-);
-
-
-alert("Dia salvo com sucesso!");
-
-}
-
-let blob = new Blob(
-["\ufeff" + csv],
-{type:"text/csv;charset=utf-8;"}
-);
-
-
-let url = URL.createObjectURL(blob);
-
-
-let a = document.createElement("a");
-
-a.href = url;
-
-a.download = "historico-cassia.csv";
-
-a.click();
-
-
-URL.revokeObjectURL(url);
-
-
-function calcularNota(i){
-
-  let valor = document.getElementById("n"+i).value;
-
-  let total = soma(valor);
-
-  notasSalvas[i] = valor;
-
-  // 👇 aqui mostra o total na caixa verde
-  let el = document.getElementById("tn"+i);
-  if(el){
-    el.innerHTML = total;
-  }
-
-}
-
-
-</script>
-
-
+      2: {
+        nome: "TERCA",
+        campos: [
+          "BLEISTAHL - CAIXA",
+          "BLEISTAHL - PALLET",
+          "BLEISTAHL - TAMPA",
+          "PUREM - CAIXA",
+          "PUREM - BANDEIJA (4)",
+          "CIEE AZUL - PALLET",
+          "CIEE AZUL - TAMPA",
+          "CIEE AZUL - BANDEIJA (6)",
+          "CIEE CINZA - PALLET",
+          "CIEE CINZA - TAMPA",
+          "CIEE CINZA - BANDEIJA (7)"
+        ]
+      },
+      3: {
+        nome: "QUARTA",
+        campos: [
+          "CESTARI - CAIXA",
+          "CESTARI - BANDEIJA (13)",
+          "MALHE - CAIXA",
+          "PROMETAL - CAIXA",
+          "CIEE AZUL - PALLET",
+          "CIEE AZUL - TAMPA",
+          "CIEE AZUL - BANDEIJA (6)",
+          "CIEE CINZA - PALLET",
+          "CIEE CINZA - TAMPA",
+          "CIEE CINZA - BANDEIJA (7)"
+        ]
+      },
+      4: {
+        nome: "QUINTA FEIRA",
+        campos: [
+          "PINHA - CAIXA",
+          "MUVIC - CAIXA",
+          "MUVIC - PALLET",
+          "MUVIC - BANDEIJA",
+          "CIEE AZUL - PALLET",
+          "CIEE AZUL - TAMPA",
+          "CIEE AZUL - BANDEIJA (6)",
+          "CIEE CINZA - PALLET",
+          "CIEE CINZA - TAMPA",
+          "CIEE CINZA - BANDEIJA (7)"
+        ]
+      },
+      5: {
+        nome: "SEXTA",
+        campos: [
+          "BIELA - CAIXA",
+          "BIELA - TAMPA",
+          "BIELA - PALLET",
+          "BIELA - BANDEIJA (2)",
+          "VETORE - CAIXA",
+          "VETORE - PALLET",
+          "VETORE - TAMPA",
+          "VETORE - BANDEIJA (5)",
+          "VALEO - CAIXA",
+          "CIEE AZUL - PALLET",
+          "CIEE AZUL - TAMPA",
+          "CIEE AZUL - BANDEIJA (6)",
+          "CIEE CINZA - PALLET",
+          "CIEE CINZA - TAMPA",
+          "CIEE CINZA - BANDEIJA (7)"
+        ]
+      }
+    };
+
+    const hoje = new Date();
+    let dia = hoje.getDay();
+    if (dia === 0 || dia === 6) dia = 1;
+
+    const diasNome = {
+      1: "SEGUNDA-FEIRA",
+      2: "TERCA-FEIRA",
+      3: "QUARTA-FEIRA",
+      4: "QUINTA-FEIRA",
+      5: "SEXTA-FEIRA"
+    };
+
+    const notasSalvas = [];
+
+    document.getElementById("saudacao").textContent =
+      hoje.getHours() < 12 ? "👋 Bom dia, Cassia!" : "☀️ Boa tarde, Cassia!";
+
+    document.getElementById("data").innerHTML =
+      "📅 " + diasNome[dia] + "<br>" + hoje.toLocaleDateString("pt-BR");
+
+    function abrirDia() {
+      document.getElementById("inicio").style.display = "none";
+      document.getElementById("contagem").style.display = "block";
+      document.getElementById("titulo").textContent = "📦 " + dias[dia].nome;
+
+      let html = "";
+
+      dias[dia].campos.forEach((item, i) => {
+        html += `
+          <div class="item">
+            <label for="c${i}">${i + 1}. ${item}</label>
+            <input id="c${i}" type="tel" inputmode="numeric" placeholder="Ex: 2+4+7" oninput="calcular(${i})">
+            <div class="total">
+              TOTAL ${item}
+              <br>
+              <span id="t${i}">0</span>
+            </div>
+          </div>
+        `;
+      });
+
+      document.getElementById("campos").innerHTML = html;
+    }
+
+    function soma(valor) {
+      if (!valor) return 0;
+
+      return valor
+        .split("+")
+        .reduce((total, parte) => total + (Number(parte.trim()) || 0), 0);
+    }
+
+    function calcular(i) {
+      const valor = soma(document.getElementById("c" + i).value);
+      document.getElementById("t" + i).textContent = valor;
+    }
+
+    function abrirNota() {
+      document.getElementById("contagem").style.display = "none";
+      document.getElementById("nota").style.display = "block";
+
+      let html = "";
+
+      dias[dia].campos.forEach((item, i) => {
+        html += `
+          <div class="item">
+            <label for="n${i}">${item} - NOTA</label>
+            <input id="n${i}" type="tel" inputmode="numeric" placeholder="Ex: 50+40+20" value="${notasSalvas[i] || ""}" oninput="calcularNota(${i})">
+            <div class="total">
+              TOTAL NOTA ${item}
+              <br>
+              <span id="tn${i}">${soma(notasSalvas[i] || "")}</span>
+            </div>
+          </div>
+        `;
+      });
+
+      document.getElementById("camposNota").innerHTML = html;
+    }
+
+    function calcularNota(i) {
+      const valor = document.getElementById("n" + i).value;
+      const total = soma(valor);
+
+      notasSalvas[i] = valor;
+
+      const el = document.getElementById("tn" + i);
+      if (el) el.textContent = total;
+    }
+
+    function montarDadosDia() {
+      return dias[dia].campos.map((item, i) => {
+        const contagemBruta = soma(document.getElementById("c" + i)?.value || "");
+        const contagem = contagemBruta;
+        const nota = soma(document.getElementById("n" + i)?.value || "");
+
+        return {
+          item,
+          contagem,
+          nota,
+          diferenca: contagem - nota
+        };
+      });
+    }
+
+    function mostrarResumo() {
+      dias[dia].campos.forEach((_, i) => {
+        notasSalvas[i] = document.getElementById("n" + i).value;
+      });
+
+      document.getElementById("nota").style.display = "none";
+      document.getElementById("resumo").style.display = "block";
+
+      const dados = montarDadosDia();
+      let html = "";
+
+      dados.forEach(({ item, contagem, nota, diferenca }) => {
+        const status = contagem === nota ? "✅ CONFERIDO" : "❌ DIVERGENCIA";
+
+        html += `
+          <div class="card">
+            <b>${item}</b>
+            <br><br>
+            <h2>${status}</h2>
+            Contagem: ${contagem}
+            <br>
+            Nota: ${nota}
+            <br>
+            Diferenca: ${diferenca}
+          </div>
+        `;
+      });
+
+      document.getElementById("resultado").innerHTML = html;
+    }
+
+    function voltarContagem() {
+      document.getElementById("nota").style.display = "none";
+      document.getElementById("resumo").style.display = "none";
+      document.getElementById("contagem").style.display = "block";
+    }
+
+    function montarDiaAtual() {
+      return {
+        data: new Date().toLocaleDateString("pt-BR"),
+        itens: montarDadosDia()
+      };
+    }
+
+    async function finalizarDia() {
+      const btn = document.getElementById("btnFinalizar");
+      const erro = document.getElementById("mensagemErro");
+
+      btn.disabled = true;
+      erro.style.display = "none";
+
+      try {
+        const ultimo = montarDiaAtual();
+        const excel = gerarExcelParaEmail(ultimo);
+        await enviarEmailAPI(ultimo, excel);
+        alert("Relatorio enviado para o email com Excel anexado!");
+      } catch (err) {
+        console.error(err);
+        erro.textContent = err.message || "Nao foi possivel finalizar o dia.";
+        erro.style.display = "block";
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function enviarEmailAPI(diaAtual, excel) {
+      const resposta = await fetch("https://embalagens-api-rho.vercel.app/api/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          data: diaAtual.data,
+          itens: diaAtual.itens,
+          relatorio: diaAtual,
+          excel,
+          attachments: [
+            {
+              filename: excel.nome,
+              content: excel.base64,
+              encoding: "base64",
+              contentType: excel.mimeType
+            }
+          ]
+        })
+      });
+
+      if (!resposta.ok) {
+        throw new Error("Erro ao enviar email. Codigo: " + resposta.status);
+      }
+    }
+
+    function gerarExcelParaEmail(diaAtual) {
+      if (!window.XLSX) {
+        throw new Error("Biblioteca XLSX ainda nao carregou. Verifique a internet e tente novamente.");
+      }
+
+      const linhas = diaAtual.itens.map(({ item, contagem, diferenca }) => ({
+        Dia: diaAtual.data,
+        Item: item,
+        Contagem: contagem,
+        Diferenca: diferenca === 0 ? "" : diferenca
+      }));
+
+      const ws = XLSX.utils.json_to_sheet(linhas);
+      const wb = XLSX.utils.book_new();
+
+      XLSX.utils.book_append_sheet(wb, ws, "Embalagens");
+
+      return {
+        nome: "embalagens-cassia.xlsx",
+        mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        base64: XLSX.write(wb, {
+          bookType: "xlsx",
+          type: "base64"
+        })
+      };
+    }
+  </script>
 </body>
-
 </html>

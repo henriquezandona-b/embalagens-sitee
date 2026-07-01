@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Sistema de Embalagens - Cássia</title>
+
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f3f5f7;
+padding:18px;
+}
+
+
+.inicio{
+
+background:white;
+min-height:80vh;
+border-radius:22px;
+padding:30px 20px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+box-shadow:0 3px 12px rgba(0,0,0,.1);
+
+}
+
+
+.logo{
+font-size:70px;
+}
+
+
+#saudacao{
+
+font-size:30px;
+font-weight:bold;
+
+}
+
+
+#data{
+
+font-size:22px;
+color:#555;
+
+}
+
+
+.subtitulo{
+
+font-size:22px;
+font-weight:bold;
+margin:25px;
+
+}
+
+
+
+.card{
+
+background:white;
+padding:18px;
+border-radius:18px;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
+margin-bottom:16px;
+
+}
+
+
+
+.item{
+
+margin-bottom:20px;
+
+}
+
+
+
+input{
+
+width:100%;
+padding:14px;
+font-size:18px;
+border:1px solid #ccc;
+border-radius:10px;
+box-sizing:border-box;
+
+}
+
+
+
+.total{
+
+background:#e9f9ec;
+border:2px solid #36a248;
+border-radius:12px;
+text-align:center;
+padding:10px;
+margin-top:8px;
+
+}
+
+
+
+.total span{
+
+font-size:38px;
+font-weight:bold;
+color:#17782c;
+
+}
+
+
+
+button{
+
+width:100%;
+padding:18px;
+font-size:18px;
+font-weight:bold;
+border:none;
+border-radius:12px;
+background:#0b5ed7;
+color:white;
+margin-top:10px;
+
+}
+
+
+
+.verde{
+
+background:#198754;
+
+}
+
+.voltar{
+
+background:#6c757d;
+
+}
+
+
+.sec{
+
+display:none;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+
+<div id="inicio" class="inicio">
+
+
+<div class="logo">
+📦
+</div>
+
+
+<h1 id="saudacao"></h1>
+
+
+<h2 id="data"></h2>
+
+
+<p class="subtitulo">
+
+Sistema de Embalagens
+
+</p>
+
+
+<button onclick="abrirDia()">
+
+▶ INICIAR CONTAGEM
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+
+<div id="contagem" class="card sec">
+
+
+<h2 id="titulo"></h2>
+
+
+<div id="campos"></div>
+
+
+<button class="verde" onclick="abrirNota()">
+
+FINALIZAR CONTAGEM
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+
+<div id="nota" class="card sec">
+
+
+<h2>
+📄 NOTA FISCAL
+</h2>
+
+
+<div id="camposNota"></div>
+
+
+<button class="verde" onclick="mostrarResumo()">
+
+CONFERIR RESULTADO
+
+</button>
+
+<button class="voltar" onclick="voltarContagem()">
+
+⬅️ VOLTAR PARA CONTAGEM
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div id="resumo" class="card sec">
+
+
+<h2>
+📋 RESUMO FINAL
+</h2>
+
+
+<div id="resultado"></div>
+
+
+<button class="verde" onclick="finalizarDia()">
+📌 FINALIZAR DIA
+</button>
+
+
+
+
+
+<button class="voltar" onclick="voltarContagem()">
+
+⬅️ VOLTAR PARA CONTAGEM
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+<script>
+
+async function enviarEmailAPI(dados) {
+
+  try {
+
+    await fetch("https://embalagens-api-rho.vercel.app/api/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        itens: dados
+      })
+    });
+
+    console.log("Email enviado");
+
+  } catch (err) {
+    console.error("Erro ao enviar email:", err);
+  }
+
+}
+
+const dias={
+
+
+1:{
+nome:"SEGUNDA",
+campos:[
+
+"MUBEIA - CAIXA",
+"MUBEIA - PALLET",
+"MUBEIA - TAMPA",
+
+"NIGTERRA - CAIXA",
+"NIGTERRA - PALLET",
+
+"CIEE AZUL - PALLET",
+"CIEE AZUL - TAMPA",
+"CIEE AZUL - BANDEIJA (6)",
+
+"CIEE CINZA - PALLET",
+"CIEE CINZA - TAMPA",
+"CIEE CINZA - BANDEIJA (7)"
+
+]
+
+},
+
+
+
+2:{
+nome:"TERÇA",
+campos:[
+
+"BLEISTAHL - CAIXA",
+"BLEISTAHL - PALLET",
+"BLEISTAHL - TAMPA",
+
+"PUREM - CAIXA",
+"PUREM - BANDEIJA (4)",
+
+"CIEE AZUL - PALLET",
+"CIEE AZUL - TAMPA",
+"CIEE AZUL - BANDEIJA (6)",
+
+"CIEE CINZA - PALLET",
+"CIEE CINZA - TAMPA",
+"CIEE CINZA - BANDEIJA (7)"
+
+]
+
+},
+
+
+
+
+3:{
+nome:"QUARTA",
+campos:[
+
+"CESTARI - CAIXA",
+"CESTARI - BANDEIJA (13)",
+
+"MALHE - CAIXA",
+
+"PROMETAL - CAIXA",
+
+"CIEE AZUL - PALLET",
+"CIEE AZUL - TAMPA",
+"CIEE AZUL - BANDEIJA (6)",
+
+"CIEE CINZA - PALLET",
+"CIEE CINZA - TAMPA",
+"CIEE CINZA - BANDEIJA (7)"
+
+]
+
+},
+
+
+
+
+4:{
+nome:"QUINTA FEIRA",
+campos:[
+
+"PINHA - CAIXA",
+
+"MUVIC - CAIXA",
+"MUVIC - PALLET",
+"MUVIC - BANDEIJA",
+
+"CIEE AZUL - PALLET",
+"CIEE AZUL - TAMPA",
+"CIEE AZUL - BANDEIJA (6)",
+
+"CIEE CINZA - PALLET",
+"CIEE CINZA - TAMPA",
+"CIEE CINZA - BANDEIJA (7)"
+
+]
+
+},
+
+
+
+
+5:{
+nome:"SEXTA",
+campos:[
+
+"BIELA - CAIXA",
+"BIELA - TAMPA",
+"BIELA - PALLET",
+"BIELA - BANDEIJA (2)",
+
+"VETORE - CAIXA",
+"VETORE - PALLET",
+"VETORE - TAMPA",
+"VETORE - BANDEIJA (5)",
+
+"VALEO - CAIXA",
+
+
+"CIEE AZUL - PALLET",
+"CIEE AZUL - TAMPA",
+"CIEE AZUL - BANDEIJA (6)",
+
+"CIEE CINZA - PALLET",
+"CIEE CINZA - TAMPA",
+"CIEE CINZA - BANDEIJA (7)"
+
+]
+
+}
+
+};
+
+
+
+
+
+
+const hoje=new Date();
+
+let dia = hoje.getDay();
+if (dia === 0 || dia === 6) dia = 1; // força segunda-feira
+
+
+
+const diasNome={
+
+1:"SEGUNDA-FEIRA",
+2:"TERÇA-FEIRA",
+3:"QUARTA-FEIRA",
+4:"QUINTA-FEIRA",
+5:"SEXTA-FEIRA"
+
+};
+
+
+
+
+document.getElementById("saudacao").innerHTML=
+
+hoje.getHours()<12 ?
+
+"👋 Bom dia, Cássia!" :
+
+"☀️ Boa tarde, Cássia!";
+
+
+
+
+
+document.getElementById("data").innerHTML=
+
+"📅 "+diasNome[dia]+
+"<br>"+
+hoje.toLocaleDateString("pt-BR");
+
+
+
+
+
+
+
+
+
+
+function abrirDia(){
+
+
+document.getElementById("inicio").style.display = "none";
+
+contagem.style.display="block";
+
+
+titulo.innerHTML="📦 "+dias[dia].nome;
+
+
+
+let html="";
+
+
+
+dias[dia].campos.forEach((item,i)=>{
+
+
+html+=`
+
+<div class="item">
+
+<label>${i+1}. ${item}</label>
+
+
+<input
+
+id="c${i}"
+
+type="tel"
+
+inputmode="numeric"
+
+placeholder="Ex: 2+4+7"
+
+oninput="calcular(${i})">
+
+
+
+<div class="total">
+
+TOTAL ${item}
+
+<br>
+
+<span id="t${i}">
+
+0
+
+</span>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+
+campos.innerHTML=html;
+
+
+}
+
+
+
+
+
+
+
+
+function soma(valor){
+
+if(!valor)return 0;
+
+
+return valor.split("+")
+.reduce((a,b)=>a+(Number(b)||0),0);
+
+}
+
+
+let notasSalvas = [];
+
+let historico = JSON.parse(localStorage.getItem("historico")) || [];
+
+
+
+
+
+function calcular(i){
+
+
+let valor=soma(
+document.getElementById("c"+i).value
+);
+
+
+let nome=dias[dia].campos[i];
+
+
+
+
+document.getElementById("t"+i).innerHTML=valor;
+
+
+}
+
+
+
+
+
+
+
+
+
+function abrirNota(){
+
+
+contagem.style.display="none";
+
+nota.style.display="block";
+
+
+
+let html="";
+
+
+
+dias[dia].campos.forEach((item,i)=>{
+
+
+html+=`
+
+<div class="item">
+
+<label>${item} - NOTA</label>
+
+<input
+id="n${i}"
+placeholder="Ex: 50+40+20"
+value="${notasSalvas[i] || ''}"
+oninput="calcularNota(${i})">
+
+<div class="total">
+TOTAL NOTA ${item}
+<br>
+<span id="tn${i}">0</span>
+</div>
+
+</div>
+
+`;
+
+
+});
+
+
+camposNota.innerHTML=html;
+
+
+}
+
+
+
+
+
+
+
+
+
+function mostrarResumo(){
+
+dias[dia].campos.forEach((_, i) => {
+notasSalvas[i] = document.getElementById("n"+i).value;
+});
+nota.style.display="none";
+
+resumo.style.display="block";
+
+
+
+let html="";
+
+
+
+dias[dia].campos.forEach((item,i)=>{
+
+
+let cont=soma(
+document.getElementById("c"+i).value
+);
+
+
+
+if(item.includes("AZUL - BANDEIJA"))
+
+cont*=6;
+
+
+
+if(item.includes("CINZA - BANDEIJA"))
+
+cont*=7;
+
+
+
+let nf=soma(
+document.getElementById("n"+i).value
+);
+
+
+
+let status = "";
+
+if(cont == nf){
+
+status = "✅ CONFERIDO";
+
+}else{
+
+status = "❌ DIVERGÊNCIA";
+
+}
+
+
+
+html+=`
+
+<div class="card">
+
+
+<b>${item}</b>
+
+<br><br>
+
+
+<h2>${status}</h2>
+
+
+Contagem: ${cont}
+
+<br>
+
+Nota: ${nf}
+
+<br>
+
+Diferença: ${cont-nf}
+
+
+</div>
+
+`;
+
+});
+
+
+resultado.innerHTML=html;
+
+
+}
+
+function voltarContagem(){
+
+nota.style.display="none";
+
+resumo.style.display="none";
+
+contagem.style.display="block";
+
+}
+
+
+
+
+function finalizarDia(){
+
+  salvarDia();
+
+  let dadosEmail = historico[historico.length - 1]?.itens || [];
+
+  enviarEmailAPI(dadosEmail);
+
+  alert("Dia finalizado e enviado por email!");
+
+}
+
+
+
+function salvarDia(){
+
+let hojeStr = new Date().toLocaleDateString("pt-BR");
+
+let diaAtual = {
+data: hojeStr,
+itens: []
+};
+
+
+dias[dia].campos.forEach((item, i) => {
+
+let cont = soma(document.getElementById("c"+i).value);
+
+if(item.includes("AZUL - BANDEIJA")) cont *= 6;
+if(item.includes("CINZA - BANDEIJA")) cont *= 7;
+
+let nf = soma(document.getElementById("n"+i)?.value || "");
+
+
+diaAtual.itens.push({
+
+item,
+contagem: cont,
+nota: nf,
+diferenca: cont - nf
+
+});
+
+
+});
+
+
+historico.push(diaAtual);
+
+
+localStorage.setItem(
+"historico",
+JSON.stringify(historico)
+);
+
+
+alert("Dia salvo com sucesso!");
+
+}
+
+let blob = new Blob(
+["\ufeff" + csv],
+{type:"text/csv;charset=utf-8;"}
+);
+
+
+let url = URL.createObjectURL(blob);
+
+
+let a = document.createElement("a");
+
+a.href = url;
+
+a.download = "historico-cassia.csv";
+
+a.click();
+
+
+URL.revokeObjectURL(url);
+
+
+function calcularNota(i){
+
+  let valor = document.getElementById("n"+i).value;
+
+  let total = soma(valor);
+
+  notasSalvas[i] = valor;
+
+  // 👇 aqui mostra o total na caixa verde
+  let el = document.getElementById("tn"+i);
+  if(el){
+    el.innerHTML = total;
+  }
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

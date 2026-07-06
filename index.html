@@ -136,6 +136,10 @@
   </style>
 </head>
 <body>
+  </body>
+  <button id="btnDashboard" onclick="abrirDashboard()">
+📊 Dashboard
+</button>
   <div id="inicio" class="inicio">
     <div class="logo">📦</div>
     <h1 id="saudacao"></h1>
@@ -422,7 +426,7 @@
         const ultimo = montarDiaAtual();
         const excel = gerarExcelParaEmail(ultimo);
         await enviarEmailAPI(ultimo, excel);
-        alert("Relatorio enviado para o email com Excel anexado!");
+        alert("Dia Finalizado!");
       } catch (err) {
         console.error(err);
         erro.textContent = err.message || "Nao foi possivel finalizar o dia.";
@@ -495,4 +499,5 @@
 }
   </script>
 </body>
+</button>
 </html>

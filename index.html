@@ -6,6 +6,25 @@
   <title>Sistema de Embalagens - Cassia</title>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
   <style>
+    #btnDashboard {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  width: auto;
+  padding: 10px 14px;
+  font-size: 14px;
+  border-radius: 12px;
+  background: #0b5ed7;
+  color: white;
+  border: none;
+  cursor: pointer;
+  z-index: 999;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+#btnDashboard:hover {
+  opacity: 0.9;
+}
     * {
       box-sizing: border-box;
     }
@@ -136,10 +155,11 @@
   </style>
 </head>
 <body>
-  </body>
+  
   <button id="btnDashboard" onclick="abrirDashboard()">
 📊 Dashboard
 </button>
+  
   <div id="inicio" class="inicio">
     <div class="logo">📦</div>
     <h1 id="saudacao"></h1>
@@ -286,6 +306,14 @@
     document.getElementById("data").innerHTML =
       "📅 " + diasNome[dia] + "<br>" + hoje.toLocaleDateString("pt-BR");
 
+    function abrirDashboard() {
+  document.getElementById("inicio").style.display = "none";
+  document.getElementById("contagem").style.display = "none";
+  document.getElementById("nota").style.display = "none";
+  document.getElementById("resumo").style.display = "none";
+
+  alert("Dashboard ainda não foi criada 📊");
+}
     function abrirDia() {
       document.getElementById("inicio").style.display = "none";
       document.getElementById("contagem").style.display = "block";

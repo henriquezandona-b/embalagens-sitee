@@ -157,14 +157,25 @@
     <button type="button" class="voltar" onclick="voltarContagem()">⬅ VOLTAR PARA CONTAGEM</button>
   </div>
 
-  <div id="resumo" class="card sec">
-    <h2>📋 RESUMO FINAL</h2>
-    <div id="resultado"></div>
-    <button type="button" id="btnFinalizar" class="verde" onclick="finalizarDia()">📌 FINALIZAR DIA</button>
-    <button type="button" class="voltar" onclick="voltarContagem()">⬅ VOLTAR PARA CONTAGEM</button>
-    <div id="mensagemErro" class="erro"></div>
-  </div>
+ <div id="resumo" class="card sec">
+  <h2>📋 RESUMO FINAL</h2>
 
+  <div id="resultado"></div>
+
+  <button type="button" id="btnFinalizar" class="verde" onclick="finalizarDia()">
+    📌 FINALIZAR DIA
+  </button>
+
+  <button type="button" class="verde" onclick="baixarExcel()">
+    📥 GERAR EXCEL
+  </button>
+
+  <button type="button" class="voltar" onclick="voltarContagem()">
+    ⬅ VOLTAR PARA CONTAGEM
+  </button>
+
+  <div id="mensagemErro" class="erro"></div>
+</div>
   <script>
     const dias = {
       1: {
@@ -465,6 +476,22 @@
         })
       };
     }
+    async function baixarExcel() {
+  const resposta = await fetch(
+    "https://embalagens-api-rho.vercel.app/api/export"
+  );
+
+  const blob = await resposta.blob();
+
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+
+  a.href = url;
+  a.download = "embalagens.xlsx";
+  a.click();
+
+  a.remove();
+}
   </script>
 </body>
 </html>

@@ -477,10 +477,10 @@
       };
     }
     async function baixarExcel() {
+      console.log("INICIANDO DOWNLOAD");
   const resposta = await fetch(
     "https://embalagens-api-rho.vercel.app/api/export"
   );
-      console.log("INICIANDO DOWNLOAD");
 
   const blob = await resposta.blob();
 

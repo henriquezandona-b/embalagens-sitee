@@ -204,6 +204,41 @@
 
   <div id="mensagemErro" class="erro"></div>
 </div>
+  <div id="dashboard" class="card sec">
+
+  <h2>📊 Dashboard</h2>
+
+  <div class="card">
+    <h3>📅 Dias Conferidos</h3>
+    <h1 id="totalDias">0</h1>
+  </div>
+
+  <div class="card">
+    <h3>📦 Itens Conferidos</h3>
+    <h1 id="totalItens">0</h1>
+  </div>
+
+  <div class="card">
+    <h3>❌ Divergências</h3>
+    <h1 id="totalDivergencias">0</h1>
+  </div>
+
+  <div class="card">
+    <h3>✅ Índice de Acerto</h3>
+    <h1 id="porcentagemAcerto">0%</h1>
+  </div>
+
+  <hr>
+
+  <h3>🏆 Top 3 Divergências</h3>
+
+  <div id="ranking"></div>
+
+  <button class="voltar" onclick="fecharDashboard()">
+    ⬅ Voltar
+  </button>
+
+</div>
   <script>
     const dias = {
       1: {
@@ -528,6 +563,58 @@
   a.click();
 
   a.remove();
+}
+    async function abrirDashboard() {
+
+    document.getElementById("inicio").style.display = "none";
+    document.getElementById("contagem").style.display = "none";
+    document.getElementById("nota").style.display = "none";
+    document.getElementById("resumo").style.display = "none";
+
+    document.getElementById("dashboard").style.display = "block";
+
+    const resposta = await fetch(
+        "https://embalagens-api-rho.vercel.app/api/dashboard"
+    );
+
+    const dados = await resposta.json();
+
+    document.getElementById("totalDias").textContent =
+        dados.totalDias;
+
+    document.getElementById("totalItens").textContent =
+        dados.totalItens;
+
+    document.getElementById("totalDivergencias").textContent =
+        dados.totalDivergencias;
+
+    document.getElementById("porcentagemAcerto").textContent =
+        dados.porcentagemAcerto + "%";
+
+    let html = "";
+
+    dados.topItens.forEach(item => {
+
+        html += `
+            <div class="card">
+                <b>${item.item}</b>
+                <br>
+                Divergências: ${item.total}
+            </div>
+        `;
+
+    });
+
+    document.getElementById("ranking").innerHTML = html;
+
+}
+
+function fecharDashboard(){
+
+    document.getElementById("dashboard").style.display = "none";
+
+    document.getElementById("inicio").style.display = "flex";
+
 }
   </script>
 </body>

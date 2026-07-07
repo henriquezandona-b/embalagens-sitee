@@ -346,10 +346,8 @@
       "📅 " + diasNome[dia] + "<br>" + hoje.toLocaleDateString("pt-BR");
 
     function abrirDashboard() {
-  document.getElementById("inicio").style.display = "none";
-  document.getElementById("contagem").style.display = "none";
-  document.getElementById("nota").style.display = "none";
-  document.getElementById("resumo").style.display = "none";
+    window.location.href = "dashboard.html";
+}
 
   alert("Dashboard ainda não foi criada 📊");
 }

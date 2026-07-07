@@ -453,7 +453,7 @@
             <br>
             Nota: ${nota}
             <br>
-            Diferenca: ${diferenca}
+            Diferença: ${diferenca}
           </div>
         `;
       });
@@ -522,7 +522,7 @@
         Dia: diaAtual.data,
         Item: item,
         Contagem: contagem,
-        Diferenca: diferenca === 0 ? "" : diferenca
+        Diferença: diferenca === 0 ? "" : diferenca
       }));
 
       const ws = XLSX.utils.json_to_sheet(linhas);

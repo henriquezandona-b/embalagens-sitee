@@ -425,7 +425,7 @@
           item,
           contagem,
           nota,
-          diferença: contagem - nota
+          diferenca: contagem - nota
         };
       });
     }
@@ -441,7 +441,7 @@
       const dados = montarDadosDia();
       let html = "";
 
-      dados.forEach(({ item, contagem, nota, diferença }) => {
+      dados.forEach(({ item, contagem, nota, diferenca }) => {
         const status = contagem === nota ? "✅ CONFERIDO" : "❌ DIVERGÊNCIA";
 
         html += `
@@ -453,7 +453,7 @@
             <br>
             Nota: ${nota}
             <br>
-            Diferença: ${diferença}
+            Diferenca: ${diferenca}
           </div>
         `;
       });
@@ -518,11 +518,11 @@
         throw new Error("Biblioteca XLSX ainda nao carregou. Verifique a internet e tente novamente.");
       }
 
-      const linhas = diaAtual.itens.map(({ item, contagem, diferença }) => ({
+      const linhas = diaAtual.itens.map(({ item, contagem, diferenca }) => ({
         Dia: diaAtual.data,
         Item: item,
         Contagem: contagem,
-        Diferença: diferença === 0 ? "" : diferença
+        Diferenca: diferenca === 0 ? "" : diferenca
       }));
 
       const ws = XLSX.utils.json_to_sheet(linhas);

@@ -466,6 +466,9 @@
     }
 
     function mostrarResumo() {
+      
+      document.getElementById("btnExcelInicio").style.display = "none";
+      
       dias[dia].campos.forEach((_, i) => {
         notasSalvas[i] = document.getElementById("n" + i).value;
       });
@@ -497,10 +500,14 @@
     }
 
     function voltarContagem() {
-      document.getElementById("nota").style.display = "none";
-      document.getElementById("resumo").style.display = "none";
-      document.getElementById("contagem").style.display = "block";
-    }
+
+    document.getElementById("btnExcelInicio").style.display = "block";
+
+    document.getElementById("nota").style.display = "none";
+    document.getElementById("resumo").style.display = "none";
+    document.getElementById("contagem").style.display = "block";
+
+}
 
     function montarDiaAtual() {
       return {

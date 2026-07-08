@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sistema de Embalagens - Cassia</title>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
   <style>
     * {
       box-sizing: border-box;
@@ -265,7 +267,9 @@
 
   <hr>
 
-  <h3>🏆 Maiores Divergências</h3>
+ <h3>📈 5 Maiores Divergências</h3>
+
+<canvas id="graficoTop5" height="250"></canvas>
 
   <div id="ranking"></div>
 
@@ -277,6 +281,7 @@
   <script>
     
     let telaAnterior = "inicio";
+    let graficoTop5 = null;
     
     const dias = {
       1: {
@@ -644,19 +649,72 @@
     document.getElementById("porcentagemAcerto").textContent =
         dados.porcentagemAcerto + "%";
 
-    let html = "";
+    const nomes = dados.topItens.map(i => i.item);
+const valores = dados.topItens.map(i => i.total);
 
-    dados.topItens.forEach(item => {
+if (graficoTop5) {
+    graficoTop5.destroy();
+}
 
-        html += `
-            <div class="card">
-                <b>${item.item}</b>
-                <br>
-                Divergências: ${item.total}
-            </div>
-        `;
+const ctx = document.getElementById("graficoTop5");
 
-    });
+graficoTop5 = new Chart(ctx, {
+
+    type: "bar",
+
+    data: {
+
+        labels: nomes,
+
+        datasets: [{
+
+            label: "Divergências",
+
+            data: valores,
+
+            backgroundColor: "#0b5ed7",
+
+            borderRadius: 8
+
+        }]
+
+    },
+
+    options: {
+
+        indexAxis: "y",
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+
+                display: false
+
+            }
+
+        },
+
+        scales: {
+
+            x: {
+
+                beginAtZero: true,
+
+                ticks: {
+
+                    precision: 0
+
+                }
+
+            }
+
+        }
+
+    }
+
+});
 
     document.getElementById("ranking").innerHTML = html;
 

@@ -275,6 +275,9 @@
 
 </div>
   <script>
+    
+    let telaAnterior = "inicio";
+    
     const dias = {
       1: {
         nome: "SEGUNDA",
@@ -603,6 +606,16 @@
   a.remove();
 }
     async function abrirDashboard() {
+     
+      if (document.getElementById("resumo").style.display === "block") {
+    telaAnterior = "resumo";
+} else if (document.getElementById("nota").style.display === "block") {
+    telaAnterior = "nota";
+} else if (document.getElementById("contagem").style.display === "block") {
+    telaAnterior = "contagem";
+} else {
+    telaAnterior = "inicio";
+}
       
     document.getElementById("btnDashboard").style.display = "none";
     document.getElementById("btnExcel").style.display = "none";
@@ -649,13 +662,34 @@
 
 }
 
-function fecharDashboard(){
+function fecharDashboard() {
 
     document.getElementById("dashboard").style.display = "none";
-    document.getElementById("inicio").style.display = "flex";
 
     document.getElementById("btnDashboard").style.display = "block";
-    document.getElementById("btnExcel").style.display = "block";
+
+    if (telaAnterior === "inicio") {
+
+        document.getElementById("btnExcel").style.display = "block";
+        document.getElementById("inicio").style.display = "flex";
+
+    } else if (telaAnterior === "contagem") {
+
+        document.getElementById("btnExcel").style.display = "block";
+        document.getElementById("contagem").style.display = "block";
+
+    } else if (telaAnterior === "nota") {
+
+        document.getElementById("btnExcel").style.display = "block";
+        document.getElementById("nota").style.display = "block";
+
+    } else if (telaAnterior === "resumo") {
+
+        // Na tela Resumo você já esconde o botão pequeno do Excel
+        document.getElementById("btnExcel").style.display = "none";
+        document.getElementById("resumo").style.display = "block";
+
+    }
 
 }
   </script>

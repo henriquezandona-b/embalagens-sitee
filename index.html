@@ -381,6 +381,10 @@
       "📅 " + diasNome[dia] + "<br>" + hoje.toLocaleDateString("pt-BR");
 
     function abrirDia() {
+      
+      document.getElementById("btnExcel").style.display = "none";
+      document.getElementById("btnDashboard").style.display = "none";
+      
       document.getElementById("inicio").style.display = "none";
       document.getElementById("contagem").style.display = "block";
       document.getElementById("titulo").textContent = "📦 " + dias[dia].nome;
@@ -592,8 +596,6 @@
   a.remove();
 }
     async function abrirDashboard() {
-    document.getElementById("btnDashboard").style.display = "none";
-    document.getElementById("btnExcelInicio").style.display = "none";
 
     document.getElementById("inicio").style.display = "none";
     document.getElementById("contagem").style.display = "none";
@@ -645,7 +647,7 @@ function fecharDashboard(){
     document.getElementById("inicio").style.display = "flex";
 
     document.getElementById("btnDashboard").style.display = "block";
-    document.getElementById("btnExcelInicio").style.display = "block";
+    document.getElementById("btnExcel").style.display = "block";
 
 }
   </script>

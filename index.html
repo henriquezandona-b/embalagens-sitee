@@ -592,6 +592,8 @@
   a.remove();
 }
     async function abrirDashboard() {
+    document.getElementById("btnDashboard").style.display = "none";
+    document.getElementById("btnExcelInicio").style.display = "none";
 
     document.getElementById("inicio").style.display = "none";
     document.getElementById("contagem").style.display = "none";
@@ -641,6 +643,9 @@ function fecharDashboard(){
     document.getElementById("dashboard").style.display = "none";
 
     document.getElementById("inicio").style.display = "flex";
+
+    document.getElementById("btnDashboard").style.display = "block";
+    document.getElementById("btnExcelInicio").style.display = "block";
 
 }
   </script>

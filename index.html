@@ -684,46 +684,54 @@ graficoTop5 = new Chart(ctx, {
 
     options: {
 
-        responsive: true,
+    responsive: true,
 
-        maintainAspectRatio: false,
+    maintainAspectRatio: false,
 
-        plugins: {
+    plugins: {
 
-            legend: {
+        legend: {
+            display: false
+        },
+
+        title: {
+            display: true,
+            text: "Top 5 Maiores Divergências"
+        }
+
+    },
+
+    scales: {
+
+        x: {
+
+            grid: {
                 display: false
             },
 
-            title: {
-                display: true,
-                text: "Top 5 Maiores Divergências"
+            ticks: {
+
+                maxRotation: 0,
+                minRotation: 0,
+
+                autoSkip: false,
+
+                font: {
+                    size: 10
+                }
+
             }
 
         },
 
-        scales: {
+        y: {
 
-            x: {
+            beginAtZero: true,
 
-                ticks: {
+            ticks: {
 
-                    maxRotation: 0,
-                    minRotation: 0
-
-                }
-
-            },
-
-            y: {
-
-                beginAtZero: true,
-
-                ticks: {
-
-                    precision: 0,
-                    stepSize: 1
-
-                }
+                precision: 0,
+                stepSize: 1
 
             }
 
@@ -731,6 +739,7 @@ graficoTop5 = new Chart(ctx, {
 
     }
 
+}
 });
 
 }

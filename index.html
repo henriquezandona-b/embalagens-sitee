@@ -235,14 +235,39 @@
     height: 300px;     /* diminua aqui */
     margin: 20px auto;
 }
+    .dashboard-page{
+    background:#f5f7fb;
+    border-radius:20px;
+    padding:30px;
+    min-height:90vh;
+}
+    .dashboard-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.dashboard-header h1{
+    margin:0;
+    font-size:34px;
+    color:#173B70;
+}
+
+.btn-voltar-dashboard{
+    width:auto;
+    padding:12px 25px;
+    background:#2563EB;
+    border-radius:10px;
+}
   </style>
 </head>
 <body>
   <button id="btnExcel" onclick="baixarExcel()">
-📥 Excel
+📥 EXCEL
 </button>
   <button id="btnDashboard" onclick="abrirDashboard()">
-📊 Dashboard
+📊 DASHBOARD
 </button>
   
   <div id="inicio" class="inicio">
@@ -285,9 +310,19 @@
 
   <div id="mensagemErro" class="erro"></div>
 </div>
-  <div id="dashboard" class="card sec">
+ <div id="dashboard" class="sec dashboard-page">
 
-  <h2>📊 Dashboard</h2>
+  <div class="dashboard-header">
+
+    <h1>
+        📊 DASHBOARD
+    </h1>
+
+    <button class="btn-voltar-dashboard" onclick="fecharDashboard()">
+        ← Voltar
+    </button>
+
+</div>
 
   <div class="dashboard-cards">
 

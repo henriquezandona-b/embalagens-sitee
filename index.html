@@ -260,6 +260,20 @@
     background:#2563EB;
     border-radius:10px;
 }
+    .dashboard-chart{
+    background:#fff;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+    margin-top:25px;
+}
+
+.dashboard-chart h3{
+    margin-top:0;
+    margin-bottom:20px;
+    color:#173B70;
+    font-size:22px;
+}
   </style>
 </head>
 <body>
@@ -374,10 +388,14 @@
 
   <hr>
 
- <h3>📈 5 Maiores Divergências</h3>
+ <div class="dashboard-chart">
 
-<div class="grafico-container">
-    <canvas id="graficoTop5"></canvas>
+    <h3>📈 Top 5 Maiores Divergências</h3>
+
+    <div class="grafico-container">
+        <canvas id="graficoTop5"></canvas>
+    </div>
+
 </div>
 
   <script>

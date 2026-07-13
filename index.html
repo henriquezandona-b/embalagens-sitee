@@ -277,11 +277,12 @@
   </style>
 </head>
 <body>
-  <button id="btnExcel" onclick="baixarExcel()">
-📥 EXCEL
+  <button id="btnExcel" onclick="abrirMenuExcel()">
+📥 Excel
 </button>
-  <button id="btnDashboard" onclick="abrirDashboard()">
-📊 DASHBOARD
+
+<button id="btnDashboard" onclick="abrirMenuDashboard()">
+📊 Dashboard
 </button>
   
   <div id="inicio" class="inicio">
@@ -398,6 +399,37 @@
 
 </div>
 
+   <div id="menuExcel" class="sec card">
+    <h2>📥 Exportar Excel</h2>
+
+    <button onclick="baixarExcel()">
+        📦 Embalagens
+    </button>
+
+    <button onclick="baixarExcelInventario()">
+        📋 Inventário
+    </button>
+
+    <button class="voltar" onclick="fecharMenus()">
+        Cancelar
+    </button>
+</div>
+
+<div id="menuDashboard" class="sec card">
+    <h2>📊 Dashboards</h2>
+
+    <button onclick="abrirDashboard()">
+        📦 Embalagens
+    </button>
+
+    <button onclick="abrirDashboardInventario()">
+        📋 Inventário
+    </button>
+
+    <button class="voltar" onclick="fecharMenus()">
+        Cancelar
+    </button>
+</div>
   <script>
     
     let telaAnterior = "inicio";
@@ -886,6 +918,28 @@ function fecharDashboard() {
         document.getElementById("resumo").style.display = "block";
 
     }
+
+}
+    function abrirMenuExcel(){
+
+    document.getElementById("inicio").style.display = "none";
+    document.getElementById("menuExcel").style.display = "block";
+
+}
+
+function abrirMenuDashboard(){
+
+    document.getElementById("inicio").style.display = "none";
+    document.getElementById("menuDashboard").style.display = "block";
+
+}
+
+function fecharMenus(){
+
+    document.getElementById("menuExcel").style.display = "none";
+    document.getElementById("menuDashboard").style.display = "none";
+
+    document.getElementById("inicio").style.display = "flex";
 
 }
   </script>

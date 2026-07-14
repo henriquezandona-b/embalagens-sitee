@@ -917,45 +917,39 @@ graficoTop5 = new Chart(ctx, {
 
 function fecharDashboard() {
 
+    document.getElementById("dashboard").style.display = "none";
+
     document.getElementById("btnExcel").style.display = "block";
-document.getElementById("btnDashboard").style.display = "block";
+    document.getElementById("btnDashboard").style.display = "block";
 
     if (telaAnterior === "inicio") {
 
         document.getElementById("inicio").style.display = "flex";
-        document.getElementById("resumo").style.display = "none";
-        document.getElementById("nota").style.display = "none";
         document.getElementById("contagem").style.display = "none";
+        document.getElementById("nota").style.display = "none";
+        document.getElementById("resumo").style.display = "none";
 
-    }
+    } else if (telaAnterior === "contagem") {
 
-    else if (telaAnterior === "contagem") {
-
+        document.getElementById("inicio").style.display = "none";
         document.getElementById("contagem").style.display = "block";
-        document.getElementById("inicio").style.display = "none";
         document.getElementById("nota").style.display = "none";
         document.getElementById("resumo").style.display = "none";
 
-    }
+    } else if (telaAnterior === "nota") {
 
-    else if (telaAnterior === "nota") {
-
+        document.getElementById("inicio").style.display = "none";
+        document.getElementById("contagem").style.display = "none";
         document.getElementById("nota").style.display = "block";
-        document.getElementById("inicio").style.display = "none";
-        document.getElementById("contagem").style.display = "none";
         document.getElementById("resumo").style.display = "none";
 
-    }
+    } else if (telaAnterior === "resumo") {
 
-    else if (telaAnterior === "resumo") {
-
-        document.getElementById("resumo").style.display = "block";
         document.getElementById("inicio").style.display = "none";
         document.getElementById("contagem").style.display = "none";
         document.getElementById("nota").style.display = "none";
-
+        document.getElementById("resumo").style.display = "block";
     }
-
 }
     function abrirMenuExcel(){
 

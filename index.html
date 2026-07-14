@@ -993,15 +993,26 @@ function abrirMenuDashboard(){
     document.getElementById("btnDashboard").style.display="none";
 }
 
-    function fecharMenus(){
+   function fecharMenus(){
 
-    document.getElementById("menuExcel").style.display="none";
-    document.getElementById("menuDashboard").style.display="none";
+    document.getElementById("menuExcel").style.display = "none";
+    document.getElementById("menuDashboard").style.display = "none";
 
-    document.getElementById("inicio").style.display="flex";
+    document.getElementById("btnExcel").style.display = "block";
+    document.getElementById("btnDashboard").style.display = "block";
 
-    document.getElementById("btnExcel").style.display="block";
-    document.getElementById("btnDashboard").style.display="block";
+    if (telaAnterior == "inicio"){
+        document.getElementById("inicio").style.display = "flex";
+    }
+    else if(telaAnterior == "contagem"){
+        document.getElementById("contagem").style.display = "block";
+    }
+    else if(telaAnterior == "nota"){
+        document.getElementById("nota").style.display = "block";
+    }
+    else if(telaAnterior == "resumo"){
+        document.getElementById("resumo").style.display = "block";
+    }
 
 }
   </script>

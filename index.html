@@ -651,8 +651,10 @@
 
       document.getElementById("btnDashboard").style.display = "block";
       document.getElementById("btnExcel").style.display = "none";
-      document.getElementById("nota").style.display = "none";
-      document.getElementById("resumo").style.display = "block";
+     document.getElementById("inicio").style.display = "none";
+document.getElementById("contagem").style.display = "none";
+document.getElementById("nota").style.display = "none";
+document.getElementById("resumo").style.display = "block";
 
       const dados = montarDadosDia();
       let html = "";
@@ -781,6 +783,10 @@
 
       document.getElementById("menuDashboard").style.display = "none";
       document.getElementById("menuExcel").style.display = "none";
+      console.log("inicio", document.getElementById("inicio").style.display);
+console.log("contagem", document.getElementById("contagem").style.display);
+console.log("nota", document.getElementById("nota").style.display);
+console.log("resumo", document.getElementById("resumo").style.display);
       
       if (document.getElementById("resumo").style.display === "block") {
     telaAnterior = "resumo";
@@ -962,12 +968,15 @@ function fecharDashboard() {
 
 function abrirMenuDashboard(){
 
-    document.getElementById("btnExcel").style.display="none";
-    document.getElementById("btnDashboard").style.display="none";
+    document.getElementById("menuDashboard").style.display = "block";
 
-    document.getElementById("inicio").style.display="none";
-    document.getElementById("menuDashboard").style.display="block";
+    document.getElementById("inicio").style.display = "none";
+    document.getElementById("contagem").style.display = "none";
+    document.getElementById("nota").style.display = "none";
+    document.getElementById("resumo").style.display = "none";
 
+    document.getElementById("btnExcel").style.display = "none";
+    document.getElementById("btnDashboard").style.display = "none";
 }
 
     function fecharMenus(){

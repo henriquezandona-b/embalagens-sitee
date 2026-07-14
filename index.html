@@ -763,7 +763,10 @@
   a.remove();
 }
     async function abrirDashboard() {
-     
+
+      document.getElementById("menuDashboard").style.display = "none";
+      document.getElementById("menuExcel").style.display = "none";
+      
       if (document.getElementById("resumo").style.display === "block") {
     telaAnterior = "resumo";
 } else if (document.getElementById("nota").style.display === "block") {

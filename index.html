@@ -594,6 +594,51 @@
       document.getElementById("campos").innerHTML = html;
     }
 
+    function abrirInventario() {
+
+    document.getElementById("btnExcel").style.display = "none";
+    document.getElementById("btnDashboard").style.display = "none";
+
+    document.getElementById("inicio").style.display = "none";
+    document.getElementById("inventario").style.display = "block";
+
+    let html = "";
+
+    categoriasInventario.forEach((categoria, indiceCategoria) => {
+
+        html += `
+            <h2 style="margin-top:30px;color:#173B70;">
+                ${categoria.categoria}
+            </h2>
+        `;
+
+        categoria.itens.forEach((item, indiceItem) => {
+
+            const id = `${indiceCategoria}_${indiceItem}`;
+
+            html += `
+
+            <div class="item">
+
+                <label>${item}</label>
+
+                <input
+                    id="inv_${id}"
+                    type="number"
+                    min="0"
+                    placeholder="Quantidade">
+
+            </div>
+
+            `;
+
+        });
+
+    });
+
+    document.getElementById("camposInventario").innerHTML = html;
+
+}
     function soma(valor) {
       if (!valor) return 0;
 
@@ -1004,6 +1049,11 @@ function abrirMenuDashboard(){
     else if(telaAnterior == "resumo"){
         document.getElementById("resumo").style.display = "block";
     }
+
+}
+    function finalizarInventario(){
+
+    alert("Inventário finalizado!");
 
 }
   </script>

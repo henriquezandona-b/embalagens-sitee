@@ -1200,9 +1200,33 @@ function abrirMenuDashboard(){
 
 }
 
-function finalizarInventario(){
+async function finalizarInventario() {
 
-    alert("Inventário finalizado!");
+    const inventario = [];
+
+    categoriasInventario.forEach((categoria, indiceCategoria) => {
+
+        categoria.itens.forEach((item, indiceItem) => {
+
+            const id = `${indiceCategoria}_${indiceItem}`;
+
+            inventario.push({
+
+                categoria: categoria.categoria,
+
+                item: item,
+
+                quantidade: soma(
+                    document.getElementById("inv_" + id).value
+                )
+
+            });
+
+        });
+
+    });
+
+    console.log(inventario);
 
 }
   

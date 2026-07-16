@@ -348,7 +348,31 @@
   <button type="button" class="voltar" onclick="voltarContagem()">
     ⬅ VOLTAR PARA CONTAGEM
   </button>
+<div id="inventario" class="card sec">
 
+    <h2>📋 INVENTÁRIO DO ARMÁRIO</h2>
+
+    <div id="camposInventario"></div>
+
+    <button
+        type="button"
+        class="verde"
+        onclick="finalizarInventario()">
+
+        FINALIZAR INVENTÁRIO
+
+    </button>
+
+    <button
+        type="button"
+        class="voltar"
+        onclick="voltarInicioInventario()">
+
+        ⬅ VOLTAR
+
+    </button>
+
+</div>
   <div id="mensagemErro" class="erro"></div>
 </div>
  <div id="dashboard" class="sec dashboard-page">
@@ -1051,11 +1075,22 @@ function abrirMenuDashboard(){
     }
 
 }
-    function finalizarInventario(){
+    function voltarInicioInventario(){
+
+    document.getElementById("inventario").style.display = "none";
+    document.getElementById("inicio").style.display = "flex";
+
+    document.getElementById("btnExcel").style.display = "block";
+    document.getElementById("btnDashboard").style.display = "block";
+
+}
+
+function finalizarInventario(){
 
     alert("Inventário finalizado!");
 
 }
+  
   </script>
 </body>
 </html>

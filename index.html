@@ -1212,10 +1212,8 @@ async function finalizarInventario() {
 
             inventario.push({
 
-                categoria: categoria.categoria,
-
-                item: item,
-
+                categoria,
+                item,
                 quantidade: soma(
                     document.getElementById("inv_" + id).value
                 )
@@ -1226,7 +1224,46 @@ async function finalizarInventario() {
 
     });
 
-    console.log(inventario);
+    try{
+
+        const resposta = await fetch(
+            "https://embalagens-api-rho.vercel.app/api/inventario",
+            {
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+
+                    data:new Date().toLocaleDateString("pt-BR"),
+
+                    itens:inventario
+
+                })
+
+            }
+        );
+
+        if(!resposta.ok){
+
+            throw new Error();
+
+        }
+
+        alert("Inventário salvo com sucesso!");
+
+        voltarInicioInventario();
+
+    }
+
+    catch{
+
+        alert("Erro ao salvar o inventário.");
+
+    }
 
 }
   

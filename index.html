@@ -737,12 +737,17 @@ const categoriasInventario = [
                 <label>${item}</label>
 
                 <input
-                    id="inv_${id}"
-                    type="number"
-                    min="0"
-                    placeholder="Quantidade">
+    id="inv_${id}"
+    type="tel"
+    inputmode="numeric"
+    placeholder="Ex: 2+4+6"
+    oninput="calcularInventario('${id}')">
 
-            </div>
+<div class="total">
+    TOTAL
+    <br>
+    <span id="tinv_${id}">0</span>
+</div>
 
             `;
 
@@ -765,6 +770,16 @@ const categoriasInventario = [
       const valor = soma(document.getElementById("c" + i).value);
       document.getElementById("t" + i).textContent = valor;
     }
+
+    function calcularInventario(id){
+
+    const total = soma(
+        document.getElementById("inv_" + id).value
+    );
+
+    document.getElementById("tinv_" + id).textContent = total;
+
+}
 
     function abrirNota() {
       document.getElementById("contagem").style.display = "none";

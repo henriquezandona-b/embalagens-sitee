@@ -37,3 +37,63 @@ body{
     font-family:"Segoe UI",sans-serif;
 
 }
+
+/* =====================================
+   ESTRUTURA PRINCIPAL DO SISTEMA
+===================================== */
+
+.app-layout{
+
+    display:flex;
+
+    min-height:100vh;
+
+}
+
+
+.sidebar{
+
+    width:260px;
+
+    background:#002C5F;
+
+    color:white;
+
+    min-height:100vh;
+
+    padding:25px;
+
+}
+
+
+.main-content{
+
+    flex:1;
+
+    background:#EEF2F6;
+
+}
+
+
+.header{
+
+    height:70px;
+
+    background:white;
+
+    display:flex;
+
+    align-items:center;
+
+    padding:0 30px;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+
+}
+
+
+.page-content{
+
+    padding:30px;
+
+}

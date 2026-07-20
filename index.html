@@ -1269,55 +1269,25 @@ async function finalizarInventario() {
 
     async function baixarExcelInventario() {
 
-    try {
+    const resposta = await fetch(
+        "https://embalagens-api-rho.vercel.app/api/exportInventario"
+    );
 
-        const resposta = await fetch(
-    "https://embalagens-api-rho.vercel.app/api/exportInventario"
-)
+    const blob = await resposta.blob();
 
-        if (!resposta.ok) {
-            throw new Error();
-        }
+    const url = window.URL.createObjectURL(blob);
 
-        const dados = await resposta.json();
+    const a = document.createElement("a");
 
-       let csv = "Categoria\tItem\tQuantidade\n";
+    a.href = url;
 
-dados.forEach(item => {
+    a.download = "Inventario.xlsx";
 
-    const categoria = item.categoria
-        .replace(/[^\p{L}\p{N}\s]/gu, "")
-        .trim();
+    a.click();
 
-    csv += `${categoria}\t${item.item}\t${item.quantidade}\n`;
+    a.remove();
 
-});
-
-        const blob = new Blob(
-            ["\ufeff" + csv],
-            { type: "text/csv;charset=utf-8;" }
-        );
-
-        const link = document.createElement("a");
-
-        link.href = URL.createObjectURL(blob);
-
-        const hoje = new Date();
-
-        const data =
-            hoje.toLocaleDateString("pt-BR").replaceAll("/", "-");
-
-        link.download = `Inventario_${data}.csv`;
-
-        link.click();
-
-    }
-
-    catch {
-
-        alert("Erro ao gerar o arquivo.");
-
-    }
+    URL.revokeObjectURL(url);
 
 }
   </script>

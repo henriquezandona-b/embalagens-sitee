@@ -1281,13 +1281,17 @@ async function finalizarInventario() {
 
         const dados = await resposta.json();
 
-        let csv = "Categoria;Item;Quantidade\n";
+       let csv = "Categoria\tItem\tQuantidade\n";
 
-        dados.forEach(item => {
+dados.forEach(item => {
 
-            csv += `${item.categoria};${item.item};${item.quantidade}\n`;
+    const categoria = item.categoria
+        .replace(/[^\p{L}\p{N}\s]/gu, "")
+        .trim();
 
-        });
+    csv += `${categoria}\t${item.item}\t${item.quantidade}\n`;
+
+});
 
         const blob = new Blob(
             ["\ufeff" + csv],

@@ -958,21 +958,27 @@ document.getElementById("resumo").style.display = "block";
       };
     }
     async function baixarExcel() {
-      console.log("INICIANDO DOWNLOAD");
-  const resposta = await fetch(
-    "https://embalagens-api-rho.vercel.app/api/export"
-  );
 
-  const blob = await resposta.blob();
+    const resposta = await fetch(
+        "https://embalagens-api-rho.vercel.app/api/export"
+    );
 
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement("a");
+    const blob = await resposta.blob();
 
-  a.href = url;
-  a.download = "embalagens.csv";
-  a.click();
+    const url = window.URL.createObjectURL(blob);
 
-  a.remove();
+    const a = document.createElement("a");
+
+    a.href = url;
+
+    a.download = "Embalagens.xlsx";
+
+    a.click();
+
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
 }
     async function abrirDashboard() {
 

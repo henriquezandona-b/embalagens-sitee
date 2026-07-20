@@ -1266,7 +1266,56 @@ async function finalizarInventario() {
     }
 
 }
-  
+
+    async function baixarExcelInventario() {
+
+    try {
+
+        const resposta = await fetch(
+            "https://embalagens-api-rho.vercel.app/api/listarInventario"
+        );
+
+        if (!resposta.ok) {
+            throw new Error();
+        }
+
+        const dados = await resposta.json();
+
+        let csv = "Categoria;Item;Quantidade\n";
+
+        dados.forEach(item => {
+
+            csv += `${item.categoria};${item.item};${item.quantidade}\n`;
+
+        });
+
+        const blob = new Blob(
+            ["\ufeff" + csv],
+            { type: "text/csv;charset=utf-8;" }
+        );
+
+        const link = document.createElement("a");
+
+        link.href = URL.createObjectURL(blob);
+
+        const hoje = new Date();
+
+        const data =
+            hoje.toLocaleDateString("pt-BR").replaceAll("/", "-");
+
+        link.download = `Inventario_${data}.csv`;
+
+        link.click();
+
+    }
+
+    catch {
+
+        alert("Erro ao gerar o arquivo.");
+
+    }
+
+}
   </script>
 </body>
 </html>

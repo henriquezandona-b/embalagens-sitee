@@ -1212,7 +1212,7 @@ async function finalizarInventario() {
 
             inventario.push({
 
-                categoria,
+               categoria: categoria.categoria,
                 item,
                 quantidade: soma(
                     document.getElementById("inv_" + id).value

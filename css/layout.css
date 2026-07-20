@@ -1,1 +1,39 @@
+/* =====================================================
+   SISTEMA DE CONTROLE LOGÍSTICO HYUNDAI
+===================================================== */
 
+:root{
+
+    --hyundai-blue:#002C5F;
+    --hyundai-blue-light:#F5F8FD;
+    --background:#EEF2F6;
+    --white:#FFFFFF;
+    --text:#2F2F2F;
+    --green:#28A745;
+    --border:#D8E2EC;
+
+    --radius:12px;
+
+    --shadow:0 4px 14px rgba(0,0,0,.08);
+
+}
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+body{
+
+    font-family:"Segoe UI",sans-serif;
+
+}

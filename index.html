@@ -1272,8 +1272,8 @@ async function finalizarInventario() {
     try {
 
         const resposta = await fetch(
-            "https://embalagens-api-rho.vercel.app/api/listarInventario"
-        );
+    "https://embalagens-api-rho.vercel.app/api/exportInventario"
+)
 
         if (!resposta.ok) {
             throw new Error();

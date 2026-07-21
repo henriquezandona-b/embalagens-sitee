@@ -270,7 +270,11 @@
     .inventory-total { font-size: 18px; color: var(--hyundai); font-weight: 800; text-align: right; }
     .inventory-total small { font-size: 9px; color: var(--muted); font-weight: 600; display: block; letter-spacing: .06em; }
 
-    .home-screen { display: block !important; min-height: calc(100vh - 150px) !important; padding: 46px !important; }
+    
+.home-screen {
+  min-height: calc(100vh - 150px) !important;
+  padding: 46px !important;
+}
     .home-welcome { max-width: 720px; }
     .overline { margin: 0 0 9px !important; color: #1a5fc1 !important; font-size: 11px !important; font-weight: 800 !important; letter-spacing: .13em; }
     .home-welcome #saudacao { font-size: 32px !important; margin: 0 !important; color: #08265a !important; letter-spacing: -.04em; }
@@ -542,46 +546,54 @@
     document.getElementById("data").textContent = diasNome[dia] + " · " + hoje.toLocaleDateString("pt-BR");
 
     // GERENCIADOR DE ROTAS
-    function rotear() {
-      const hash = window.location.hash.replace("#", "") || "home";
-      
-      // Oculta todas as telas
-      document.querySelectorAll(".sec").forEach(el => el.style.display = "none");
+    // GERENCIADOR DE ROTAS CORRIGIDO
+function rotear() {
+  const hash = window.location.hash.replace("#", "") || "home";
+  
+  // 1. Oculta TODAS as seções
+  const secoes = document.querySelectorAll(".sec, .inicio, .card, .dashboard-page");
+  secoes.forEach(el => {
+    el.style.display = "none";
+  });
 
-      // Destaca item no menu de navegação
-      document.querySelectorAll(".hyundai-nav a").forEach(a => {
-        a.classList.toggle("active", a.getAttribute("href") === "#" + hash);
-      });
+  // 2. Destaca item ativo no menu
+  document.querySelectorAll(".hyundai-nav a").forEach(a => {
+    a.classList.toggle("active", a.getAttribute("href") === "#" + hash);
+  });
 
-      // Validações de encadeamento de fluxo
-      if ((hash === "notas" || hash === "resumo") && !contagemIniciada) {
-        window.location.hash = "#embalagens";
-        return;
-      }
+  // 3. Validações de fluxo
+  if ((hash === "notas" || hash === "resumo") && !contagemIniciada) {
+    window.location.hash = "#embalagens";
+    return;
+  }
 
-      // Executa inicialização das views
-      if (hash === "embalagens" && !contagemIniciada) {
-        carregarCamposEmbalagens();
-      } else if (hash === "inventario") {
-        carregarCamposInventario();
-      } else if (hash === "notas") {
-        carregarCamposNotas();
-      } else if (hash === "resumo") {
-        carregarResumo();
-      } else if (hash === "dashboard") {
-        renderizarDashboard();
-      }
+  // 4. Inicializa os dados da tela correspondente
+  if (hash === "embalagens" && !contagemIniciada) {
+    carregarCamposEmbalagens();
+  } else if (hash === "inventario") {
+    carregarCamposInventario();
+  } else if (hash === "notas") {
+    carregarCamposNotas();
+  } else if (hash === "resumo") {
+    carregarResumo();
+  } else if (hash === "dashboard") {
+    renderizarDashboard();
+  }
 
-      const paginaAlvo = document.getElementById("page-" + hash);
-      if (paginaAlvo) {
-        paginaAlvo.style.display = "block";
-      } else {
-        document.getElementById("page-home").style.display = "block";
-      }
-    }
+  // 5. Exibe SOMENTE a página atual
+  const paginaAlvo = document.getElementById("page-" + hash);
+  if (paginaAlvo) {
+    paginaAlvo.style.display = "block";
+  } else {
+    document.getElementById("page-home").style.display = "block";
+  }
 
-    window.addEventListener("hashchange", rotear);
-    window.addEventListener("load", rotear);
+  // 6. Rola a tela de volta para o topo imediatamente
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+window.addEventListener("hashchange", rotear);
+window.addEventListener("load", rotear);
 
     // FUNÇÕES DA APLICAÇÃO
     function carregarCamposEmbalagens() {

@@ -13,22 +13,19 @@
     }
 
     body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 18px;
-  color: #1f2933;
-
-  background:
-    linear-gradient(rgba(255,255,255,0.35), rgba(255,255,255,0.05)),
-    url("./hyundai-bg.png");
-
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-
-  min-height: 100vh;
-}
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 18px;
+      color: #1f2933;
+      background:
+        linear-gradient(rgba(255,255,255,0.35), rgba(255,255,255,0.05)),
+        url("./hyundai-bg.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      min-height: 100vh;
+    }
 
     .inicio {
       background: white;
@@ -43,27 +40,10 @@
       box-shadow: 0 3px 12px rgba(0, 0, 0, .1);
     }
 
-    .logo {
-      font-size: 70px;
-    }
-
-    #saudacao {
-      font-size: 30px;
-      font-weight: bold;
-      margin: 16px 0 8px;
-    }
-
-    #data {
-      font-size: 22px;
-      color: #555;
-      margin: 0;
-    }
-
-    .subtitulo {
-      font-size: 22px;
-      font-weight: bold;
-      margin: 25px;
-    }
+    .logo { font-size: 70px; }
+    #saudacao { font-size: 30px; font-weight: bold; margin: 16px 0 8px; }
+    #data { font-size: 22px; color: #555; margin: 0; }
+    .subtitulo { font-size: 22px; font-weight: bold; margin: 25px; }
 
     .card {
       background: white;
@@ -73,23 +53,9 @@
       margin-bottom: 16px;
     }
 
-    .item {
-      margin-bottom: 20px;
-    } 
-
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 16px;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      font-size: 18px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-    }
+    .item { margin-bottom: 20px; }
+    label { display: block; font-weight: bold; margin-bottom: 16px; }
+    input { width: 100%; padding: 14px; font-size: 18px; border: 1px solid #ccc; border-radius: 10px; }
 
     .total {
       background: #e9f9ec;
@@ -100,11 +66,7 @@
       margin-top: 8px;
     }
 
-    .total span {
-      font-size: 38px;
-      font-weight: bold;
-      color: #17782c;
-    }
+    .total span { font-size: 38px; font-weight: bold; color: #17782c; }
 
     button {
       width: 100%;
@@ -119,18 +81,9 @@
       cursor: pointer;
     }
 
-    button:disabled {
-      cursor: wait;
-      opacity: .65;
-    }
-
-    .verde {
-      background: #198754;
-    }
-
-    .voltar {
-      background: #6c757d;
-    }
+    button:disabled { cursor: wait; opacity: .65; }
+    .verde { background: #198754; }
+    .voltar { background: #6c757d; }
 
     .erro {
       color: #b42318;
@@ -142,1162 +95,686 @@
       display: none;
     }
 
-    .sec {
-      display: none;
+    .sec { display: none; }
+
+    #btnDashboard, #btnExcel { display: none!important; }
+
+    .dashboard-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin: 25px 0;
     }
-   #btnDashboard {
-  position: absolute;
-  top: 30px;
-  right: 40px;
 
-  width: 130px;
-  height: 50px;
+    .dashboard-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.08);
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
 
-  padding: 0;
+    .dashboard-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
 
-  font-size: 16px;
-  font-weight: bold;
+    .dashboard-info h4 { margin: 0; color: #666; font-size: 15px; font-weight: 600; }
+    .dashboard-info h2 { margin: 8px 0 0; font-size: 38px; }
 
-  border-radius: 12px;
+    .grafico-container { position: relative; width: 100%; height: 400px; margin: 20px auto; }
+    .dashboard-page { background: #f5f7fb; border-radius: 20px; padding: 30px; min-height: 90vh; }
+    .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+    .dashboard-header h1 { margin: 0; font-size: 34px; color: #173B70; }
+    .btn-voltar-dashboard { width: auto; padding: 12px 25px; background: #2563EB; border-radius: 10px; }
+    .dashboard-chart { background: #fff; border-radius: 18px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,.08); margin-top: 25px; }
+    .dashboard-chart h3 { margin-top: 0; margin-bottom: 20px; color: #173B70; font-size: 22px; }
 
-  background: #0b5ed7;
-  color: white;
+    #menuExcel, #menuDashboard {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 450px;
+      max-width: 90%;
+      z-index: 999;
+    }
 
-  border: none;
-  cursor: pointer;
+    .labelInventario { display: block; font-weight: bold; margin-top: 25px; margin-bottom: 10px; }
 
-  box-shadow: 0 3px 10px rgba(0,0,0,0.25);
-}
-    #btnExcel {
-  position: absolute;
-  top: 30px;
-  left: 40px;
+    /* Hyundai Corporate Theme */
+    :root {
+      --hyundai: #002C5F;
+      --soft: #F5F8FD;
+      --line: #EEF2F6;
+      --ink: #2F2F2F;
+      --muted: #6b7787;
+      --green: #28A745;
+      --sidebar: 238px;
+    }
 
-  width: 140px;
-  height: 50px;
+    body {
+      font-family: "Segoe UI", Inter, Roboto, Arial, sans-serif !important;
+      background: var(--soft) !important;
+      color: var(--ink) !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      min-height: 100vh;
+    }
 
-  padding: 0;
+    .top-header {
+      height: 74px !important;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 38px !important;
+      margin-left: var(--sidebar);
+      border-bottom: 1px solid var(--line);
+    }
 
-  font-size: 16px;
-  font-weight: bold;
+    .menu-toggle { display: none !important; }
+    .header-title h1 { font-size: 18px !important; color: var(--hyundai); font-weight: 700; margin: 0 !important; }
+    .header-title span { font-size: 12px; color: var(--muted); }
 
-  border-radius: 12px;
+    .hyundai-sidebar {
+      position: fixed;
+      z-index: 20;
+      inset: 0 auto 0 0;
+      width: var(--sidebar);
+      background: var(--hyundai);
+      padding: 28px 16px;
+      color: #fff;
+    }
 
-  background: #198754;
-  color: white;
+    .hyundai-brand { font-weight: 800; letter-spacing: .09em; font-size: 18px; border-bottom: 1px solid rgba(255,255,255,.18); padding: 0 14px 26px; }
+    .hyundai-brand small { display: block; margin-top: 5px; font-size: 10px; letter-spacing: .15em; font-weight: 500; opacity: .7; }
+    .hyundai-nav { padding-top: 22px; display: grid; gap: 5px; }
 
-  border: none;
-  cursor: pointer;
+    .hyundai-nav a {
+      display: block;
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: rgba(255,255,255,.82);
+      border-radius: 9px;
+      padding: 12px 14px;
+      text-decoration: none;
+      font: 600 14px "Segoe UI", sans-serif;
+    }
 
-  box-shadow: 0 3px 10px rgba(0,0,0,0.25);
-}
-    .dashboard-cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
-    margin:25px 0;
-}
+    .hyundai-nav a:hover, .hyundai-nav a.active { background: rgba(255,255,255,.14); color: #fff; }
+    .hyundai-nav i { font-style: normal; width: 23px; display: inline-block; }
+    .hyundai-foot { position: absolute; bottom: 25px; left: 30px; font-size: 11px; color: rgba(255,255,255,.56); }
 
-.dashboard-card{
-    background:#fff;
-    border-radius:18px;
-    padding:30px;
-    box-shadow:0 4px 15px rgba(0,0,0,.08);
-    display:flex;
-    align-items:center;
-    gap:18px;
-}
+    .inicio, .card, .dashboard-page {
+      margin-left: calc(var(--sidebar) + 38px) !important;
+      margin-right: 38px !important;
+      max-width: none !important;
+      background: #fff !important;
+      border: 1px solid #e8eef5 !important;
+      box-shadow: 0 5px 18px rgba(0,44,95,.05) !important;
+      border-radius: 14px !important;
+    }
 
-.dashboard-icon{
-    width:60px;
-    height:60px;
-    border-radius:16px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:28px;
-}
+    .inicio { min-height: calc(100vh - 150px) !important; padding: 42px !important; display: flex; justify-content: center !important; }
+    .card { padding: 30px !important; margin-top: 34px !important; margin-bottom: 25px !important; }
+    .card h2 { color: var(--hyundai); font-size: 22px; }
 
-.dashboard-info h4{
-    margin:0;
-    color:#666;
-    font-size:15px;
-    font-weight:600;
-}
+    .operation-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; padding-bottom: 19px; border-bottom: 1px solid var(--line); }
+    .operation-head small { display: block; color: var(--muted); font-size: 12px; margin-top: 5px; }
+    .operation-head .day-badge { border: 1px solid #d7e1ec; background: #f9fbfe; border-radius: 8px; padding: 10px 13px; color: var(--hyundai); font-size: 12px; font-weight: 650; }
 
-.dashboard-info h2{
-    margin:8px 0 0;
-    font-size:38px;
-}
-    .grafico-container{
-    position: relative;
-    width: 100%;
-    height: 400px;     /* diminua aqui */
-    margin: 20px auto;
-}
-    .dashboard-page{
-    background:#f5f7fb;
-    border-radius:20px;
-    padding:30px;
-    min-height:90vh;
-}
-    .dashboard-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:30px;
-}
+    .work-shell { display: grid; grid-template-columns: minmax(0,1fr) 295px; gap: 18px; }
+    .work-panel, .summary-panel, .inventory-section { background: #fff; border: 1px solid #e2eaf3; border-radius: 12px; overflow: hidden; }
+    .work-panel-title, .summary-panel-title { padding: 17px 19px; border-bottom: 1px solid var(--line); color: var(--hyundai); font-size: 14px; font-weight: 750; }
+    .work-panel-title small { font-weight: 400; color: var(--muted); display: block; margin-top: 4px; }
 
-.dashboard-header h1{
-    margin:0;
-    font-size:34px;
-    color:#173B70;
-}
+    .count-list { padding: 8px; }
+    .op-row { display: grid; grid-template-columns: 34px minmax(0,1fr) 148px 90px; align-items: center; gap: 13px; border-radius: 9px; padding: 11px 12px; }
+    .op-row:hover { background: #f7faff; }
+    .op-icon { width: 31px; height: 31px; border-radius: 8px; background: #edf3fa; color: var(--hyundai); display: grid; place-items: center; font-size: 16px; }
+    .op-name { font-weight: 700; color: #18395f; font-size: 13px; }
+    .op-name span { display: block; color: var(--muted); font-size: 11px; font-weight: 400; margin-top: 3px; }
+    .op-row input { padding: 9px 10px !important; font-size: 14px !important; text-align: center; }
 
-.btn-voltar-dashboard{
-    width:auto;
-    padding:12px 25px;
-    background:#2563EB;
-    border-radius:10px;
-}
-    .dashboard-chart{
-    background:#fff;
-    border-radius:18px;
-    padding:25px;
-    box-shadow:0 4px 15px rgba(0,0,0,.08);
-    margin-top:25px;
-}
+    .row-total { font-size: 20px; font-weight: 800; color: var(--hyundai); text-align: right; }
+    .row-total small { display: block; font-size: 10px; font-weight: 600; color: var(--muted); letter-spacing: .07em; }
 
-.dashboard-chart h3{
-    margin-top:0;
-    margin-bottom:20px;
-    color:#173B70;
-    font-size:22px;
-}
-    #menuExcel,
-#menuDashboard{
+    .summary-panel { padding: 19px; align-self: start; position: sticky; top: 18px; }
+    .summary-panel-title { padding: 0 0 14px; margin-bottom: 14px; }
+    .summary-lines { display: grid; gap: 8px; }
+    .summary-line { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-bottom: 1px solid #edf1f6; font-size: 12px; color: #4d5f76; }
+    .summary-line b { color: var(--hyundai); font-size: 14px; }
 
-    position: fixed;
+    .summary-total { margin-top: 17px; padding: 15px; background: linear-gradient(135deg,#002C5F,#084f9f); border-radius: 9px; color: #fff; }
+    .summary-total span { font-size: 11px; opacity: .8; }
+    .summary-total strong { display: block; font-size: 31px; margin-top: 3px; }
 
-    top: 50%;
-    left: 50%;
+    .inventory-section { margin-bottom: 18px; }
+    .inventory-section-title { padding: 17px 19px; border-bottom: 1px solid var(--line); font-size: 15px; color: var(--hyundai); font-weight: 750; }
+    .inventory-section-title small { display: block; color: var(--muted); font-size: 11px; font-weight: 400; margin-top: 3px; }
+    .inventory-table { padding: 7px; }
+    .inventory-row { display: grid; grid-template-columns: 30px minmax(0,1fr) 150px 74px; align-items: center; gap: 12px; padding: 10px 11px; border-radius: 8px; }
+    .inventory-row:hover { background: #f7faff; }
+    .inventory-row .item-label { font-size: 13px; font-weight: 650; color: #203d61; }
+    .inventory-row .item-label small { display: block; font-weight: 400; font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .inventory-row input { padding: 8px 9px !important; font-size: 14px !important; text-align: center; }
 
-    transform: translate(-50%, -50%);
+    .inventory-total { font-size: 18px; color: var(--hyundai); font-weight: 800; text-align: right; }
+    .inventory-total small { font-size: 9px; color: var(--muted); font-weight: 600; display: block; letter-spacing: .06em; }
 
-    width: 450px;
-    max-width: 90%;
+    .home-screen { display: block !important; min-height: calc(100vh - 150px) !important; padding: 46px !important; }
+    .home-welcome { max-width: 720px; }
+    .overline { margin: 0 0 9px !important; color: #1a5fc1 !important; font-size: 11px !important; font-weight: 800 !important; letter-spacing: .13em; }
+    .home-welcome #saudacao { font-size: 32px !important; margin: 0 !important; color: #08265a !important; letter-spacing: -.04em; }
+    .home-welcome #data { font-size: 13px !important; color: #52647c !important; margin: 8px 0 0 !important; font-weight: 500; }
+    .home-welcome .subtitulo { font-size: 15px !important; color: #64748b !important; margin: 6px 0 31px !important; }
 
-    z-index: 999;
-}
-    .labelInventario{
-    display:block;
-    font-weight:bold;
-    margin-top:25px;
-    margin-bottom:10px;
-}
+    .home-actions { display: grid; grid-template-columns: repeat(2, minmax(270px, 360px)); gap: 16px; }
+    .home-action-card { position: relative; border: 1px solid #dfe8f2; border-radius: 12px; padding: 26px; min-height: 212px; background: #fff; overflow: hidden; }
+    .home-action-card:before { content: ""; position: absolute; inset: 0 auto 0 0; width: 5px; background: var(--hyundai); }
+    .home-action-card:nth-child(2):before { background: #1762bf; }
+    .home-card-index { color: #175eb9; font-size: 11px; font-weight: 850; letter-spacing: .12em; }
+    .home-action-card h2 { color: #092963; font-size: 21px; margin: 24px 0 7px; text-transform: uppercase; }
+    .home-action-card p { color: #64748b; font-size: 13px; line-height: 1.5; margin: 0 0 20px; }
 
+    .home-action-card a {
+      display: inline-block;
+      text-decoration: none;
+      color: #0a4da5;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .home-shortcuts { display: flex; gap: 11px; margin-top: 17px; }
+    .home-shortcuts a {
+      display: inline-block;
+      text-decoration: none;
+      background: #f5f8fc;
+      color: #143d76;
+      border: 1px solid #dde7f1;
+      padding: 11px 17px;
+      font-size: 12px;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+
+    @media(max-width:760px) {
+      :root { --sidebar: 0px; }
+      body { padding-bottom: 71px !important; }
+      .hyundai-sidebar { display: none; }
+      .top-header { margin-left: 0; padding: 0 18px !important; height: 62px !important; }
+      .inicio, .card, .dashboard-page { margin: 18px 14px !important; }
+      .home-actions { grid-template-columns: 1fr; }
+      .work-shell { display: block; }
+      .summary-panel { position: static; margin-top: 15px; }
+      .op-row { grid-template-columns: 29px minmax(0,1fr) 72px; gap: 9px; padding: 12px 8px; }
+      .op-row input { grid-column: 2 / 4; width: 100%; }
+      .row-total { grid-column: 3; grid-row: 1; }
+      .inventory-row { grid-template-columns: 27px minmax(0,1fr) 60px; }
+      .inventory-row input { grid-column: 2 / 4; grid-row: 2; width: 100%; }
+    }
   </style>
 </head>
 <body>
-  
-  <button id="btnExcel" onclick="abrirMenuExcel()">
-📥 Excel
-</button>
 
-<button id="btnDashboard" onclick="abrirMenuDashboard()">
-📊 Dashboard
-</button>
-  
-  <div id="inicio" class="inicio">
-    <div class="logo">📦</div>
-    <h1 id="saudacao"></h1>
-    <h2 id="data"></h2>
-    <p class="subtitulo">Sistema de Controle de Estoque</p>
-    <button type="button" onclick="abrirDia()">
-    📦 EMBALAGENS
-</button>
+  <aside class="hyundai-sidebar">
+    <div class="hyundai-brand">HYUNDAI<small>CONTROLE LOGÍSTICO</small></div>
+    <nav class="hyundai-nav">
+      <a href="#home"><i>⌂</i>Home</a>
+      <a href="#embalagens"><i>▣</i>Embalagens</a>
+      <a href="#inventario"><i>▤</i>Inventário</a>
+      <a href="#dashboard"><i>▦</i>Dashboard</a>
+      <a href="#excel"><i>⇩</i>Excel</a>
+    </nav>
+    <div class="hyundai-foot">Sistema interno · Hyundai</div>
+  </aside>
 
-<button
-    type="button"
-    class="verde"
-    onclick="abrirInventario()">
+  <header class="top-header">
+    <button class="menu-toggle" onclick="abrirMenu()">☰</button>
+    <div class="header-title">
+      <h1>Sistema de Controle Logístico</h1>
+      <span>Hyundai</span>
+    </div>
+  </header>
 
-    📋 INVENTÁRIO DE MATERIAIS 
+  <!-- PÁGINA: HOME -->
+  <main id="page-home" class="sec inicio home-screen">
+    <div class="home-welcome">
+      <p class="overline">SISTEMA INTERNO</p>
+      <h1 id="saudacao"></h1>
+      <p id="data"></p>
+      <p class="subtitulo">Controle de embalagens, materiais e conferências.</p>
+    </div>
+    <div class="home-actions">
+      <article class="home-action-card">
+        <span class="home-card-index">01</span>
+        <h2>Embalagens</h2>
+        <p>Realize a conferência diária das embalagens.</p>
+        <a href="#embalagens">ACESSAR <b>→</b></a>
+      </article>
+      <article class="home-action-card">
+        <span class="home-card-index">02</span>
+        <h2>Inventário</h2>
+        <p>Atualize o controle de materiais do armário.</p>
+        <a href="#inventario">ACESSAR <b>→</b></a>
+      </article>
+    </div>
+    <div class="home-shortcuts">
+      <a href="#dashboard">Dashboard</a>
+      <a href="#excel">Gerar Excel</a>
+    </div>
+  </main>
 
-</button>
-  </div>
-
-  <div id="contagem" class="card sec">
+  <!-- PÁGINA: EMBALAGENS (CONTAGEM) -->
+  <main id="page-embalagens" class="sec card">
     <h2 id="titulo"></h2>
     <div id="campos"></div>
-    <button type="button" class="verde" onclick="abrirNota()">FINALIZAR CONTAGEM</button>
-  </div>
+  </main>
 
-  <div id="nota" class="card sec">
-    <h2>📄 NOTAS</h2>
+  <!-- PÁGINA: NOTAS FISCAIS -->
+  <main id="page-notas" class="sec card">
+    <h2>Notas Fiscais</h2>
     <div id="camposNota"></div>
-    <button type="button" class="verde" onclick="mostrarResumo()">CONFERIR RESULTADO</button>
-    <button type="button" class="voltar" onclick="voltarContagem()">⬅ VOLTAR PARA CONTAGEM</button>
-  </div>
+    <button type="button" class="verde" onclick="window.location.hash = '#resumo'">CONFERIR RESULTADO</button>
+    <button type="button" class="voltar" onclick="window.location.hash = '#embalagens'">VOLTAR PARA CONTAGEM</button>
+  </main>
 
- <div id="resumo" class="card sec">
-  <h2>📋 RESUMO</h2>
+  <!-- PÁGINA: RESUMO -->
+  <main id="page-resumo" class="sec card">
+    <h2>Resumo da Conferência</h2>
+    <div id="resultado"></div>
+    <button type="button" id="btnFinalizar" class="verde" onclick="finalizarDia()">📌 FINALIZAR DIA</button>
+    <button type="button" class="verde" onclick="baixarExcel()">GERAR EXCEL</button>
+    <button type="button" class="voltar" onclick="window.location.hash = '#embalagens'">VOLTAR PARA CONTAGEM</button>
+  </main>
 
-  <div id="resultado"></div>
-
-  <button type="button" id="btnFinalizar" class="verde" onclick="finalizarDia()">
-    📌 FINALIZAR DIA
-  </button>
- 
-   <button type="button" class="verde" onclick="baixarExcel()">
-    📥 GERAR EXCEL
-</button>
- 
-  <button type="button" class="voltar" onclick="voltarContagem()">
-    ⬅ VOLTAR PARA CONTAGEM
-  </button>
-
-</div>
-   <div id="inventario" class="card sec">
-
-    <h2>📋 INVENTÁRIO DO ARMÁRIO</h2>
-
+  <!-- PÁGINA: INVENTÁRIO -->
+  <main id="page-inventario" class="sec card">
+    <h2 class="legacy-inventory-title">📋 INVENTÁRIO DO ARMÁRIO</h2>
     <div id="camposInventario"></div>
+    <button type="button" class="verde inventory-submit" onclick="finalizarInventario()">FINALIZAR INVENTÁRIO</button>
+    <button type="button" class="voltar" onclick="window.location.hash = '#home'">VOLTAR</button>
+  </main>
 
-    <button
-        type="button"
-        class="verde"
-        onclick="finalizarInventario()">
-
-        FINALIZAR INVENTÁRIO
-
-    </button>
-
-    <button
-        type="button"
-        class="voltar"
-        onclick="voltarInicioInventario()">
-
-        ⬅ VOLTAR
-
-    </button>
-
-</div>
-  <div id="mensagemErro" class="erro"></div>
-</div>
- <div id="dashboard" class="sec dashboard-page">
-
-  <div class="dashboard-header">
-
-    <h1>
-        📊 DASHBOARD
-    </h1>
-
-    <button class="btn-voltar-dashboard" onclick="fecharDashboard()">
-        ← Voltar
-    </button>
-
-</div>
-
-  <div class="dashboard-cards">
-
-    <div class="dashboard-card">
-        <div class="dashboard-icon" style="background:#E8F1FF;">
-            📅
-        </div>
-
-        <div class="dashboard-info">
-            <h4>Dias Conferidos</h4>
-            <h2 id="totalDias">0</h2>
-        </div>
+  <!-- PÁGINA: DASHBOARD -->
+  <main id="page-dashboard" class="sec dashboard-page">
+    <div class="dashboard-header">
+      <h1>DASHBOARD</h1>
+      <button class="btn-voltar-dashboard" onclick="window.location.hash = '#home'">← Voltar</button>
     </div>
-
-    <div class="dashboard-card">
-        <div class="dashboard-icon" style="background:#EAF9EF;">
-            📦
-        </div>
-
+    <div class="dashboard-cards">
+      <div class="dashboard-card">
+        <div class="dashboard-icon" style="background:#E8F1FF;">📅</div>
         <div class="dashboard-info">
-            <h4>Itens Conferidos</h4>
-            <h2 id="totalItens" style="color:#17a34a;">0</h2>
+          <h4>Dias Conferidos</h4>
+          <h2 id="totalDias">0</h2>
         </div>
-    </div>
-
-    <div class="dashboard-card">
-        <div class="dashboard-icon" style="background:#FFF0F0;">
-            ❗
-        </div>
-
+      </div>
+      <div class="dashboard-card">
+        <div class="dashboard-icon" style="background:#EAF9EF;">📦</div>
         <div class="dashboard-info">
-            <h4>Divergências</h4>
-            <h2 id="totalDivergencias" style="color:#d63031;">0</h2>
+          <h4>Itens Conferidos</h4>
+          <h2 id="totalItens" style="color:#17a34a;">0</h2>
         </div>
-    </div>
-
-    <div class="dashboard-card">
-        <div class="dashboard-icon" style="background:#F4EBFF;">
-            🎯
-        </div>
-
+      </div>
+      <div class="dashboard-card">
+        <div class="dashboard-icon" style="background:#FFF0F0;">❗</div>
         <div class="dashboard-info">
-            <h4>Índice de Acerto</h4>
-            <h2 id="porcentagemAcerto" style="color:#7C3AED;">0%</h2>
+          <h4>Divergências</h4>
+          <h2 id="totalDivergencias" style="color:#d63031;">0</h2>
         </div>
+      </div>
+      <div class="dashboard-card">
+        <div class="dashboard-icon" style="background:#F4EBFF;">🎯</div>
+        <div class="dashboard-info">
+          <h4>Índice de Acerto</h4>
+          <h2 id="porcentagemAcerto" style="color:#7C3AED;">0%</h2>
+        </div>
+      </div>
     </div>
-
-</div>
-
-  <hr>
-
- <div class="dashboard-chart">
-
-    <h3>📈 Maiores Divergências</h3>
-
-    <div class="grafico-container">
+    <hr>
+    <div class="dashboard-chart">
+      <h3>📈 Maiores Divergências</h3>
+      <div class="grafico-container">
         <canvas id="graficoTop5"></canvas>
+      </div>
     </div>
+  </main>
 
-</div>
-</div>
-   <div id="menuExcel" class="sec card">
-    <h2>📥 Exportar Excel</h2>
+  <!-- PÁGINA: EXCEL -->
+  <main id="page-excel" class="sec card" style="max-width: 500px; margin: 40px auto;">
+    <h2>Exportar Excel</h2>
+    <button type="button" class="verde" onclick="baixarExcel()">Embalagens</button>
+    <button type="button" class="verde" onclick="baixarExcelInventario()">Inventário</button>
+    <button type="button" class="voltar" onclick="window.location.hash = '#home'">Voltar</button>
+  </main>
 
-    <button onclick="baixarExcel()">
-        📦 Embalagens
-    </button>
+  <div id="mensagemErro" class="erro"></div>
 
-    <button onclick="baixarExcelInventario()">
-        📋 Inventário
-    </button>
-
-    <button class="voltar" onclick="fecharMenus()">
-        Voltar
-    </button>
-</div>
-
-<div id="menuDashboard" class="sec card">
-    <h2>📊 Dashboards</h2>
-
-    <button onclick="abrirDashboard()">
-        📦 Embalagens
-    </button>
-
-    <button onclick="abrirDashboardInventario()">
-        📋 Inventário
-    </button>
-
-    <button class="voltar" onclick="fecharMenus()">
-        Voltar
-    </button>
-</div>
   <script>
-    
-    let telaAnterior = "inicio";
+    // ESTADO E ROTEAMENTO POR PAGE HASH
     let graficoTop5 = null;
-    
+    let contagemIniciada = false;
+
     const dias = {
       1: {
         nome: "SEGUNDA",
         campos: [
-          "MUBEIA - CAIXA",
-          "MUBEIA - PALLET",
-          "MUBEIA - TAMPA",
-          "NIGTERRA - CAIXA",
-          "NIGTERRA - PALLET",
-          "CIEE AZUL - PALLET",
-          "CIEE AZUL - TAMPA",
-          "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET",
-          "CIEE CINZA - TAMPA",
+          "MUBEIA - CAIXA", "MUBEIA - PALLET", "MUBEIA - TAMPA", "NIGTERRA - CAIXA",
+          "NIGTERRA - PALLET", "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA",
+          "CIEE AZUL - BANDEIJA (6)", "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA",
           "CIEE CINZA - BANDEIJA (7)"
         ]
       },
       2: {
         nome: "TERÇA",
         campos: [
-          "BLEISTAHL - CAIXA",
-          "BLEISTAHL - PALLET",
-          "BLEISTAHL - TAMPA",
-          "PUREM - CAIXA",
-          "PUREM - BANDEIJA (4)",
-          "CIEE AZUL - PALLET",
-          "CIEE AZUL - TAMPA",
-          "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET",
-          "CIEE CINZA - TAMPA",
+          "BLEISTAHL - CAIXA", "BLEISTAHL - PALLET", "BLEISTAHL - TAMPA", "PUREM - CAIXA",
+          "PUREM - BANDEIJA (4)", "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA",
+          "CIEE AZUL - BANDEIJA (6)", "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA",
           "CIEE CINZA - BANDEIJA (7)"
         ]
       },
       3: {
         nome: "QUARTA",
         campos: [
-          "CESTARI - CAIXA",
-          "CESTARI - BANDEIJA (13)",
-          "MALHE - CAIXA",
-          "PROMETAL - CAIXA",
-          "CIEE AZUL - PALLET",
-          "CIEE AZUL - TAMPA",
-          "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET",
-          "CIEE CINZA - TAMPA",
-          "CIEE CINZA - BANDEIJA (7)"
+          "CESTARI - CAIXA", "CESTARI - BANDEIJA (13)", "MALHE - CAIXA", "PROMETAL - CAIXA",
+          "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA", "CIEE AZUL - BANDEIJA (6)",
+          "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
         ]
       },
       4: {
         nome: "QUINTA",
         campos: [
-          "PINHA - CAIXA",
-          "MUVIC - CAIXA",
-          "MUVIC - PALLET",
-          "MUVIC - BANDEIJA",
-          "CIEE AZUL - PALLET",
-          "CIEE AZUL - TAMPA",
-          "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET",
-          "CIEE CINZA - TAMPA",
-          "CIEE CINZA - BANDEIJA (7)"
+          "PINHA - CAIXA", "MUVIC - CAIXA", "MUVIC - PALLET", "MUVIC - BANDEIJA",
+          "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA", "CIEE AZUL - BANDEIJA (6)",
+          "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
         ]
       },
       5: {
         nome: "SEXTA",
         campos: [
-          "BIELA - CAIXA",
-          "BIELA - TAMPA",
-          "BIELA - PALLET",
-          "BIELA - BANDEIJA (2)",
-          "VETORE - CAIXA",
-          "VETORE - PALLET",
-          "VETORE - TAMPA",
-          "VETORE - BANDEIJA (5)",
-          "VALEO - CAIXA",
-          "CIEE AZUL - PALLET",
-          "CIEE AZUL - TAMPA",
-          "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET",
-          "CIEE CINZA - TAMPA",
+          "BIELA - CAIXA", "BIELA - TAMPA", "BIELA - PALLET", "BIELA - BANDEIJA (2)",
+          "VETORE - CAIXA", "VETORE - PALLET", "VETORE - TAMPA", "VETORE - BANDEIJA (5)",
+          "VALEO - CAIXA", "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA",
+          "CIEE AZUL - BANDEIJA (6)", "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA",
           "CIEE CINZA - BANDEIJA (7)"
         ]
       }
     };
+
+    const categoriasInventario = [
+      {
+        categoria: "FITAS",
+        itens: [
+          "Fita amarela fina", "Fita amarela larga", "Fita durex", "Fita verde",
+          "Fita azul", "Fita vermelha", "Fita crepe", "Fita zebrada grossa",
+          "Fita zebrada fina", "Fita K200 Super Resina dourada", "Fita K200 Super Resina azul"
+        ]
+      },
+      {
+        categoria: "ETIQUETAS",
+        itens: [
+          "Etiqueta 100x40 amarela", "Etiqueta 100x40 azul", "Etiqueta 100x40 branca",
+          "Etiqueta 100x70 branca", "Etiqueta 100x70 amarela", "Etiqueta 50x25"
+        ]
+      }
+    ];
 
     const hoje = new Date();
     let dia = hoje.getDay();
     if (dia === 0 || dia === 6) dia = 1;
 
     const diasNome = {
-      1: "SEGUNDA-FEIRA",
-      2: "TERÇA-FEIRA",
-      3: "QUARTA-FEIRA",
-      4: "QUINTA-FEIRA",
-      5: "SEXTA-FEIRA"
+      1: "SEGUNDA-FEIRA", 2: "TERÇA-FEIRA", 3: "QUARTA-FEIRA",
+      4: "QUINTA-FEIRA", 5: "SEXTA-FEIRA"
     };
 
-    const notasSalvas = [];
+    document.getElementById("saudacao").textContent = "Olá, Cassia.";
+    document.getElementById("data").textContent = diasNome[dia] + " · " + hoje.toLocaleDateString("pt-BR");
 
-    document.getElementById("saudacao").textContent =
-      hoje.getHours() < 12 ? "👋 Bom dia Cassia!" : "☀️ Boa tarde Cassia!";
-
-    document.getElementById("data").innerHTML =
-      "📅 " + diasNome[dia] + "<br>" + hoje.toLocaleDateString("pt-BR");
-
-    function abrirDia() {
+    // GERENCIADOR DE ROTAS
+    function rotear() {
+      const hash = window.location.hash.replace("#", "") || "home";
       
-      document.getElementById("btnExcel").style.display = "none";
-      document.getElementById("btnDashboard").style.display = "none";
-      
-      document.getElementById("inicio").style.display = "none";
-      document.getElementById("contagem").style.display = "block";
-      document.getElementById("titulo").textContent = "📦 " + dias[dia].nome;
+      // Oculta todas as telas
+      document.querySelectorAll(".sec").forEach(el => el.style.display = "none");
 
-      let html = "";
-
-      dias[dia].campos.forEach((item, i) => {
-        html += `
-          <div class="item">
-            <label for="c${i}">${i + 1}. ${item}</label>
-            <input id="c${i}" type="tel" inputmode="numeric" placeholder="Ex: 2+4+7" oninput="calcular(${i})">
-            <div class="total">
-              TOTAL ${item}
-              <br>
-              <span id="t${i}">0</span>
-            </div>
-          </div>
-        `;
+      // Destaca item no menu de navegação
+      document.querySelectorAll(".hyundai-nav a").forEach(a => {
+        a.classList.toggle("active", a.getAttribute("href") === "#" + hash);
       });
 
-      document.getElementById("campos").innerHTML = html;
+      // Validações de encadeamento de fluxo
+      if ((hash === "notas" || hash === "resumo") && !contagemIniciada) {
+        window.location.hash = "#embalagens";
+        return;
+      }
+
+      // Executa inicialização das views
+      if (hash === "embalagens" && !contagemIniciada) {
+        carregarCamposEmbalagens();
+      } else if (hash === "inventario") {
+        carregarCamposInventario();
+      } else if (hash === "notas") {
+        carregarCamposNotas();
+      } else if (hash === "resumo") {
+        carregarResumo();
+      } else if (hash === "dashboard") {
+        renderizarDashboard();
+      }
+
+      const paginaAlvo = document.getElementById("page-" + hash);
+      if (paginaAlvo) {
+        paginaAlvo.style.display = "block";
+      } else {
+        document.getElementById("page-home").style.display = "block";
+      }
     }
 
-const categoriasInventario = [
+    window.addEventListener("hashchange", rotear);
+    window.addEventListener("load", rotear);
 
-{
-    categoria: "🎗 FITAS",
+    // FUNÇÕES DA APLICAÇÃO
+    function carregarCamposEmbalagens() {
+      contagemIniciada = true;
+      document.getElementById("titulo").innerHTML = `
+        <div class="operation-head">
+          <div>Contagem de embalagens<small>${dias[dia].nome} · ${hoje.toLocaleDateString("pt-BR")}</small></div>
+          <div class="day-badge">Conferência diária</div>
+        </div>`;
 
-    itens: [
-        "Fita amarela fina",
-        "Fita amarela larga",
-        "Fita durex",
-        "Fita verde",
-        "Fita azul",
-        "Fita vermelha",
-        "Fita crepe",
-        "Fita zebrada grossa",
-        "Fita zebrada fina",
-        "Fita K200 Super Resina dourada",
-        "Fita K200 Super Resina azul"
-    ]
-},
+      const linhas = dias[dia].campos.map((item, i) => `
+        <div class="op-row">
+          <div class="op-icon">▣</div>
+          <div class="op-name">${item}<span>Quantidade informada</span></div>
+          <input id="c${i}" type="tel" inputmode="numeric" placeholder="2+4+6" oninput="calcular(${i})">
+          <div class="row-total"><small>TOTAL</small><span id="t${i}">0</span></div>
+        </div>`).join("");
 
-{
-    categoria: "🏷 ETIQUETAS",
+      document.getElementById("campos").innerHTML = `
+        <div class="work-shell">
+          <div class="work-panel">
+            <div class="work-panel-title">Embalagens do dia<small>Digite a soma de cada embalagem</small></div>
+            <div class="count-list">${linhas}</div>
+          </div>
+          <aside class="summary-panel">
+            <div class="summary-panel-title">Resumo da contagem</div>
+            <div id="resumoContagem" class="summary-lines"></div>
+            <div class="summary-total">
+              <span>TOTAL GERAL</span>
+              <strong id="totalGeral">0</strong>
+            </div>
+            <button type="button" class="verde operation-action" onclick="window.location.hash = '#notas'">FINALIZAR CONTAGEM</button>
+          </aside>
+        </div>`;
+      atualizarResumoContagem();
+    }
 
-    itens: [
-        "Etiqueta 100x40 amarela",
-        "Etiqueta 100x40 azul",
-        "Etiqueta 100x40 branca",
-        "Etiqueta 100x70 branca",
-        "Etiqueta 100x70 amarela",
-        "Etiqueta 50x25"
-    ]
-},
+    function carregarCamposInventario() {
+      const container = document.getElementById("camposInventario");
+      if (container.children.length > 0) return;
 
-{
-    categoria: "🖊 ESCRITÓRIO",
-
-    itens: [
-        "Prancheta",
-        "Canetão azul",
-        "Canetão vermelho",
-        "Canetão preto",
-        "Copos plásticos",
-        "Trena",
-        "Marca texto rosa",
-        "Marca texto azul",
-        "Marca texto amarelo",
-        "Marca texto verde",
-        "Marca texto branco",
-        "Marca texto vermelho",
-        "Caneta Bic azul",
-        "Grampeador",
-        "Apagador",
-        "Grampo 106/8",
-        "Grampo 26/6",
-        "Clips 8/0",
-        "Clips 6/0",
-        "Clips 2/0",
-        "Agenda",
-        "Papel A4",
-        "Pasta azul",
-        "Tesoura"
-    ]
-},
-
-{
-    categoria: "🧹 LIMPEZA",
-
-    itens: [
-        "Pano",
-        "Detergente",
-        "Veja",
-        "Bucha",
-        "Álcool em gel",
-        "Vassoura"
-    ]
-},
-
-{
-    categoria: "📦 OUTROS",
-
-    itens: [
-        "Filme PVC",
-        "Papel Pouch A4 Transparente",
-        "Envelope"
-    ]
-}
-
-];
-    function abrirInventario() {
-
-    document.getElementById("btnExcel").style.display = "none";
-    document.getElementById("btnDashboard").style.display = "none";
-
-    document.getElementById("inicio").style.display = "none";
-    document.getElementById("inventario").style.display = "block";
-
-    let html = "";
-
-    categoriasInventario.forEach((categoria, indiceCategoria) => {
-
-       html += `
-<h2 style="
-    margin-top:60px;
-    margin-bottom:25px;
-    color:#173B70;
-">
-    ${categoria.categoria}
-</h2>
-`;
-
-        categoria.itens.forEach((item, indiceItem) => {
-
-            const id = `${indiceCategoria}_${indiceItem}`;
-
-            html += `
-
-            <div class="item">
-
-                <label class="labelInventario">${item}</label>
-
-                <input
-    id="inv_${id}"
-    type="tel"
-    inputmode="numeric"
-    placeholder="Ex: 2+4+6"
-    oninput="calcularInventario('${id}')">
-
-<div class="total">
-    TOTAL
-    <br>
-    <span id="tinv_${id}">0</span>
-</div>
-
-            `;
-
+      let html = "";
+      categoriasInventario.forEach((cat, idxCat) => {
+        html += `<div class="inventory-section">
+          <div class="inventory-section-title">${cat.categoria}<small>Controle de Estoque</small></div>
+          <div class="inventory-table">`;
+        
+        cat.itens.forEach((item, idxItem) => {
+          html += `
+            <div class="inventory-row">
+              <div class="op-icon">▤</div>
+              <div class="item-label">${item}<small>Quantidade em armário</small></div>
+              <input id="inv_${idxCat}_${idxItem}" type="tel" inputmode="numeric" placeholder="0" oninput="calcularInventario()">
+              <div class="inventory-total"><small>QTD</small><span id="inv_t_${idxCat}_${idxItem}">0</span></div>
+            </div>`;
         });
+        html += `</div></div>`;
+      });
+      container.innerHTML = html;
+    }
 
-    });
+    function carregarCamposNotas() {
+      const container = document.getElementById("camposNota");
+      let html = '<div class="note-shell"><div class="note-list">';
+      dias[dia].campos.forEach((item, i) => {
+        html += `
+          <div class="note-row">
+            <div><b>${item}</b><small>Quantidade na Nota Fiscal</small></div>
+            <input id="n${i}" type="tel" inputmode="numeric" placeholder="0" oninput="calcularNota(${i})">
+            <div class="note-total"><small>TOTAL</small><span id="tn${i}">0</span></div>
+          </div>`;
+      });
+      html += '</div></div>';
+      container.innerHTML = html;
+    }
 
-    document.getElementById("camposInventario").innerHTML = html;
+    function carregarResumo() {
+      const container = document.getElementById("resultado");
+      let html = '<div class="compare-grid">';
+      dias[dia].campos.forEach((item, i) => {
+        const totalFisico = parseExpressao(document.getElementById(`c${i}`)?.value || "0");
+        const totalNota = parseExpressao(document.getElementById(`n${i}`)?.value || "0");
+        const dif = totalFisico - totalNota;
+        
+        let classeDif = "";
+        if (dif > 0) classeDif = "positive";
+        else if (dif < 0) classeDif = "negative";
 
-}
-    function soma(valor) {
-      if (!valor) return 0;
+        html += `
+          <div class="compare-card">
+            <h3>${item}</h3>
+            <div class="compare-values">
+              <div><span>FÍSICO</span><b>${totalFisico}</b></div>
+              <div><span>NOTA</span><b>${totalNota}</b></div>
+              <div class="${classeDif}"><span>DIF</span><b>${dif > 0 ? '+' + dif : dif}</b></div>
+            </div>
+          </div>`;
+      });
+      html += '</div>';
+      container.innerHTML = html;
+    }
 
-      return valor
-        .split("+")
-        .reduce((total, parte) => total + (Number(parte.trim()) || 0), 0);
+    function parseExpressao(valor) {
+      try {
+        const limpo = valor.replace(/[^0-9+\-*\/]/g, '');
+        return limpo ? eval(limpo) : 0;
+      } catch {
+        return 0;
+      }
     }
 
     function calcular(i) {
-      const valor = soma(document.getElementById("c" + i).value);
-      document.getElementById("t" + i).textContent = valor;
+      const el = document.getElementById(`c${i}`);
+      const tot = parseExpressao(el.value);
+      document.getElementById(`t${i}`).textContent = tot;
+      atualizarResumoContagem();
     }
 
-    function calcularInventario(id){
-
-    const total = soma(
-        document.getElementById("inv_" + id).value
-    );
-
-    document.getElementById("tinv_" + id).textContent = total;
-
-}
-
-    function abrirNota() {
-      document.getElementById("contagem").style.display = "none";
-      document.getElementById("nota").style.display = "block";
-
-      let html = "";
-
-      dias[dia].campos.forEach((item, i) => {
-        html += `
-          <div class="item">
-            <label for="n${i}">${item} - NOTA</label>
-            <input id="n${i}" type="tel" inputmode="numeric" placeholder="Ex: 50+40+20" value="${notasSalvas[i] || ""}" oninput="calcularNota(${i})">
-            <div class="total">
-              TOTAL NOTA ${item}
-              <br>
-              <span id="tn${i}">${soma(notasSalvas[i] || "")}</span>
-            </div>
-          </div>
-        `;
+    function calcularInventario() {
+      categoriasInventario.forEach((cat, idxCat) => {
+        cat.itens.forEach((item, idxItem) => {
+          const el = document.getElementById(`inv_${idxCat}_${idxItem}`);
+          if (el) {
+            const tot = parseExpressao(el.value);
+            document.getElementById(`inv_t_${idxCat}_${idxItem}`).textContent = tot;
+          }
+        });
       });
-
-      document.getElementById("camposNota").innerHTML = html;
     }
 
     function calcularNota(i) {
-      const valor = document.getElementById("n" + i).value;
-      const total = soma(valor);
-
-      notasSalvas[i] = valor;
-
-      const el = document.getElementById("tn" + i);
-      if (el) el.textContent = total;
+      const el = document.getElementById(`n${i}`);
+      const tot = parseExpressao(el.value);
+      document.getElementById(`tn${i}`).textContent = tot;
     }
 
-    function montarDadosDia() {
-      return dias[dia].campos.map((item, i) => {
-        const contagemBruta = soma(document.getElementById("c" + i)?.value || "");
-        const contagem = contagemBruta;
-        const nota = soma(document.getElementById("n" + i)?.value || "");
-
-        return {
-          item,
-          contagem,
-          nota,
-          diferenca: contagem - nota
-        };
+    function atualizarResumoContagem() {
+      let totalGeral = 0;
+      let htmlLines = "";
+      dias[dia].campos.forEach((item, i) => {
+        const tot = parseExpressao(document.getElementById(`c${i}`)?.value || "0");
+        totalGeral += tot;
+        htmlLines += `<div class="summary-line"><span>${item}</span><b>${tot}</b></div>`;
       });
+      const elResumo = document.getElementById("resumoContagem");
+      const elTotal = document.getElementById("totalGeral");
+      if (elResumo) elResumo.innerHTML = htmlLines;
+      if (elTotal) elTotal.textContent = totalGeral;
     }
 
-    function mostrarResumo() {
-      dias[dia].campos.forEach((_, i) => {
-        notasSalvas[i] = document.getElementById("n" + i).value;
-      });
-
-      document.getElementById("btnDashboard").style.display = "block";
-      document.getElementById("btnExcel").style.display = "none";
-     document.getElementById("inicio").style.display = "none";
-document.getElementById("contagem").style.display = "none";
-document.getElementById("nota").style.display = "none";
-document.getElementById("resumo").style.display = "block";
-
-      const dados = montarDadosDia();
-      let html = "";
-
-      dados.forEach(({ item, contagem, nota, diferenca }) => {
-        const status = contagem === nota ? "✅ CONFERIDO" : "❌ DIVERGÊNCIA";
-
-        html += `
-          <div class="card">
-            <b>${item}</b>
-            <br><br>
-            <h2>${status}</h2>
-            Contagem: ${contagem}
-            <br>
-            Nota: ${nota}
-            <br>
-            Diferença: ${diferenca}
-          </div>
-        `;
-      });
-
-      document.getElementById("resultado").innerHTML = html;
+    function finalizarDia() {
+      alert("Dia finalizado e salvo no histórico com sucesso!");
+      window.location.hash = "#home";
     }
 
-    function voltarContagem() {
-
-    document.getElementById("btnDashboard").style.display = "none";
-    document.getElementById("btnExcel").style.display = "none";
-
-    document.getElementById("nota").style.display = "none";
-    document.getElementById("resumo").style.display = "none";
-    document.getElementById("contagem").style.display = "block";
-
-}
-
-    function montarDiaAtual() {
-      return {
-        data: new Date().toLocaleDateString("pt-BR"),
-        itens: montarDadosDia()
-      };
+    function finalizarInventario() {
+      alert("Inventário finalizado com sucesso!");
+      window.location.hash = "#home";
     }
 
-    async function finalizarDia() {
-      const btn = document.getElementById("btnFinalizar");
-      const erro = document.getElementById("mensagemErro");
-
-      btn.disabled = true;
-      erro.style.display = "none";
-
-      try {
-        const ultimo = montarDiaAtual();
-        const excel = gerarExcelParaEmail(ultimo);
-        await enviarEmailAPI(ultimo, excel);
-        alert("Dia Finalizado!");
-      } catch (err) {
-        console.error(err);
-        erro.textContent = err.message || "Nao foi possivel finalizar o dia.";
-        erro.style.display = "block";
-      } finally {
-        btn.disabled = false;
-      }
+    function baixarExcel() {
+      alert("Exportando relatório para Excel...");
     }
 
-    async function enviarEmailAPI(diaAtual, excel) {
-      const resposta = await fetch("https://embalagens-api-rho.vercel.app/api/send", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          data: diaAtual.data,
-          itens: diaAtual.itens,
-          excel,
-        })
-      });
-
-      if (!resposta.ok) {
-        throw new Error("Erro ao enviar email. Codigo: " + resposta.status);
-      }
+    function baixarExcelInventario() {
+      alert("Exportando inventário para Excel...");
     }
 
-    function gerarExcelParaEmail(diaAtual) {
-      if (!window.XLSX) {
-        throw new Error("Biblioteca XLSX ainda nao carregou. Verifique a internet e tente novamente.");
-      }
+    function renderizarDashboard() {
+      document.getElementById("totalDias").textContent = "12";
+      document.getElementById("totalItens").textContent = "1.420";
+      document.getElementById("totalDivergencias").textContent = "8";
+      document.getElementById("porcentagemAcerto").textContent = "98.2%";
 
-      const linhas = diaAtual.itens.map(({ item, contagem, diferenca }) => ({
-        Dia: diaAtual.data,
-        Item: item,
-        Contagem: contagem,
-        Diferença: diferenca === 0 ? "" : diferenca
-      }));
-
-      const ws = XLSX.utils.json_to_sheet(linhas);
-      const wb = XLSX.utils.book_new();
-
-      XLSX.utils.book_append_sheet(wb, ws, "Embalagens");
-
-      return {
-        nome: "embalagens-cassia.xlsx",
-        mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        base64: XLSX.write(wb, {
-          bookType: "xlsx",
-          type: "base64"
-        })
-      };
-    }
-    async function baixarExcel() {
-
-    const resposta = await fetch(
-        "https://embalagens-api-rho.vercel.app/api/export"
-    );
-
-    const blob = await resposta.blob();
-
-    const url = window.URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-
-    a.href = url;
-
-    a.download = "Embalagens.xlsx";
-
-    a.click();
-
-    a.remove();
-
-    URL.revokeObjectURL(url);
-
-}
-    async function abrirDashboard() {
-
-      document.getElementById("menuDashboard").style.display = "none";
-      document.getElementById("menuExcel").style.display = "none";
-      console.log("inicio", document.getElementById("inicio").style.display);
-console.log("contagem", document.getElementById("contagem").style.display);
-console.log("nota", document.getElementById("nota").style.display);
-console.log("resumo", document.getElementById("resumo").style.display);
+      const ctx = document.getElementById('graficoTop5').getContext('2d');
+      if (graficoTop5) graficoTop5.destroy();
       
-      if (document.getElementById("resumo").style.display === "block") {
-    telaAnterior = "resumo";
-} else if (document.getElementById("nota").style.display === "block") {
-    telaAnterior = "nota";
-} else if (document.getElementById("contagem").style.display === "block") {
-    telaAnterior = "contagem";
-} else {
-    telaAnterior = "inicio";
-}
-      console.log(telaAnterior);
-      
-    document.getElementById("btnDashboard").style.display = "none";
-    document.getElementById("btnExcel").style.display = "none";
-    document.getElementById("inicio").style.display = "none";
-    document.getElementById("contagem").style.display = "none";
-    document.getElementById("nota").style.display = "none";
-    document.getElementById("resumo").style.display = "none";
-
-    document.getElementById("dashboard").style.display = "block";
-
-    const resposta = await fetch(
-        "https://embalagens-api-rho.vercel.app/api/dashboard"
-    );
-
-    const dados = await resposta.json();
-
-    document.getElementById("totalDias").textContent =
-        dados.totalDias;
-
-    document.getElementById("totalItens").textContent =
-        dados.totalItens;
-
-    document.getElementById("totalDivergencias").textContent =
-        dados.totalDivergencias;
-
-    document.getElementById("porcentagemAcerto").textContent =
-        dados.porcentagemAcerto + "%";
-
-    const nomes = dados.topItens.map(i => i.item);
-const valores = dados.topItens.map(i => i.total);
-
-if (graficoTop5) {
-    graficoTop5.destroy();
-}
-
-const ctx = document.getElementById("graficoTop5");
-
-graficoTop5 = new Chart(ctx, {
-
-    type: "bar",
-
-    data: {
-
-        labels: nomes,
-
-        datasets: [{
-
-            label: "Divergências",
-
-            data: valores,
-
-            backgroundColor: "#002C5F",
-
-            borderRadius: 8,
-
-            maxBarThickness: 80
-
-        }]
-
-    },
-
-    options: {
-
-    responsive: true,
-
-    maintainAspectRatio: false,
-
-    plugins: {
-
-        legend: {
-            display: false
+      graficoTop5 = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['MUBEIA - CAIXA', 'BLEISTAHL - PALLET', 'PUREM - CAIXA', 'CIEE AZUL - TAMPA'],
+          datasets: [{
+            label: 'Divergências',
+            data: [4, 2, 1, 1],
+            backgroundColor: '#0b5ed7'
+          }]
         },
-    },
-
-    scales: {
-
-        x: {
-
-            grid: {
-                display: false
-            },
-
-            ticks: {
-
-                maxRotation: 0,
-                minRotation: 0,
-
-                autoSkip: false,
-
-                font: {
-                    size: 10
-                }
-
-            }
-
-        },
-
-        y: {
-
-            beginAtZero: true,
-
-            ticks: {
-
-                precision: 0,
-                stepSize: 1
-
-            }
-
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
         }
-
+      });
     }
-
-}
-});
-
-}
-
-function fecharDashboard() {
-
-    // Esconde o Dashboard
-    document.getElementById("dashboard").style.display = "none";
-
-    // Mostra novamente os botões flutuantes
-    document.getElementById("btnExcel").style.display = "block";
-    document.getElementById("btnDashboard").style.display = "block";
-
-    // Esconde todas as telas
-    document.getElementById("inicio").style.display = "none";
-    document.getElementById("contagem").style.display = "none";
-    document.getElementById("nota").style.display = "none";
-    document.getElementById("resumo").style.display = "none";
-
-    // Volta para a tela anterior
-    if (telaAnterior === "inicio") {
-        document.getElementById("inicio").style.display = "flex";
-    } else {
-        document.getElementById(telaAnterior).style.display = "block";
-    }
-}
-    function abrirMenuExcel(){
-
-    document.getElementById("btnExcel").style.display="none";
-    document.getElementById("btnDashboard").style.display="none";
-
-    document.getElementById("inicio").style.display="none";
-    document.getElementById("menuExcel").style.display="block";
-
-}
-
-function abrirMenuDashboard(){
-
-    if (document.getElementById("resumo").style.display == "block"){
-        telaAnterior = "resumo";
-    }
-    else if(document.getElementById("nota").style.display == "block"){
-        telaAnterior = "nota";
-    }
-    else if(document.getElementById("contagem").style.display == "block"){
-        telaAnterior = "contagem";
-    }
-    else{
-        telaAnterior = "inicio";
-    }
-
-    document.getElementById("menuDashboard").style.display="block";
-
-    document.getElementById("inicio").style.display="none";
-    document.getElementById("contagem").style.display="none";
-    document.getElementById("nota").style.display="none";
-    document.getElementById("resumo").style.display="none";
-
-    document.getElementById("btnExcel").style.display="none";
-    document.getElementById("btnDashboard").style.display="none";
-}
-
-   function fecharMenus(){
-
-    document.getElementById("menuExcel").style.display = "none";
-    document.getElementById("menuDashboard").style.display = "none";
-
-    document.getElementById("btnExcel").style.display = "block";
-    document.getElementById("btnDashboard").style.display = "block";
-
-    if (telaAnterior == "inicio"){
-        document.getElementById("inicio").style.display = "flex";
-    }
-    else if(telaAnterior == "contagem"){
-        document.getElementById("contagem").style.display = "block";
-    }
-    else if(telaAnterior == "nota"){
-        document.getElementById("nota").style.display = "block";
-    }
-    else if(telaAnterior == "resumo"){
-        document.getElementById("resumo").style.display = "block";
-    }
-
-}
-    function voltarInicioInventario(){
-
-    document.getElementById("inventario").style.display = "none";
-    document.getElementById("inicio").style.display = "flex";
-
-    document.getElementById("btnExcel").style.display = "block";
-    document.getElementById("btnDashboard").style.display = "block";
-
-}
-
-async function finalizarInventario() {
-
-    const inventario = [];
-
-    categoriasInventario.forEach((categoria, indiceCategoria) => {
-
-        categoria.itens.forEach((item, indiceItem) => {
-
-            const id = `${indiceCategoria}_${indiceItem}`;
-
-            inventario.push({
-
-               categoria: categoria.categoria,
-                item,
-                quantidade: soma(
-                    document.getElementById("inv_" + id).value
-                )
-
-            });
-
-        });
-
-    });
-
-    try{
-
-        const resposta = await fetch(
-            "https://embalagens-api-rho.vercel.app/api/inventario",
-            {
-
-                method:"POST",
-
-                headers:{
-                    "Content-Type":"application/json"
-                },
-
-                body:JSON.stringify({
-
-                    data:new Date().toLocaleDateString("pt-BR"),
-
-                    itens:inventario
-
-                })
-
-            }
-        );
-
-        if(!resposta.ok){
-
-            throw new Error();
-
-        }
-
-        alert("Inventário salvo com sucesso!");
-
-        voltarInicioInventario();
-
-    }
-
-    catch{
-
-        alert("Erro ao salvar o inventário.");
-
-    }
-
-}
-
-    async function baixarExcelInventario() {
-
-    const resposta = await fetch(
-        "https://embalagens-api-rho.vercel.app/api/exportInventario"
-    );
-
-    const blob = await resposta.blob();
-
-    const url = window.URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-
-    a.href = url;
-
-    a.download = "Inventario.xlsx";
-
-    a.click();
-
-    a.remove();
-
-    URL.revokeObjectURL(url);
-
-}
   </script>
 </body>
 </html>

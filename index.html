@@ -3,34 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HYUNDAI - Sistema de Controle Logístico</title>
+  <title>HYUNDAI - Sistema Logístico</title>
 
   <!-- LIBs Externas (Preservadas) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-    /* ==========================================================================
-       DESIGN SYSTEM CORPORATIVO HYUNDAI / SAP ERP
-       ========================================================================== */
     :root {
       --hyundai-blue: #002C5F;
-      --hyundai-blue-hover: #001A39;
+      --hyundai-active-blue: #0A3D78;
       --hyundai-accent: #0072CE;
-      --hyundai-accent-hover: #005DAA;
-      --hyundai-light-blue: #F0F4F8;
       --hyundai-gray-bg: #EEF2F6;
       --hyundai-card-border: #E0E6ED;
       --text-primary: #1F2937;
       --text-secondary: #6B7280;
-      
-      --status-success-bg: #EAF2FB;
       --status-danger: #D32F2F;
       --status-danger-bg: #FCE8E6;
       
       --font-main: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
       --sidebar-width: 260px;
-      --header-height: 64px;
     }
 
     * {
@@ -44,16 +36,16 @@
       background-color: var(--hyundai-gray-bg);
       color: var(--text-primary);
       line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
     }
 
-    /* --- ESTRUTURA PRINCIPAL --- */
     .app-container {
       display: flex;
       min-height: 100vh;
     }
 
-    /* SIDEBAR (DESKTOP) REESTRUTURADA */
+    /* ==========================================================================
+       SIDEBAR AJUSTADA - PREENCHIMENTO COMPLETO DO ESPAÇO AZUL
+       ========================================================================== */
     .sidebar {
       width: var(--sidebar-width);
       background-color: var(--hyundai-blue);
@@ -65,103 +57,101 @@
       bottom: 0;
       left: 0;
       z-index: 100;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.15);
     }
 
+    /* Marca / Logo Hyundai no Topo Esquerdo */
     .sidebar-brand {
-      height: 80px;
+      padding: 24px 20px;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 0 24px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .sidebar-brand svg {
-      height: 22px;
+      width: 38px;
+      height: 24px;
       fill: #FFFFFF;
-      margin-bottom: 4px;
     }
 
-    .sidebar-brand .sub-text {
-      font-size: 10px;
-      letter-spacing: 1.5px;
+    .sidebar-brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-brand-text .brand-title {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #FFFFFF;
+      line-height: 1.1;
+    }
+
+    .sidebar-brand-text .brand-sub {
+      font-size: 9px;
+      letter-spacing: 1.2px;
       opacity: 0.7;
       font-weight: 600;
-      text-transform: uppercase;
     }
 
-    /* Espaçamento vertical da barra lateral */
+    /* Conteêiner do Menu ocupando todo o espaço restante vertical */
     .sidebar-menu-wrapper {
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      padding: 24px 0;
     }
 
     .sidebar-menu {
       list-style: none;
+      height: 100%;
       display: flex;
       flex-direction: column;
-      height: 100%;
-      justify-content: space-evenly;
+      justify-content: space-evenly; /* Preenche o espaço de cima a baixo */
     }
 
     .sidebar-menu li a {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 16px 24px;
-      color: #CFD8DC;
+      gap: 16px;
+      padding: 18px 24px;
+      color: #FFFFFF;
       text-decoration: none;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
-      transition: all 0.2s ease;
+      transition: background 0.2s ease;
       cursor: pointer;
-      border-left: 4px solid transparent;
     }
 
     .sidebar-menu li a svg {
-      width: 20px;
-      height: 20px;
-      fill: #CFD8DC;
-      transition: fill 0.2s ease;
+      width: 22px;
+      height: 22px;
+      fill: #FFFFFF;
+      flex-shrink: 0;
     }
 
     .sidebar-menu li a:hover,
     .sidebar-menu li a.active {
-      color: #FFFFFF;
-      background-color: rgba(255, 255, 255, 0.08);
-      border-left-color: var(--hyundai-accent);
+      background-color: var(--hyundai-active-blue);
     }
 
-    .sidebar-menu li a:hover svg,
-    .sidebar-menu li a.active svg {
-      fill: #FFFFFF;
-    }
-
-    /* ÁREA DE CONTEÚDO */
+    /* ==========================================================================
+       CONTEÚDO PRINCIPAL
+       ========================================================================== */
     .main-wrapper {
       margin-left: var(--sidebar-width);
       flex: 1;
       display: flex;
       flex-direction: column;
-      min-width: 0;
     }
 
     .top-header {
-      height: var(--header-height);
+      height: 64px;
       background-color: #FFFFFF;
       border-bottom: 1px solid var(--hyundai-card-border);
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 32px;
-      position: sticky;
-      top: 0;
-      z-index: 90;
     }
 
     .page-title-header {
@@ -170,45 +160,26 @@
       color: var(--hyundai-blue);
     }
 
-    .user-badge {
-      font-size: 13px;
-      color: var(--hyundai-blue);
-      font-weight: 600;
-      background: var(--hyundai-light-blue);
-      padding: 6px 14px;
-      border-radius: 20px;
-      border: 1px solid var(--hyundai-card-border);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
     .content-area {
       padding: 32px;
-      flex: 1;
-      max-width: 1400px;
+      max-width: 1200px;
       width: 100%;
       margin: 0 auto;
-      display: flex;
-      flex-direction: column;
     }
 
     .app-page {
       display: none;
-      width: 100%;
     }
 
-    /* COMPONENTES DA INTERFACE */
     .card {
       background: #FFFFFF;
       border: 1px solid var(--hyundai-card-border);
       border-radius: 8px;
       padding: 24px;
       margin-bottom: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
 
-    /* BOTÕES AZUIS */
+    /* BOTÕES AZUIS (SEM NENHUM VERDE) */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -221,18 +192,6 @@
       border: none;
       cursor: pointer;
       transition: all 0.2s;
-      text-decoration: none;
-    }
-
-    .btn svg {
-      width: 18px;
-      height: 18px;
-      fill: currentColor;
-    }
-
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
     }
 
     .btn-primary {
@@ -240,8 +199,8 @@
       color: #FFFFFF;
     }
 
-    .btn-primary:hover:not(:disabled) {
-      background-color: var(--hyundai-blue-hover);
+    .btn-primary:hover {
+      background-color: #001A39;
     }
 
     .btn-accent {
@@ -249,8 +208,8 @@
       color: #FFFFFF;
     }
 
-    .btn-accent:hover:not(:disabled) {
-      background-color: var(--hyundai-accent-hover);
+    .btn-accent:hover {
+      background-color: #005DAA;
     }
 
     .btn-secondary {
@@ -259,15 +218,11 @@
       border: 1px solid var(--hyundai-card-border);
     }
 
-    .btn-secondary:hover:not(:disabled) {
-      background-color: var(--hyundai-light-blue);
-    }
-
     /* CARDS DE ITEM */
     .grid-cards {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
       margin-top: 16px;
     }
 
@@ -275,38 +230,31 @@
       background: #FFFFFF;
       border: 1px solid var(--hyundai-card-border);
       border-radius: 8px;
-      padding: 20px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .item-card label {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       color: var(--hyundai-blue);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .item-card input {
       width: 100%;
-      padding: 10px 14px;
-      font-size: 16px;
+      padding: 10px;
+      font-size: 15px;
       border: 1px solid #CFD8DC;
-      border-radius: 6px;
-      outline: none;
-    }
-
-    .item-card input:focus {
-      border-color: var(--hyundai-accent);
+      border-radius: 4px;
     }
 
     .total-badge {
-      background-color: var(--status-success-bg);
+      background-color: #EAF2FB;
       color: var(--hyundai-blue);
-      border: 1px solid #BEE3F8;
-      border-radius: 6px;
+      border-radius: 4px;
       padding: 8px 12px;
       display: flex;
       justify-content: space-between;
@@ -316,27 +264,25 @@
     }
 
     .total-badge span:last-child {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
-      color: var(--hyundai-blue);
     }
 
-    /* RODAPÉ FIXO DE AÇÕES */
+    /* BOTÕES DE FINALIZAR NO RODOAPÉ DA PÁGINA */
     .page-footer-actions {
       margin-top: 32px;
-      padding: 20px 0;
+      padding-top: 20px;
       border-top: 1px solid var(--hyundai-card-border);
       display: flex;
       justify-content: flex-end;
       gap: 12px;
-      background-color: transparent;
     }
 
     /* DASHBOARD */
     .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
       margin-bottom: 24px;
     }
 
@@ -344,112 +290,19 @@
       background: #FFFFFF;
       border: 1px solid var(--hyundai-card-border);
       border-radius: 8px;
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .kpi-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: var(--hyundai-light-blue);
-    }
-
-    .kpi-icon svg {
-      width: 26px;
-      height: 26px;
-      fill: var(--hyundai-accent);
+      padding: 16px;
     }
 
     .kpi-info h4 {
       font-size: 12px;
       color: var(--text-secondary);
       text-transform: uppercase;
-      font-weight: 600;
     }
 
     .kpi-info h2 {
-      font-size: 26px;
+      font-size: 24px;
       font-weight: 700;
       color: var(--hyundai-blue);
-    }
-
-    .grafico-wrapper {
-      background: #FFFFFF;
-      border: 1px solid var(--hyundai-card-border);
-      border-radius: 8px;
-      padding: 24px;
-    }
-
-    .grafico-container {
-      position: relative;
-      width: 100%;
-      height: 380px;
-    }
-
-    .erro {
-      color: var(--status-danger);
-      background: var(--status-danger-bg);
-      border: 1px solid #FCA5A5;
-      border-radius: 6px;
-      padding: 12px 16px;
-      margin-top: 16px;
-      font-size: 14px;
-      display: none;
-    }
-
-    /* BOTTOM NAV (MOBILE) */
-    .bottom-nav {
-      display: none;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background-color: var(--hyundai-blue);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      z-index: 200;
-      justify-content: space-around;
-      align-items: center;
-    }
-
-    .bottom-nav-item {
-      color: #CFD8DC;
-      text-decoration: none;
-      font-size: 11px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      cursor: pointer;
-    }
-
-    .bottom-nav-item svg {
-      width: 20px;
-      height: 20px;
-      fill: #CFD8DC;
-    }
-
-    .bottom-nav-item.active {
-      color: #FFFFFF;
-      font-weight: 700;
-    }
-
-    .bottom-nav-item.active svg {
-      fill: #FFFFFF;
-    }
-
-    @media (max-width: 768px) {
-      .sidebar { display: none; }
-      .main-wrapper { margin-left: 0; margin-bottom: 60px; }
-      .content-area { padding: 16px; }
-      .bottom-nav { display: flex; }
-      .top-header { padding: 0 16px; }
     }
   </style>
 </head>
@@ -457,45 +310,52 @@
 
   <div class="app-container">
 
-    <!-- SIDEBAR COM LAYOUT VERTICAL PREENCHIDO E LOGO OFICIAL -->
+    <!-- SIDEBAR CORRIGIDA COM ICONES PROFISSIONAIS E BRANDING HYUNDAI -->
     <aside class="sidebar">
       <div class="sidebar-brand">
-        <!-- Logo Vetorial Oficial Hyundai -->
-        <svg viewBox="0 0 220 28" xmlns="http://www.w3.org/2000/svg">
-          <path d="M22.8 1.2C10.4 1.2 0 6.8 0 13.8s10.4 12.6 22.8 12.6 22.8-5.6 22.8-12.6S35.2 1.2 22.8 1.2zm8.5 18.2c-1.2.6-3.8 1.1-7 1.1-6.1 0-11.4-2.1-11.4-6.4 0-3.8 4.2-5.8 9.5-5.8 2.3 0 4.5.4 5.6.8l-.8 2.2c-.9-.4-2.7-.7-4.7-.7-3.8 0-6.6 1.3-6.6 3.6 0 2.2 3.2 3.8 8.1 3.8 2 0 3.8-.3 4.8-.7l.5 2.1z"/>
-          <path d="M60.2 2.2h4.5l6.8 13.5L78.3 2.2h4.5v22.8h-4.2V8.9l-6.1 12.3h-2.9L63.5 8.9v16.1h-3.3V2.2zm30 0h4.3v10.1h8.6V2.2h4.3v22.8h-4.3V15.5h-8.6v9.5h-4.3V2.2zm23.6 0h4.3v13.5l8.1-13.5h4.6l-8.9 14.1 9.4 8.7h-5.2l-8-7.7v7.7h-4.3V2.2zm26.4 0h4.3v22.8h-4.3V2.2zm14.8 0h4.3v19h9.1v3.8h-13.4V2.2z"/>
+        <!-- Icone Vetorial Oficial Hyundai Oval H -->
+        <svg viewBox="0 0 100 60">
+          <path d="M 50 5 C 20 5, 5 18, 5 30 C 5 42, 20 55, 50 55 C 80 55, 95 42, 95 30 C 95 18, 80 5, 50 5 Z M 32 42 L 24 42 L 32 18 L 40 18 L 37 28 C 42 22, 52 20, 60 25 C 55 31, 46 32, 42 35 L 34 42 Z M 68 42 L 60 42 L 68 18 L 76 18 L 68 42 Z"/>
         </svg>
-        <span class="sub-text">SISTEMA LOGÍSTICO</span>
+        <div class="sidebar-brand-text">
+          <span class="brand-title">HYUNDAI</span>
+          <span class="brand-sub">SISTEMA LOGÍSTICO</span>
+        </div>
       </div>
 
       <div class="sidebar-menu-wrapper">
         <ul class="sidebar-menu">
           <li>
             <a onclick="navegarPara('inicio')" id="nav-inicio" class="active">
+              <!-- Icone Início (Casa) -->
               <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
               <span>Início</span>
             </a>
           </li>
           <li>
             <a onclick="abrirDia()" id="nav-embalagens">
+              <!-- Icone Embalagens (Caixa/Gráfico Bar) -->
               <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
               <span>Embalagens</span>
             </a>
           </li>
           <li>
             <a onclick="abrirInventario()" id="nav-inventario">
+              <!-- Icone Inventário (Prancheta) -->
               <svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 16H5V5h2v3h10V5h2v14z"/></svg>
               <span>Inventário</span>
             </a>
           </li>
           <li>
             <a onclick="abrirDashboard()" id="nav-dashboard">
+              <!-- Icone Dashboard (Painel) -->
               <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
               <span>Dashboard</span>
             </a>
           </li>
           <li>
             <a onclick="baixarExcel()" id="nav-excel">
+              <!-- Icone Download Excel -->
               <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
               <span>Exportar Excel</span>
             </a>
@@ -509,15 +369,11 @@
 
       <header class="top-header">
         <div class="page-title-header" id="header-title">Início</div>
-        <div class="user-badge" id="user-display">
-          <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-          Operador Logístico
-        </div>
       </header>
 
       <main class="content-area">
 
-        <!-- TELA 1: INÍCIO (SAUDAÇÃO CORRIGIDA) -->
+        <!-- TELA 1: INÍCIO (SAUDAÇÃO SIMPLIFICADA SEM CASSIA) -->
         <section id="inicio" class="app-page" style="display: block;">
           <div class="card" style="text-align: center; padding: 48px 24px;">
             <h1 id="saudacao" style="font-size: 32px; color: var(--hyundai-blue); font-weight: 700;"></h1>
@@ -525,13 +381,11 @@
             <p style="margin: 24px 0 32px 0; color: var(--text-secondary);">Selecione o módulo operacional que deseja acessar:</p>
 
             <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-              <button class="btn btn-primary" style="min-width: 220px; padding: 16px;" onclick="abrirDia()">
-                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/></svg>
+              <button class="btn btn-primary" style="min-width: 200px;" onclick="abrirDia()">
                 EMBALAGENS
               </button>
-              <button class="btn btn-accent" style="min-width: 220px; padding: 16px;" onclick="abrirInventario()">
-                <svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 16H5V5h2v3h10V5h2v14z"/></svg>
-                INVENTÁRIO DE MATERIAIS
+              <button class="btn btn-accent" style="min-width: 200px;" onclick="abrirInventario()">
+                INVENTÁRIO
               </button>
             </div>
           </div>
@@ -546,11 +400,10 @@
 
           <div class="grid-cards" id="campos"></div>
 
-          <!-- BOTÃO MOVIDO PARA O FINAL DA PÁGINA -->
+          <!-- BOTÃO NO FINAL DA PÁGINA -->
           <div class="page-footer-actions">
             <button class="btn btn-accent" onclick="abrirNota()">
-              AVANÇAR PARA NOTAS FISCAIS
-              <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              AVANÇAR PARA NOTAS FISCAIS →
             </button>
           </div>
         </section>
@@ -568,8 +421,7 @@
           <div class="page-footer-actions">
             <button class="btn btn-secondary" onclick="voltarContagem()">Voltar</button>
             <button class="btn btn-accent" onclick="mostrarResumo()">
-              CONFERIR RESULTADO
-              <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              CONFERIR RESULTADO →
             </button>
           </div>
         </section>
@@ -582,16 +434,12 @@
           </div>
 
           <div class="grid-cards" id="resultado" style="margin-top: 20px;"></div>
-          <div id="mensagemErro" class="erro"></div>
+          <div id="mensagemErro" style="display:none; color: red; margin-top: 10px;"></div>
 
           <div class="page-footer-actions">
             <button class="btn btn-secondary" onclick="voltarContagem()">Voltar</button>
-            <button class="btn btn-secondary" onclick="baixarExcel()">
-              <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-              Gerar Excel
-            </button>
+            <button class="btn btn-secondary" onclick="baixarExcel()">Gerar Excel</button>
             <button class="btn btn-primary" id="btnFinalizar" onclick="finalizarDia()">
-              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
               FINALIZAR DIA
             </button>
           </div>
@@ -608,12 +456,8 @@
 
           <div class="page-footer-actions">
             <button class="btn btn-secondary" onclick="voltarInicioInventario()">Voltar</button>
-            <button class="btn btn-secondary" onclick="baixarExcelInventario()">
-              <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-              Baixar Excel
-            </button>
+            <button class="btn btn-secondary" onclick="baixarExcelInventario()">Baixar Excel</button>
             <button class="btn btn-accent" onclick="finalizarInventario()">
-              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
               SALVAR INVENTÁRIO
             </button>
           </div>
@@ -628,39 +472,24 @@
 
           <div class="kpi-grid">
             <div class="kpi-card">
-              <div class="kpi-icon">
-                <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
-              </div>
               <div class="kpi-info">
                 <h4>Dias Conferidos</h4>
                 <h2 id="totalDias">0</h2>
               </div>
             </div>
-
             <div class="kpi-card">
-              <div class="kpi-icon">
-                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/></svg>
-              </div>
               <div class="kpi-info">
                 <h4>Itens Conferidos</h4>
                 <h2 id="totalItens">0</h2>
               </div>
             </div>
-
             <div class="kpi-card">
-              <div class="kpi-icon" style="background-color: var(--status-danger-bg);">
-                <svg viewBox="0 0 24 24" style="fill: var(--status-danger);"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-              </div>
               <div class="kpi-info">
                 <h4>Divergências</h4>
                 <h2 id="totalDivergencias" style="color: var(--status-danger);">0</h2>
               </div>
             </div>
-
             <div class="kpi-card">
-              <div class="kpi-icon">
-                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-              </div>
               <div class="kpi-info">
                 <h4>Índice de Acerto</h4>
                 <h2 id="porcentagemAcerto" style="color: var(--hyundai-accent);">0%</h2>
@@ -668,9 +497,9 @@
             </div>
           </div>
 
-          <div class="grafico-wrapper">
+          <div class="card">
             <h3 style="color: var(--hyundai-blue); margin-bottom: 16px;">Top 5 Divergências por Item</h3>
-            <div class="grafico-container">
+            <div style="height: 300px;">
               <canvas id="graficoTop5"></canvas>
             </div>
           </div>
@@ -680,29 +509,6 @@
     </div>
   </div>
 
-  <!-- NAVEGAÇÃO INFERIOR MOBILE -->
-  <nav class="bottom-nav">
-    <a onclick="navegarPara('inicio')" class="bottom-nav-item active" id="bnav-inicio">
-      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      <span>Início</span>
-    </a>
-    <a onclick="abrirDia()" class="bottom-nav-item" id="bnav-embalagens">
-      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/></svg>
-      <span>Embalagens</span>
-    </a>
-    <a onclick="abrirInventario()" class="bottom-nav-item" id="bnav-inventario">
-      <svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
-      <span>Inventário</span>
-    </a>
-    <a onclick="abrirDashboard()" class="bottom-nav-item" id="bnav-dashboard">
-      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
-      <span>Dashboard</span>
-    </a>
-  </nav>
-
-  <!-- ==========================================================================
-     LÓGICA JAVASCRIPT
-     ========================================================================== -->
   <script>
     let telaAnterior = "inicio";
     let graficoTop5 = null;
@@ -711,83 +517,42 @@
       1: {
         nome: "SEGUNDA-FEIRA",
         campos: [
-          "MUBEIA - CAIXA",
-          "MUBEIA - PALLET",
-          "MUBEIA - TAMPA",
-          "NIGTERRA - CAIXA",
-          "NIGTERRA - PALLET",
-          "CIEE AZUL - PALLET",
-          "CIEE AZUL - TAMPA",
-          "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET",
-          "CIEE CINZA - TAMPA",
-          "CIEE CINZA - BANDEIJA (7)"
+          "MUBEIA - CAIXA", "MUBEIA - PALLET", "MUBEIA - TAMPA", "NIGTERRA - CAIXA",
+          "NIGTERRA - PALLET", "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA",
+          "CIEE AZUL - BANDEIJA (6)", "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
         ]
       },
       2: {
         nome: "TERÇA-FEIRA",
         campos: [
-          "BLEISTAHL - CAIXA",
-          "BLEISTAHL - PALLET",
-          "BLEISTAHL - TAMPA",
-          "PUREM - CAIXA",
-          "PUREM - BANDEIJA (4)",
-          "CIEE AZUL - PALLET",
-          "CIEE AZUL - TAMPA",
-          "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET",
-          "CIEE CINZA - TAMPA",
-          "CIEE CINZA - BANDEIJA (7)"
+          "BLEISTAHL - CAIXA", "BLEISTAHL - PALLET", "BLEISTAHL - TAMPA", "PUREM - CAIXA",
+          "PUREM - BANDEIJA (4)", "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA",
+          "CIEE AZUL - BANDEIJA (6)", "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
         ]
       },
       3: {
         nome: "QUARTA-FEIRA",
         campos: [
-          "CESTARI - CAIXA",
-          "CESTARI - BANDEIJA (13)",
-          "MALHE - CAIXA",
-          "PROMETAL - CAIXA",
-          "CIEE AZUL - PALLET",
-          "CIEE AZUL - TAMPA",
-          "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET",
-          "CIEE CINZA - TAMPA",
-          "CIEE CINZA - BANDEIJA (7)"
+          "CESTARI - CAIXA", "CESTARI - BANDEIJA (13)", "MALHE - CAIXA", "PROMETAL - CAIXA",
+          "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA", "CIEE AZUL - BANDEIJA (6)",
+          "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
         ]
       },
       4: {
         nome: "QUINTA-FEIRA",
         campos: [
-          "PINHA - CAIXA",
-          "MUVIC - CAIXA",
-          "MUVIC - PALLET",
-          "MUVIC - BANDEIJA",
-          "CIEE AZUL - PALLET",
-          "CIEE AZUL - TAMPA",
-          "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET",
-          "CIEE CINZA - TAMPA",
-          "CIEE CINZA - BANDEIJA (7)"
+          "PINHA - CAIXA", "MUVIC - CAIXA", "MUVIC - PALLET", "MUVIC - BANDEIJA",
+          "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA", "CIEE AZUL - BANDEIJA (6)",
+          "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
         ]
       },
       5: {
         nome: "SEXTA-FEIRA",
         campos: [
-          "BIELA - CAIXA",
-          "BIELA - TAMPA",
-          "BIELA - PALLET",
-          "BIELA - BANDEIJA (2)",
-          "VETORE - CAIXA",
-          "VETORE - PALLET",
-          "VETORE - TAMPA",
-          "VETORE - BANDEIJA (5)",
-          "VALEO - CAIXA",
-          "CIEE AZUL - PALLET",
-          "CIEE AZUL - TAMPA",
-          "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET",
-          "CIEE CINZA - TAMPA",
-          "CIEE CINZA - BANDEIJA (7)"
+          "BIELA - CAIXA", "BIELA - TAMPA", "BIELA - PALLET", "BIELA - BANDEIJA (2)",
+          "VETORE - CAIXA", "VETORE - PALLET", "VETORE - TAMPA", "VETORE - BANDEIJA (5)",
+          "VALEO - CAIXA", "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA", "CIEE AZUL - BANDEIJA (6)",
+          "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
         ]
       }
     };
@@ -795,29 +560,15 @@
     const categoriasInventario = [
       {
         categoria: "FITAS",
-        itens: [
-          "Fita amarela fina", "Fita amarela larga", "Fita durex", "Fita verde",
-          "Fita azul", "Fita vermelha", "Fita crepe", "Fita zebrada grossa",
-          "Fita zebrada fina", "Fita K200 Super Resina dourada", "Fita K200 Super Resina azul"
-        ]
+        itens: ["Fita amarela fina", "Fita amarela larga", "Fita durex", "Fita verde", "Fita azul", "Fita vermelha", "Fita crepe", "Fita zebrada grossa", "Fita zebrada fina", "Fita K200 Super Resina dourada", "Fita K200 Super Resina azul"]
       },
       {
         categoria: "ETIQUETAS",
-        itens: [
-          "Etiqueta 100x40 amarela", "Etiqueta 100x40 azul", "Etiqueta 100x40 branca",
-          "Etiqueta 100x70 branca", "Etiqueta 100x70 amarela", "Etiqueta 50x25"
-        ]
+        itens: ["Etiqueta 100x40 amarela", "Etiqueta 100x40 azul", "Etiqueta 100x40 branca", "Etiqueta 100x70 branca", "Etiqueta 100x70 amarela", "Etiqueta 50x25"]
       },
       {
         categoria: "ESCRITÓRIO",
-        itens: [
-          "Prancheta", "Canetão azul", "Canetão vermelho", "Canetão preto",
-          "Copos plásticos", "Trena", "Marca texto rosa", "Marca texto azul",
-          "Marca texto amarelo", "Marca texto verde", "Marca texto branco",
-          "Marca texto vermelho", "Caneta Bic azul", "Grampeador", "Apagador",
-          "Grampo 106/8", "Grampo 26/6", "Clips 8/0", "Clips 6/0", "Clips 2/0",
-          "Agenda", "Papel A4", "Pasta azul", "Tesoura"
-        ]
+        itens: ["Prancheta", "Canetão azul", "Canetão vermelho", "Canetão preto", "Copos plásticos", "Trena", "Marca texto rosa", "Marca texto azul", "Marca texto amarelo", "Marca texto verde", "Marca texto branco", "Marca texto vermelho", "Caneta Bic azul", "Grampeador", "Apagador", "Grampo 106/8", "Grampo 26/6", "Clips 8/0", "Clips 6/0", "Clips 2/0", "Agenda", "Papel A4", "Pasta azul", "Tesoura"]
       },
       {
         categoria: "LIMPEZA",
@@ -833,17 +584,10 @@
     let dia = hoje.getDay();
     if (dia === 0 || dia === 6) dia = 1;
 
-    const diasNome = {
-      1: "SEGUNDA-FEIRA",
-      2: "TERÇA-FEIRA",
-      3: "QUARTA-FEIRA",
-      4: "QUINTA-FEIRA",
-      5: "SEXTA-FEIRA"
-    };
-
+    const diasNome = { 1: "SEGUNDA-FEIRA", 2: "TERÇA-FEIRA", 3: "QUARTA-FEIRA", 4: "QUINTA-FEIRA", 5: "SEXTA-FEIRA" };
     const notasSalvas = [];
 
-    // SAUDAÇÃO SEM NOME INDIVIDUAL
+    // SAUDAÇÃO SEM NOME
     window.addEventListener("DOMContentLoaded", () => {
       const hora = hoje.getHours();
       let textoSaudacao = "Olá!";
@@ -862,28 +606,18 @@
 
     function navegarPara(idTela) {
       document.querySelectorAll(".app-page").forEach(p => p.style.display = "none");
-      
       const telaAlvo = document.getElementById(idTela);
-      if (telaAlvo) {
-        telaAlvo.style.display = "block";
-      }
+      if (telaAlvo) telaAlvo.style.display = "block";
 
-      // Atualiza estado visual do menu lateral
-      document.querySelectorAll(".sidebar-menu a, .bottom-nav a").forEach(a => a.classList.remove("active"));
+      document.querySelectorAll(".sidebar-menu a").forEach(a => a.classList.remove("active"));
       const activeNav = document.getElementById("nav-" + idTela);
       if (activeNav) activeNav.classList.add("active");
-      const activeBNav = document.getElementById("bnav-" + idTela);
-      if (activeBNav) activeBNav.classList.add("active");
 
       const headerTitle = document.getElementById("header-title");
       if (headerTitle) {
         const titulos = {
-          inicio: "Início",
-          contagem: "Contagem de Embalagens",
-          nota: "Notas Fiscais",
-          resumo: "Resumo da Conferência",
-          inventario: "Inventário de Materiais",
-          dashboard: "Dashboard Analítico"
+          inicio: "Início", contagem: "Contagem de Embalagens", nota: "Notas Fiscais",
+          resumo: "Resumo da Conferência", inventario: "Inventário de Materiais", dashboard: "Dashboard Analítico"
         };
         headerTitle.innerText = titulos[idTela] || "Sistema Logístico";
       }
@@ -893,12 +627,9 @@
 
     function soma(valor) {
       if (!valor) return 0;
-      return valor
-        .split("+")
-        .reduce((total, parte) => total + (Number(parte.trim()) || 0), 0);
+      return valor.split("+").reduce((total, parte) => total + (Number(parte.trim()) || 0), 0);
     }
 
-    /* --- EMBALAGENS --- */
     function abrirDia() {
       navegarPara("contagem");
       document.getElementById("titulo").textContent = dias[dia].nome;
@@ -916,7 +647,6 @@
           </div>
         `;
       });
-
       document.getElementById("campos").innerHTML = html;
     }
 
@@ -928,7 +658,6 @@
     function abrirNota() {
       navegarPara("nota");
       let html = "";
-
       dias[dia].campos.forEach((item, i) => {
         html += `
           <div class="item-card">
@@ -941,29 +670,21 @@
           </div>
         `;
       });
-
       document.getElementById("camposNota").innerHTML = html;
     }
 
     function calcularNota(i) {
       const valor = document.getElementById("n" + i).value;
-      const total = soma(valor);
       notasSalvas[i] = valor;
       const el = document.getElementById("tn" + i);
-      if (el) el.textContent = total;
+      if (el) el.textContent = soma(valor);
     }
 
     function montarDadosDia() {
       return dias[dia].campos.map((item, i) => {
         const contagem = soma(document.getElementById("c" + i)?.value || "");
         const nota = soma(document.getElementById("n" + i)?.value || "");
-
-        return {
-          item,
-          contagem,
-          nota,
-          diferenca: contagem - nota
-        };
+        return { item, contagem, nota, diferenca: contagem - nota };
       });
     }
 
@@ -983,84 +704,47 @@
 
         html += `
           <div class="card" style="border-left: 4px solid ${statusColor}; margin-bottom: 0;">
-            <h4 style="color: var(--hyundai-blue); font-size: 15px; margin-bottom: 8px;">${item}</h4>
-            <div style="font-weight: 700; color: ${statusColor}; font-size: 12px; margin-bottom: 12px; letter-spacing: 0.5px;">${statusText}</div>
-            <div style="font-size: 13px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
+            <h4 style="color: var(--hyundai-blue); font-size: 14px; margin-bottom: 8px;">${item}</h4>
+            <div style="font-weight: 700; color: ${statusColor}; font-size: 11px; margin-bottom: 10px;">${statusText}</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">
               <div>Contagem Física: <b>${contagem}</b></div>
               <div>Nota Fiscal: <b>${nota}</b></div>
-              <div>Diferença: <b style="color: ${diferenca !== 0 ? statusColor : 'inherit'}">${diferenca}</b></div>
+              <div>Diferença: <b>${diferenca}</b></div>
             </div>
           </div>
         `;
       });
-
       document.getElementById("resultado").innerHTML = html;
     }
 
-    function voltarContagem() {
-      navegarPara("contagem");
-    }
-
-    function montarDiaAtual() {
-      return {
-        data: new Date().toLocaleDateString("pt-BR"),
-        itens: montarDadosDia()
-      };
-    }
+    function voltarContagem() { navegarPara("contagem"); }
 
     async function finalizarDia() {
       const btn = document.getElementById("btnFinalizar");
-      const erro = document.getElementById("mensagemErro");
-
       btn.disabled = true;
-      erro.style.display = "none";
-
       try {
-        const ultimo = montarDiaAtual();
+        const ultimo = { data: new Date().toLocaleDateString("pt-BR"), itens: montarDadosDia() };
         const excel = gerarExcelParaEmail(ultimo);
-        await enviarEmailAPI(ultimo, excel);
+        await fetch("https://embalagens-api-rho.vercel.app/api/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ data: ultimo.data, itens: ultimo.itens, excel })
+        });
         alert("Dia Finalizado com sucesso!");
       } catch (err) {
-        console.error(err);
-        erro.textContent = err.message || "Não foi possível finalizar o dia.";
-        erro.style.display = "block";
+        alert("Não foi possível finalizar o dia.");
       } finally {
         btn.disabled = false;
       }
     }
 
-    async function enviarEmailAPI(diaAtual, excel) {
-      const resposta = await fetch("https://embalagens-api-rho.vercel.app/api/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          data: diaAtual.data,
-          itens: diaAtual.itens,
-          excel
-        })
-      });
-
-      if (!resposta.ok) {
-        throw new Error("Erro ao enviar e-mail. Código: " + resposta.status);
-      }
-    }
-
     function gerarExcelParaEmail(diaAtual) {
-      if (!window.XLSX) {
-        throw new Error("Biblioteca XLSX não carregada.");
-      }
-
       const linhas = diaAtual.itens.map(({ item, contagem, diferenca }) => ({
-        Dia: diaAtual.data,
-        Item: item,
-        Contagem: contagem,
-        Diferença: diferenca === 0 ? "" : diferenca
+        Dia: diaAtual.data, Item: item, Contagem: contagem, Diferença: diferenca === 0 ? "" : diferenca
       }));
-
       const ws = XLSX.utils.json_to_sheet(linhas);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Embalagens");
-
       return {
         nome: "embalagens.xlsx",
         mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -1077,32 +761,22 @@
         a.href = url;
         a.download = "Embalagens.xlsx";
         a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
       } catch (e) {
         alert("Erro ao exportar o arquivo Excel.");
       }
     }
 
-    /* --- INVENTÁRIO DE MATERIAIS --- */
     function abrirInventario() {
       navegarPara("inventario");
       let html = "";
-
       categoriasInventario.forEach((categoria, indiceCategoria) => {
-        html += `
-          <h3 style="margin: 32px 0 16px 0; color: var(--hyundai-blue); border-bottom: 2px solid var(--hyundai-card-border); padding-bottom: 8px;">
-            ${categoria.categoria}
-          </h3>
-          <div class="grid-cards">
-        `;
-
+        html += `<h3 style="margin: 24px 0 12px 0; color: var(--hyundai-blue);">${categoria.categoria}</h3><div class="grid-cards">`;
         categoria.itens.forEach((item, indiceItem) => {
           const id = `${indiceCategoria}_${indiceItem}`;
           html += `
             <div class="item-card">
               <label>${item}</label>
-              <input id="inv_${id}" type="tel" inputmode="numeric" placeholder="Ex: 2+4+6" oninput="calcularInventario('${id}')">
+              <input id="inv_${id}" type="tel" inputmode="numeric" placeholder="Ex: 2+4" oninput="calcularInventario('${id}')">
               <div class="total-badge">
                 <span>TOTAL</span>
                 <span id="tinv_${id}">0</span>
@@ -1110,48 +784,32 @@
             </div>
           `;
         });
-
         html += `</div>`;
       });
-
       document.getElementById("camposInventario").innerHTML = html;
     }
 
     function calcularInventario(id) {
-      const total = soma(document.getElementById("inv_" + id).value);
-      document.getElementById("tinv_" + id).textContent = total;
+      document.getElementById("tinv_" + id).textContent = soma(document.getElementById("inv_" + id).value);
     }
 
-    function voltarInicioInventario() {
-      navegarPara("inicio");
-    }
+    function voltarInicioInventario() { navegarPara("inicio"); }
 
     async function finalizarInventario() {
       const inventario = [];
-
       categoriasInventario.forEach((categoria, indiceCategoria) => {
         categoria.itens.forEach((item, indiceItem) => {
           const id = `${indiceCategoria}_${indiceItem}`;
-          inventario.push({
-            categoria: categoria.categoria,
-            item,
-            quantidade: soma(document.getElementById("inv_" + id).value)
-          });
+          inventario.push({ categoria: categoria.categoria, item, quantidade: soma(document.getElementById("inv_" + id).value) });
         });
       });
 
       try {
-        const resposta = await fetch("https://embalagens-api-rho.vercel.app/api/inventario", {
+        await fetch("https://embalagens-api-rho.vercel.app/api/inventario", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            data: new Date().toLocaleDateString("pt-BR"),
-            itens: inventario
-          })
+          body: JSON.stringify({ data: new Date().toLocaleDateString("pt-BR"), itens: inventario })
         });
-
-        if (!resposta.ok) throw new Error();
-
         alert("Inventário salvo com sucesso!");
         voltarInicioInventario();
       } catch {
@@ -1168,14 +826,11 @@
         a.href = url;
         a.download = "Inventario.xlsx";
         a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
       } catch (e) {
         alert("Erro ao baixar planilha de inventário.");
       }
     }
 
-    /* --- DASHBOARD LOGÍSTICO --- */
     async function abrirDashboard() {
       telaAnterior = "inicio";
       navegarPara("dashboard");
@@ -1189,52 +844,22 @@
         document.getElementById("totalDivergencias").textContent = dados.totalDivergencias;
         document.getElementById("porcentagemAcerto").textContent = dados.porcentagemAcerto + "%";
 
-        const nomes = dados.topItens.map(i => i.item);
-        const valores = dados.topItens.map(i => i.total);
-
-        if (graficoTop5) {
-          graficoTop5.destroy();
-        }
-
+        if (graficoTop5) graficoTop5.destroy();
         const ctx = document.getElementById("graficoTop5");
         graficoTop5 = new Chart(ctx, {
           type: "bar",
           data: {
-            labels: nomes,
-            datasets: [{
-              label: "Divergências",
-              data: valores,
-              backgroundColor: "#0072CE",
-              borderRadius: 6,
-              maxBarThickness: 50
-            }]
+            labels: dados.topItens.map(i => i.item),
+            datasets: [{ label: "Divergências", data: dados.topItens.map(i => i.total), backgroundColor: "#0072CE" }]
           },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { display: false }
-            },
-            scales: {
-              x: {
-                grid: { display: false },
-                ticks: { font: { size: 11 } }
-              },
-              y: {
-                beginAtZero: true,
-                ticks: { precision: 0, stepSize: 1 }
-              }
-            }
-          }
+          options: { responsive: true, maintainAspectRatio: false }
         });
       } catch (e) {
-        console.error("Erro ao carregar dados do dashboard", e);
+        console.error("Erro ao carregar dashboard", e);
       }
     }
 
-    function fecharDashboard() {
-      navegarPara(telaAnterior);
-    }
+    function fecharDashboard() { navegarPara(telaAnterior); }
   </script>
 </body>
 </html>

@@ -66,7 +66,6 @@
       padding: 10px 12px 32px 12px;
     }
 
-    /* Mantemos a logo branca na sidebar para contraste com o degradê */
     .sidebar-brand img {
       max-width: 150px;
       height: auto;
@@ -179,10 +178,10 @@
     }
 
     .header-logo {
-      height: 40px; /* Aumentado levemente para destacar o logo metálico */
+      height: 32px;
       width: auto;
       display: block;
-      /* REMOVIDO: filter: brightness(0) invert(1); Para mostrar as cores originais metálicas */
+      filter: brightness(0) invert(1); /* Deixa a logo toda branca */
     }
 
     .content-area {
@@ -314,8 +313,7 @@
     }
 
     .mobile-header img {
-      height: 30px;
-      /* O filtro é mantido no mobile pois a logo é pequena e o fundo é sólido */
+      height: 22px;
       filter: brightness(0) invert(1);
     }
 
@@ -369,8 +367,7 @@
 
   <!-- MOBILE HEADER -->
   <div class="mobile-header">
-    <!-- Usamos o arquivo local aqui também -->
-    <img src="logo-hyundai.png" alt="Hyundai Logo">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg" alt="Hyundai Logo">
   </div>
 
   <div class="app-container">
@@ -378,8 +375,8 @@
     <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-brand">
-        <!-- Logo Hyundai em Branco na Sidebar (usando filtro CSS no arquivo local) -->
-        <img src="logo-hyundai.png" alt="Hyundai Logo">
+        <!-- Logo Hyundai em Branco na Sidebar -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg" alt="Hyundai Logo">
       </div>
 
       <ul class="sidebar-menu">
@@ -417,7 +414,7 @@
 
       <div class="sidebar-footer">
         <button class="btn-sair" onclick="navegarPara('inicio')">
-          <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           <span>Sair</span>
         </button>
       </div>
@@ -425,9 +422,9 @@
 
     <div class="main-wrapper">
 
-      <!-- TOP HEADER APENAS COM A LOGO CENTRALIZADA (CORES ORIGINAIS) -->
+      <!-- TOP HEADER APENAS COM A LOGO CENTRALIZADA -->
       <header class="top-header">
-        <img src="logo-hyundai.png" alt="Hyundai Logo" class="header-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg" alt="Hyundai Logo" class="header-logo">
       </header>
 
       <main class="content-area">
@@ -476,7 +473,7 @@
 
           <div class="page-footer-actions">
             <button class="btn btn-accent" onclick="abrirNota()">
-              AVANÇAR PARA NOTAS FISCAIS →
+              NOTAS FISCAIS 
             </button>
           </div>
         </section>
@@ -492,7 +489,7 @@
           <div class="page-footer-actions">
             <button class="btn btn-secondary" onclick="voltarContagem()">Voltar</button>
             <button class="btn btn-accent" onclick="mostrarResumo()">
-              CONFERIR RESULTADO →
+              CONFERIR RESULTADO 
             </button>
           </div>
         </section>

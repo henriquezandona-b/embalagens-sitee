@@ -11,8 +11,11 @@
 
   <style>
     :root {
-      --hyundai-navy: #0C60A8;
-      --hyundai-blue: #033C73;
+      /* COR OFICIAL HYUNDAI (Hyundai Blue: #002C6C) */
+      --hyundai-navy: #002C6C;
+      --hyundai-blue: #002C6C;
+      --hyundai-sky-blue: #00AAD2;
+      
       --hyundai-active-blue: rgba(255, 255, 255, 0.2);
       --hyundai-gray-bg: #F4F6F9;
       --hyundai-card-border: #E2E8F0;
@@ -43,10 +46,10 @@
       min-height: 100vh;
     }
 
-    /* SIDEBAR APENAS COM A LOGO BRANCA */
+    /* SIDEBAR COM A COR OFICIAL HYUNDAI */
     .sidebar {
       width: var(--sidebar-width);
-      background: linear-gradient(180deg, #0D66B2 0%, #084C8A 50%, #033261 100%);
+      background: linear-gradient(180deg, #002C6C 0%, #001E4B 100%);
       color: #FFFFFF;
       display: flex;
       flex-direction: column;
@@ -117,13 +120,13 @@
 
     .sidebar-menu li a.active {
       background-color: #FFFFFF;
-      color: #084C8A;
+      color: #002C6C;
       font-weight: 700;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
     }
 
     .sidebar-menu li a.active svg {
-      stroke: #084C8A;
+      stroke: #002C6C;
     }
 
     .sidebar-footer {
@@ -176,10 +179,10 @@
       margin-left: 0;
     }
 
-    /* HEADER LIMPO COM CONTEXTO DA APLICAÇÃO */
+    /* HEADER COM A COR OFICIAL HYUNDAI */
     .top-header {
       height: 75px;
-      background: linear-gradient(90deg, #084C8A 0%, #0C60A8 100%);
+      background: linear-gradient(90deg, #002C6C 0%, #001E4B 100%);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -286,21 +289,21 @@
     }
 
     .btn-primary {
-      background-color: var(--hyundai-navy);
+      background-color: var(--hyundai-blue);
       color: #FFFFFF;
     }
 
     .btn-primary:hover {
-      background-color: #084C8A;
+      background-color: #001E4B;
     }
 
     .btn-accent {
-      background-color: #0D66B2;
+      background-color: var(--hyundai-blue);
       color: #FFFFFF;
     }
 
     .btn-accent:hover {
-      background-color: #084C8A;
+      background-color: #001E4B;
     }
 
     .btn-secondary {
@@ -329,7 +332,7 @@
     .item-card label {
       font-size: 13px;
       font-weight: 700;
-      color: var(--hyundai-navy);
+      color: var(--hyundai-blue);
       text-transform: uppercase;
       letter-spacing: 0.3px;
     }
@@ -345,7 +348,7 @@
 
     .total-badge {
       background-color: #F1F5F9;
-      color: var(--hyundai-navy);
+      color: var(--hyundai-blue);
       border-radius: 6px;
       padding: 10px 14px;
       display: flex;
@@ -372,7 +375,7 @@
     .mobile-header {
       display: none;
       height: 60px;
-      background-color: #0D66B2;
+      background-color: #002C6C;
       padding: 0 20px;
       align-items: center;
       justify-content: space-between;
@@ -391,7 +394,7 @@
       left: 0;
       right: 0;
       height: 65px;
-      background-color: #084C8A;
+      background-color: #002C6C;
       z-index: 200;
       justify-content: space-around;
       align-items: center;
@@ -440,7 +443,7 @@
 
   <div class="app-container">
 
-    <!-- SIDEBAR (Apenas com a marca corporativa) -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-brand">
         <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg" alt="Hyundai Logo">
@@ -489,7 +492,7 @@
 
     <div class="main-wrapper">
 
-      <!-- TOP HEADER COM TITULO DO SISTEMA EM VEZ DO LOGO REPETIDO -->
+      <!-- TOP HEADER -->
       <header class="top-header">
         <div class="header-left">
           <button class="btn-toggle-menu" onclick="toggleSidebar()" title="Alternar Menu">
@@ -529,30 +532,30 @@
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px;">
             <div class="card" style="margin-bottom:0;">
               <span style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">EMBALAGENS</span>
-              <div style="font-size: 32px; font-weight: 800; color: var(--hyundai-navy); margin: 8px 0;">1.248</div>
-              <a onclick="abrirDia()" style="font-size: 13px; color: #0D66B2; font-weight: 600; text-decoration: none; cursor: pointer;">Ver detalhes →</a>
+              <div style="font-size: 32px; font-weight: 800; color: var(--hyundai-blue); margin: 8px 0;">1.248</div>
+              <a onclick="abrirDia()" style="font-size: 13px; color: var(--hyundai-blue); font-weight: 600; text-decoration: none; cursor: pointer;">Ver detalhes →</a>
             </div>
             <div class="card" style="margin-bottom:0;">
               <span style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">INVENTÁRIO</span>
-              <div style="font-size: 32px; font-weight: 800; color: var(--hyundai-navy); margin: 8px 0;">50</div>
-              <a onclick="abrirInventario()" style="font-size: 13px; color: #0D66B2; font-weight: 600; text-decoration: none; cursor: pointer;">Ver detalhes →</a>
+              <div style="font-size: 32px; font-weight: 800; color: var(--hyundai-blue); margin: 8px 0;">50</div>
+              <a onclick="abrirInventario()" style="font-size: 13px; color: var(--hyundai-blue); font-weight: 600; text-decoration: none; cursor: pointer;">Ver detalhes →</a>
             </div>
             <div class="card" style="margin-bottom:0;">
               <span style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">CATEGORIAS</span>
-              <div style="font-size: 32px; font-weight: 800; color: var(--hyundai-navy); margin: 8px 0;">5</div>
-              <a onclick="abrirInventario()" style="font-size: 13px; color: #0D66B2; font-weight: 600; text-decoration: none; cursor: pointer;">Ver detalhes →</a>
+              <div style="font-size: 32px; font-weight: 800; color: var(--hyundai-blue); margin: 8px 0;">5</div>
+              <a onclick="abrirInventario()" style="font-size: 13px; color: var(--hyundai-blue); font-weight: 600; text-decoration: none; cursor: pointer;">Ver detalhes →</a>
             </div>
             <div class="card" style="margin-bottom:0;">
               <span style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">ITENS ZERADOS</span>
-              <div style="font-size: 32px; font-weight: 800; color: var(--hyundai-navy); margin: 8px 0;">8</div>
-              <a onclick="abrirInventario()" style="font-size: 13px; color: #0D66B2; font-weight: 600; text-decoration: none; cursor: pointer;">Ver detalhes →</a>
+              <div style="font-size: 32px; font-weight: 800; color: var(--hyundai-blue); margin: 8px 0;">8</div>
+              <a onclick="abrirInventario()" style="font-size: 13px; color: var(--hyundai-blue); font-weight: 600; text-decoration: none; cursor: pointer;">Ver detalhes →</a>
             </div>
           </div>
         </section>
 
         <section id="contagem" class="app-page">
           <div>
-            <h2 id="titulo" style="color: var(--hyundai-navy);"></h2>
+            <h2 id="titulo" style="color: var(--hyundai-blue);"></h2>
             <p style="color: var(--text-secondary); font-size: 14px;">Digite os valores da contagem física (Ex: 2+4+7)</p>
           </div>
 
@@ -567,7 +570,7 @@
 
         <section id="nota" class="app-page">
           <div>
-            <h2 style="color: var(--hyundai-navy);">Entrada de Notas Fiscais</h2>
+            <h2 style="color: var(--hyundai-blue);">Entrada de Notas Fiscais</h2>
             <p style="color: var(--text-secondary); font-size: 14px;">Informe os valores das notas para cruzamento</p>
           </div>
 
@@ -583,7 +586,7 @@
 
         <section id="resumo" class="app-page">
           <div>
-            <h2 style="color: var(--hyundai-navy);">Resumo da Conferência</h2>
+            <h2 style="color: var(--hyundai-blue);">Resumo da Conferência</h2>
             <p style="color: var(--text-secondary); font-size: 14px;">Validação e identificação de divergências</p>
           </div>
 
@@ -600,7 +603,7 @@
 
         <section id="inventario" class="app-page" style="display: block;">
           <div>
-            <h2 style="color: var(--hyundai-navy);">Inventário de Materiais</h2>
+            <h2 style="color: var(--hyundai-blue);">Inventário de Materiais</h2>
             <p style="color: var(--text-secondary); font-size: 14px;">Controle geral de materiais e suprimentos</p>
           </div>
 
@@ -617,12 +620,12 @@
 
         <section id="dashboard" class="app-page">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-            <h2 style="color: var(--hyundai-navy);">Painel Analítico</h2>
+            <h2 style="color: var(--hyundai-blue);">Painel Analítico</h2>
             <button class="btn btn-secondary" onclick="fecharDashboard()">Voltar</button>
           </div>
 
           <div class="card">
-            <h3 style="color: var(--hyundai-navy); margin-bottom: 16px;">Top 5 Divergências por Item</h3>
+            <h3 style="color: var(--hyundai-blue); margin-bottom: 16px;">Top 5 Divergências por Item</h3>
             <div style="height: 300px;">
               <canvas id="graficoTop5"></canvas>
             </div>
@@ -841,11 +844,11 @@
       dados.forEach(({ item, contagem, nota, diferenca }) => {
         const ehOk = contagem === nota;
         const statusText = ehOk ? "CONFERIDO" : "DIVERGÊNCIA";
-        const statusColor = ehOk ? "var(--hyundai-navy)" : "var(--status-danger)";
+        const statusColor = ehOk ? "var(--hyundai-blue)" : "var(--status-danger)";
 
         html += `
           <div class="card" style="border-left: 4px solid ${statusColor}; margin-bottom: 0;">
-            <h4 style="color: var(--hyundai-navy); font-size: 14px; margin-bottom: 8px;">${item}</h4>
+            <h4 style="color: var(--hyundai-blue); font-size: 14px; margin-bottom: 8px;">${item}</h4>
             <div style="font-weight: 700; color: ${statusColor}; font-size: 11px; margin-bottom: 10px;">${statusText}</div>
             <div style="font-size: 13px; color: var(--text-secondary);">
               <div>Contagem Física: <b>${contagem}</b></div>
@@ -910,7 +913,7 @@
     function renderizarCamposInventario() {
       let html = "";
       categoriasInventario.forEach((categoria, indiceCategoria) => {
-        html += `<h3 style="margin: 24px 0 12px 0; color: var(--hyundai-navy);">${categoria.categoria}</h3><div class="grid-cards">`;
+        html += `<h3 style="margin: 24px 0 12px 0; color: var(--hyundai-blue);">${categoria.categoria}</h3><div class="grid-cards">`;
         categoria.itens.forEach((item, indiceItem) => {
           const id = `${indiceCategoria}_${indiceItem}`;
           html += `
@@ -993,7 +996,7 @@
           datasets: [{
             label: "Divergências",
             data: [12, 8, 5, 4, 2],
-            backgroundColor: "#0D66B2",
+            backgroundColor: "#002C6C",
             borderRadius: 6
           }]
         },

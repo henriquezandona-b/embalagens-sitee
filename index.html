@@ -60,7 +60,6 @@
       transition: transform 0.3s ease;
     }
 
-    /* Classe para ocultar/recolher a sidebar */
     .sidebar.collapsed {
       transform: translateX(-100%);
     }
@@ -173,23 +172,22 @@
       transition: margin-left 0.3s ease;
     }
 
-    /* Classe para expandir o conteúdo quando a sidebar recolher */
     .main-wrapper.full-width {
       margin-left: 0;
     }
 
-    /* HEADER COM COR DESTACADA, BOTÃO HAMBÚRGUER, LOGO E SIGLA SGI */
+    /* HEADER LIMPO COM CONTEXTO DA APLICAÇÃO */
     .top-header {
       height: 75px;
       background: linear-gradient(90deg, #084C8A 0%, #0C60A8 100%);
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      padding: 0 40px;
+      justify-content: space-between;
+      padding: 0 32px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
-    .header-brand {
+    .header-left {
       display: flex;
       align-items: center;
       gap: 20px;
@@ -203,8 +201,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 6px;
-      border-radius: 6px;
+      padding: 8px;
+      border-radius: 8px;
       transition: background 0.2s;
     }
 
@@ -212,24 +210,45 @@
       background-color: rgba(255, 255, 255, 0.15);
     }
 
-    .header-logo {
-      height: 32px;
-      width: auto;
-      display: block;
-      filter: brightness(0) invert(1); /* Deixa a logo toda branca */
-    }
-
-    .brand-divider {
-      color: rgba(255, 255, 255, 0.4);
-      font-size: 22px;
-      font-weight: 300;
-    }
-
-    .brand-sigla {
+    .system-title-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
       color: #FFFFFF;
-      font-size: 22px;
+    }
+
+    .system-sigla-badge {
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 14px;
       font-weight: 800;
-      letter-spacing: 1.5px;
+      letter-spacing: 1px;
+    }
+
+    .system-full-name {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      opacity: 0.95;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: #FFFFFF;
+    }
+
+    .user-profile-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 6px 14px;
+      border-radius: 20px;
     }
 
     .content-area {
@@ -356,7 +375,7 @@
       background-color: #0D66B2;
       padding: 0 20px;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       color: #FFFFFF;
     }
 
@@ -416,14 +435,14 @@
   <!-- MOBILE HEADER -->
   <div class="mobile-header">
     <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg" alt="Hyundai Logo">
+    <span style="font-weight: 700; font-size: 14px;">SGI</span>
   </div>
 
   <div class="app-container">
 
-    <!-- SIDEBAR -->
+    <!-- SIDEBAR (Apenas com a marca corporativa) -->
     <aside class="sidebar">
       <div class="sidebar-brand">
-        <!-- Logo Hyundai em Branco na Sidebar -->
         <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg" alt="Hyundai Logo">
       </div>
 
@@ -470,19 +489,28 @@
 
     <div class="main-wrapper">
 
-      <!-- TOP HEADER COM BOTÃO HAMBÚRGUER, LOGO E SIGLA SGI -->
+      <!-- TOP HEADER COM TITULO DO SISTEMA EM VEZ DO LOGO REPETIDO -->
       <header class="top-header">
-        <div class="header-brand">
+        <div class="header-left">
           <button class="btn-toggle-menu" onclick="toggleSidebar()" title="Alternar Menu">
-            <svg viewBox="0 0 24 24" width="26" height="26" stroke="currentColor" stroke-width="2.5" fill="none">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5" fill="none">
               <line x1="3" y1="6" x2="21" y2="6"/>
               <line x1="3" y1="12" x2="21" y2="12"/>
               <line x1="3" y1="18" x2="21" y2="18"/>
             </svg>
           </button>
-          <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg" alt="Hyundai Logo" class="header-logo">
-          <span class="brand-divider">|</span>
-          <span class="brand-sigla">SGI</span>
+          
+          <div class="system-title-container">
+            <span class="system-sigla-badge">SGI</span>
+            <span class="system-full-name">Sistema de Gestão de Inventário</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="user-profile-badge">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Operação Hyundai</span>
+          </div>
         </div>
       </header>
 
@@ -624,7 +652,6 @@
     let telaAnterior = "inicio";
     let graficoTop5 = null;
 
-    // Função para alternar visibilidade da Sidebar
     function toggleSidebar() {
       const sidebar = document.querySelector('.sidebar');
       const mainWrapper = document.querySelector('.main-wrapper');

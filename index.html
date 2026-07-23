@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HYUNDAI - Sistema de Estoque & Inventário</title>
+  <title>HYUNDAI - SGI (Sistema de Gestão de Inventário)</title>
 
   <!-- LIBs Externas -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
@@ -57,6 +57,12 @@
       z-index: 100;
       padding: 24px 16px;
       box-shadow: 2px 0 12px rgba(0, 0, 0, 0.12);
+      transition: transform 0.3s ease;
+    }
+
+    /* Classe para ocultar/recolher a sidebar */
+    .sidebar.collapsed {
+      transform: translateX(-100%);
     }
 
     .sidebar-brand {
@@ -164,25 +170,67 @@
       display: flex;
       flex-direction: column;
       min-width: 0;
+      transition: margin-left 0.3s ease;
     }
 
-    /* HEADER COM COR DESTACADA E LOGO CENTRALIZADA */
+    /* Classe para expandir o conteúdo quando a sidebar recolher */
+    .main-wrapper.full-width {
+      margin-left: 0;
+    }
+
+    /* HEADER COM COR DESTACADA, BOTÃO HAMBÚRGUER, LOGO E SIGLA SGI */
     .top-header {
       height: 75px;
       background: linear-gradient(90deg, #084C8A 0%, #0C60A8 100%);
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       padding: 0 40px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
-   .header-logo {
-  height: 32px;
-  width: auto;
-  display: block;
-  filter: brightness(0) invert(1); /* Deixa a logo SVG perfeitamente branca */
-}
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .btn-toggle-menu {
+      background: transparent;
+      border: none;
+      color: #FFFFFF;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-toggle-menu:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .header-logo {
+      height: 32px;
+      width: auto;
+      display: block;
+      filter: brightness(0) invert(1); /* Deixa a logo toda branca */
+    }
+
+    .brand-divider {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 22px;
+      font-weight: 300;
+    }
+
+    .brand-sigla {
+      color: #FFFFFF;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
 
     .content-area {
       padding: 32px 40px;
@@ -422,9 +470,20 @@
 
     <div class="main-wrapper">
 
-      <!-- TOP HEADER APENAS COM A LOGO CENTRALIZADA -->
+      <!-- TOP HEADER COM BOTÃO HAMBÚRGUER, LOGO E SIGLA SGI -->
       <header class="top-header">
-       <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg" alt="Hyundai Logo" class="header-logo">
+        <div class="header-brand">
+          <button class="btn-toggle-menu" onclick="toggleSidebar()" title="Alternar Menu">
+            <svg viewBox="0 0 24 24" width="26" height="26" stroke="currentColor" stroke-width="2.5" fill="none">
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg" alt="Hyundai Logo" class="header-logo">
+          <span class="brand-divider">|</span>
+          <span class="brand-sigla">SGI</span>
+        </div>
       </header>
 
       <main class="content-area">
@@ -564,6 +623,15 @@
   <script>
     let telaAnterior = "inicio";
     let graficoTop5 = null;
+
+    // Função para alternar visibilidade da Sidebar
+    function toggleSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      const mainWrapper = document.querySelector('.main-wrapper');
+
+      sidebar.classList.toggle('collapsed');
+      mainWrapper.classList.toggle('full-width');
+    }
 
     const dias = {
       1: {

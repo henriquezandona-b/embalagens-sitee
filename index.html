@@ -69,7 +69,7 @@
     .sidebar-brand img {
       max-width: 150px;
       height: auto;
-      filter: brightness(0) invert(1); /* Torna o logo totalmente branco */
+      filter: brightness(0) invert(1);
     }
 
     .sidebar-menu {
@@ -166,66 +166,22 @@
       min-width: 0;
     }
 
-    /* HEADER COM A LOGO DA HYUNDAI E O TÍTULO DA PÁGINA */
+    /* HEADER COM COR DESTACADA E LOGO CENTRALIZADA */
     .top-header {
-      height: 70px;
-      background-color: #FFFFFF;
-      border-bottom: 1px solid var(--hyundai-card-border);
+      height: 75px;
+      background: linear-gradient(90deg, #084C8A 0%, #0C60A8 100%);
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       padding: 0 40px;
-    }
-
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 24px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
     .header-logo {
-      height: 28px;
+      height: 32px;
       width: auto;
       display: block;
-    }
-
-    .header-divider {
-      height: 24px;
-      width: 1px;
-      background-color: var(--hyundai-card-border);
-    }
-
-    .page-title-header {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
-    .btn-notificacao {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: transparent;
-      border: none;
-      color: var(--text-secondary);
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      padding: 8px 12px;
-      border-radius: 6px;
-    }
-
-    .btn-notificacao:hover {
-      background-color: var(--hyundai-gray-bg);
-      color: var(--text-primary);
-    }
-
-    .btn-notificacao svg {
-      width: 18px;
-      height: 18px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
+      filter: brightness(0) invert(1); /* Deixa a logo toda branca */
     }
 
     .content-area {
@@ -352,7 +308,7 @@
       background-color: #0D66B2;
       padding: 0 20px;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       color: #FFFFFF;
     }
 
@@ -419,7 +375,7 @@
     <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-brand">
-        <!-- Logo Hyundai Oficial em Branco na Sidebar -->
+        <!-- Logo Hyundai em Branco na Sidebar -->
         <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg" alt="Hyundai Logo">
       </div>
 
@@ -466,19 +422,9 @@
 
     <div class="main-wrapper">
 
-      <!-- TOP HEADER COM LOGO E TÍTULO -->
+      <!-- TOP HEADER APENAS COM A LOGO CENTRALIZADA -->
       <header class="top-header">
-        <div class="header-left">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg" alt="Hyundai Logo" class="header-logo">
-          <div class="header-divider"></div>
-          <div class="page-title-header" id="header-title">Inventário</div>
-        </div>
-        <div class="header-actions">
-          <button class="btn-notificacao">
-            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-            Notificações
-          </button>
-        </div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg" alt="Hyundai Logo" class="header-logo">
       </header>
 
       <main class="content-area">
@@ -721,15 +667,6 @@
       document.querySelectorAll(".sidebar-menu a").forEach(a => a.classList.remove("active"));
       const activeNav = document.getElementById("nav-" + idTela);
       if (activeNav) activeNav.classList.add("active");
-
-      const headerTitle = document.getElementById("header-title");
-      if (headerTitle) {
-        const titulos = {
-          inicio: "Dashboard", contagem: "Contagem de Embalagens", nota: "Notas Fiscais",
-          resumo: "Resumo da Conferência", inventario: "Inventário de Materiais", dashboard: "Relatórios & Analíticos"
-        };
-        headerTitle.innerText = titulos[idTela] || "Sistema Logístico";
-      }
 
       window.scrollTo({ top: 0, behavior: 'instant' });
     }

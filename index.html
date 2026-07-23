@@ -91,7 +91,7 @@
       text-decoration: none;
       font-size: 15px;
       font-weight: 500;
-      border-radius: 14px; /* Bordas bem ovais/arredondadas como no print */
+      border-radius: 14px; /* Bordas bem ovais/arredondadas */
       transition: all 0.2s ease;
       cursor: pointer;
     }
@@ -404,44 +404,41 @@
     <!-- SIDEBAR COM DESIGN OVAL E ÍCONES OUTLINE -->
     <aside class="sidebar">
       <div class="sidebar-brand">
-        <svg viewBox="0 0 500 60">
-          <path d="M 80 10 C 35 10, 0 22, 0 35 C 0 48, 35 60, 80 60 C 125 60, 160 48, 160 35 C 160 22, 125 10, 80 10 Z M 80 16 C 118 16, 148 24, 148 35 C 148 46, 118 54, 80 54 C 42 54, 12 46, 12 35 C 12 24, 42 16, 80 16 Z" fill="#FFFFFF"/>
-          <text x="180" y="45" font-family="-apple-system, sans-serif" font-weight="900" font-size="40" fill="#FFFFFF" letter-spacing="3">HYUNDAI</text>
-        </svg>
+        <img src="logo-hyundai.png" alt="Hyundai Logo" style="max-width: 150px; height: auto;">
       </div>
 
       <ul class="sidebar-menu">
         <li>
           <a onclick="navegarPara('inicio')" id="nav-inicio">
-            <!-- Icone Dashboard (Painel Outline) -->
+            <!-- Icone Dashboard -->
             <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
             <span>Dashboard</span>
           </a>
         </li>
         <li>
           <a onclick="abrirDia()" id="nav-embalagens">
-            <!-- Icone Embalagens (Laptop / Tela Outline como no seu print) -->
+            <!-- Icone Embalagens -->
             <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
             <span>Embalagens</span>
           </a>
         </li>
         <li>
           <a onclick="abrirInventario()" id="nav-inventario" class="active">
-            <!-- Icone Inventario (Prancheta Outline exatamente igual ao print) -->
+            <!-- Icone Inventario -->
             <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
             <span>Inventário</span>
           </a>
         </li>
         <li>
           <a onclick="abrirDashboard()" id="nav-dashboard">
-            <!-- Icone Relatórios (Gráfico de Linha Outline) -->
+            <!-- Icone Relatórios -->
             <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 9l-5 5-4-4-3 3"/></svg>
             <span>Relatórios</span>
           </a>
         </li>
         <li>
           <a onclick="baixarExcel()" id="nav-excel">
-            <!-- Icone Histórico (Relógio/Seta Outline) -->
+            <!-- Icone Histórico -->
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
             <span>Histórico</span>
           </a>
@@ -693,7 +690,7 @@
       let textoSaudacao = "Olá!";
       
       if (hora >= 5 && hora < 12) {
-        textoSaudacao = "Bom dia";
+        textoSaudacao = "Bom dia 👋";
       } else if (hora >= 12 && hora < 18) {
         textoSaudacao = "Boa tarde 👋";
       } else {
@@ -705,7 +702,6 @@
       const opcoesData = { day: 'numeric', month: 'long', year: 'numeric' };
       document.getElementById("data").innerHTML = diasNome[dia] + ", " + hoje.toLocaleDateString("pt-BR", opcoesData);
       
-      // Inicializar campos do inventário na abertura
       renderizarCamposInventario();
     });
 
@@ -925,44 +921,56 @@
       }
     }
 
-    async function baixarExcelInventario() {
-      try {
-        const resposta = await fetch("https://embalagens-api-rho.vercel.app/api/exportInventario");
-        const blob = await resposta.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "Inventario.xlsx";
-        a.click();
-      } catch (e) {
-        alert("Erro ao baixar planilha de inventário.");
-      }
-    }
-
-    async function abrirDashboard() {
-      telaAnterior = "inicio";
-      navegarPara("dashboard");
-
-      try {
-        const resposta = await fetch("https://embalagens-api-rho.vercel.app/api/dashboard");
-        const dados = await resposta.json();
-
-        if (graficoTop5) graficoTop5.destroy();
-        const ctx = document.getElementById("graficoTop5");
-        graficoTop5 = new Chart(ctx, {
-          type: "bar",
-          data: {
-            labels: dados.topItens.map(i => i.item),
-            datasets: [{ label: "Divergências", data: dados.topItens.map(i => i.total), backgroundColor: "#1B64DA" }]
-          },
-          options: { responsive: true, maintainAspectRatio: false }
+    function baixarExcelInventario() {
+      const inventario = [];
+      categoriasInventario.forEach((categoria, indiceCategoria) => {
+        categoria.itens.forEach((item, indiceItem) => {
+          const id = `${indiceCategoria}_${indiceItem}`;
+          inventario.push({
+            Categoria: categoria.categoria,
+            Item: item,
+            Quantidade: soma(document.getElementById("inv_" + id)?.value || "0")
+          });
         });
-      } catch (e) {
-        console.error("Erro ao carregar dashboard", e);
-      }
+      });
+
+      const ws = XLSX.utils.json_to_sheet(inventario);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Inventário");
+      XLSX.writeFile(wb, "Inventario_Materiais.xlsx");
     }
 
-    function fecharDashboard() { navegarPara(telaAnterior); }
+    function abrirDashboard() {
+      navegarPara("dashboard");
+      
+      const ctx = document.getElementById("graficoTop5").getContext("2d");
+      if (graficoTop5) graficoTop5.destroy();
+
+      graficoTop5 = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: ["Item A", "Item B", "Item C", "Item D", "Item E"],
+          datasets: [{
+            label: "Divergências",
+            data: [12, 8, 5, 4, 2],
+            backgroundColor: "#1B64DA",
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+    }
+
+    function fecharDashboard() { navegarPara("inicio"); }
   </script>
 </body>
 </html>

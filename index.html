@@ -91,7 +91,7 @@
     .sidebar-menu li a {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
       padding: 14px 20px;
       color: rgba(255, 255, 255, 0.85);
       text-decoration: none;
@@ -127,6 +127,62 @@
 
     .sidebar-menu li a.active svg {
       stroke: #002C6C;
+    }
+
+    /* ESTILOS DO SUBMENU DROPDOWN EXPORTAR EXCEL */
+    .dropdown {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dropdown-arrow {
+      margin-left: auto;
+      width: 16px !important;
+      height: 16px !important;
+      transition: transform 0.3s ease;
+    }
+
+    .dropdown.open .dropdown-arrow {
+      transform: rotate(180deg);
+    }
+
+    .submenu {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 6px;
+      padding-left: 12px;
+      list-style: none;
+    }
+
+    .dropdown.open .submenu {
+      display: flex;
+    }
+
+    .submenu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 13.5px;
+      font-weight: 500;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .submenu-item:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
+    }
+
+    .submenu-item svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
     }
 
     .sidebar-footer {
@@ -409,6 +465,7 @@
       color: rgba(255, 255, 255, 0.7);
       text-decoration: none;
       font-size: 11px;
+      cursor: pointer;
     }
 
     .mobile-bottom-nav a.active {
@@ -474,11 +531,26 @@
             <span>Relatórios</span>
           </a>
         </li>
-        <li>
-          <a onclick="baixarExcel()" id="nav-excel">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
-            <span>Histórico</span>
+
+        <!-- DROPDOWN DE EXPORTAR EXCEL COM SUB-ABA PARA BAIXO -->
+        <li class="dropdown" id="dropdown-excel">
+          <a onclick="toggleDropdownExcel()" id="nav-excel">
+            <!-- Ícone de Tabela / Planilha Excel -->
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span>Exportar Excel</span>
+            <svg class="dropdown-arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
           </a>
+          
+          <ul class="submenu">
+            <li class="submenu-item" onclick="solicitarExportacao('embalagens')">
+              <svg viewBox="0 0 24 24"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              <span>Embalagens</span>
+            </li>
+            <li class="submenu-item" onclick="solicitarExportacao('inventario')">
+              <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+              <span>Inventário</span>
+            </li>
+          </ul>
         </li>
       </ul>
 
@@ -594,7 +666,7 @@
 
           <div class="page-footer-actions">
             <button class="btn btn-secondary" onclick="voltarContagem()">Voltar</button>
-            <button class="btn btn-secondary" onclick="baixarExcel()">Gerar Excel</button>
+            <button class="btn btn-secondary" onclick="solicitarExportacao('embalagens')">Gerar Excel</button>
             <button class="btn btn-primary" id="btnFinalizar" onclick="finalizarDia()">
               FINALIZAR DIA
             </button>
@@ -611,7 +683,7 @@
 
           <div class="page-footer-actions">
             <button class="btn btn-secondary" onclick="voltarInicioInventario()">Voltar</button>
-            <button class="btn btn-secondary" onclick="baixarExcelInventario()">Baixar Excel</button>
+            <button class="btn btn-secondary" onclick="solicitarExportacao('inventario')">Baixar Excel</button>
             <button class="btn btn-accent" onclick="finalizarInventario()">
               SALVAR INVENTÁRIO
             </button>
@@ -636,6 +708,7 @@
     </div>
   </div>
 
+  <!-- MOBILE BOTTOM NAV -->
   <div class="mobile-bottom-nav">
     <a onclick="navegarPara('inicio')">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
@@ -649,6 +722,10 @@
       <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
       Inventário
     </a>
+    <a onclick="solicitarExportacao('embalagens')">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+      Excel
+    </a>
   </div>
 
   <script>
@@ -661,6 +738,26 @@
 
       sidebar.classList.toggle('collapsed');
       mainWrapper.classList.toggle('full-width');
+    }
+
+    /* CONTROLE DO DROPDOWN EXPORTAR EXCEL */
+    function toggleDropdownExcel() {
+      const dropdown = document.getElementById("dropdown-excel");
+      dropdown.classList.toggle("open");
+    }
+
+    /* MENSAGEM DE CONFIRMAÇÃO DE EXPORTAÇÃO */
+    function solicitarExportacao(tipo) {
+      const nomeRelatorio = tipo === 'embalagens' ? 'Embalagens' : 'Inventário';
+      const confirmou = confirm(`Deseja exportar a planilha de ${nomeRelatorio} para Excel?`);
+      
+      if (confirmou) {
+        if (tipo === 'embalagens') {
+          baixarExcel();
+        } else if (tipo === 'inventario') {
+          baixarExcelInventario();
+        }
+      }
     }
 
     const dias = {

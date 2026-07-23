@@ -181,7 +181,7 @@
   height: 32px;
   width: auto;
   display: block;
-  mix-blend-mode: multiply; /* <-- Remove o fundo branco e mantém o logo */
+  filter: brightness(0) invert(1); /* Deixa a logo SVG perfeitamente branca */
 }
 
     .content-area {
@@ -424,7 +424,7 @@
 
       <!-- TOP HEADER APENAS COM A LOGO CENTRALIZADA -->
       <header class="top-header">
-       <img src="logo-hyundai.png" alt="Hyundai Logo" class="header-logo">
+       <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg" alt="Hyundai Logo" class="header-logo">
       </header>
 
       <main class="content-area">

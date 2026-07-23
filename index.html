@@ -11,9 +11,9 @@
 
   <style>
     :root {
-      --hyundai-navy: #001E3D;
-      --hyundai-blue: #002C5F;
-      --hyundai-active-blue: #1B64DA; /* Azul brilhante do botão ativo */
+      --hyundai-navy: #0C60A8;
+      --hyundai-blue: #033C73;
+      --hyundai-active-blue: rgba(255, 255, 255, 0.2);
       --hyundai-gray-bg: #F4F6F9;
       --hyundai-card-border: #E2E8F0;
       --text-primary: #1E293B;
@@ -43,12 +43,10 @@
       min-height: 100vh;
     }
 
-    /* ==========================================================================
-       SIDEBAR COM SELEÇÃO OVAL
-       ========================================================================== */
+    /* SIDEBAR COM AZUL VIBRANTE DA FOTO */
     .sidebar {
       width: var(--sidebar-width);
-      background-color: var(--hyundai-navy);
+      background: linear-gradient(180deg, #0D66B2 0%, #084C8A 50%, #033261 100%);
       color: #FFFFFF;
       display: flex;
       flex-direction: column;
@@ -58,22 +56,22 @@
       left: 0;
       z-index: 100;
       padding: 24px 16px;
+      box-shadow: 2px 0 12px rgba(0, 0, 0, 0.12);
     }
 
-    /* Brand Header */
     .sidebar-brand {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 4px 12px 32px 12px;
+      justify-content: center;
+      padding: 10px 12px 28px 12px;
     }
 
-    .sidebar-brand svg {
-      height: 20px;
-      fill: #FFFFFF;
+    .sidebar-brand img {
+      max-width: 160px;
+      height: auto;
+      filter: brightness(0) invert(1); /* Deixa a imagem totalmente branca */
     }
 
-    /* Lista de Menu com Botões Ovais */
     .sidebar-menu {
       list-style: none;
       display: flex;
@@ -87,16 +85,15 @@
       align-items: center;
       gap: 16px;
       padding: 14px 20px;
-      color: #94A3B8;
+      color: rgba(255, 255, 255, 0.85);
       text-decoration: none;
       font-size: 15px;
       font-weight: 500;
-      border-radius: 14px; /* Bordas bem ovais/arredondadas */
+      border-radius: 14px;
       transition: all 0.2s ease;
       cursor: pointer;
     }
 
-    /* Estilo dos Ícones Vazados (Outline) */
     .sidebar-menu li a svg {
       width: 22px;
       height: 22px;
@@ -110,22 +107,20 @@
 
     .sidebar-menu li a:hover {
       color: #FFFFFF;
-      background-color: rgba(255, 255, 255, 0.06);
+      background-color: rgba(255, 255, 255, 0.15);
     }
 
-    /* ESTADO ATIVO: Fundo Azul Bright + Texto Branco + Arredondado Oval */
     .sidebar-menu li a.active {
-      background-color: var(--hyundai-active-blue);
-      color: #FFFFFF;
-      font-weight: 600;
-      box-shadow: 0 4px 12px rgba(27, 100, 218, 0.3);
+      background-color: #FFFFFF;
+      color: #084C8A;
+      font-weight: 700;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
     }
 
     .sidebar-menu li a.active svg {
-      stroke: #FFFFFF;
+      stroke: #084C8A;
     }
 
-    /* Botão Sair no Rodapé */
     .sidebar-footer {
       margin-top: auto;
       padding-top: 16px;
@@ -136,7 +131,7 @@
       align-items: center;
       gap: 16px;
       padding: 14px 20px;
-      color: #94A3B8;
+      color: rgba(255, 255, 255, 0.85);
       text-decoration: none;
       font-size: 15px;
       font-weight: 500;
@@ -150,7 +145,7 @@
 
     .btn-sair:hover {
       color: #FFFFFF;
-      background-color: rgba(255, 255, 255, 0.06);
+      background-color: rgba(255, 255, 255, 0.15);
     }
 
     .btn-sair svg {
@@ -163,9 +158,6 @@
       stroke-linejoin: round;
     }
 
-    /* ==========================================================================
-       MAIN CONTENT
-       ========================================================================== */
     .main-wrapper {
       margin-left: var(--sidebar-width);
       flex: 1;
@@ -257,16 +249,16 @@
     }
 
     .btn-primary:hover {
-      background-color: #001226;
+      background-color: #084C8A;
     }
 
     .btn-accent {
-      background-color: var(--hyundai-active-blue);
+      background-color: #0D66B2;
       color: #FFFFFF;
     }
 
     .btn-accent:hover {
-      background-color: #1552B5;
+      background-color: #084C8A;
     }
 
     .btn-secondary {
@@ -335,11 +327,10 @@
       gap: 12px;
     }
 
-    /* MOBILE NAV */
     .mobile-header {
       display: none;
       height: 60px;
-      background-color: var(--hyundai-navy);
+      background-color: #0D66B2;
       padding: 0 20px;
       align-items: center;
       justify-content: space-between;
@@ -353,7 +344,7 @@
       left: 0;
       right: 0;
       height: 65px;
-      background-color: var(--hyundai-navy);
+      background-color: #084C8A;
       z-index: 200;
       justify-content: space-around;
       align-items: center;
@@ -365,7 +356,7 @@
       flex-direction: column;
       align-items: center;
       gap: 4px;
-      color: #94A3B8;
+      color: rgba(255, 255, 255, 0.7);
       text-decoration: none;
       font-size: 11px;
     }
@@ -394,51 +385,45 @@
 </head>
 <body>
 
-  <!-- MOBILE HEADER -->
   <div class="mobile-header">
     <span style="font-size: 18px; font-weight: bold; letter-spacing: 1px;">HYUNDAI</span>
   </div>
 
   <div class="app-container">
 
-    <!-- SIDEBAR COM DESIGN OVAL E ÍCONES OUTLINE -->
     <aside class="sidebar">
       <div class="sidebar-brand">
-        <img src="logo-hyundai.png" alt="Hyundai Logo" style="max-width: 150px; height: auto;">
+        <!-- Logo Hyundai Oficial Puxado por Imagem -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg" alt="Hyundai Logo">
       </div>
 
       <ul class="sidebar-menu">
         <li>
           <a onclick="navegarPara('inicio')" id="nav-inicio">
-            <!-- Icone Dashboard -->
             <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
             <span>Dashboard</span>
           </a>
         </li>
         <li>
           <a onclick="abrirDia()" id="nav-embalagens">
-            <!-- Icone Embalagens -->
             <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
             <span>Embalagens</span>
           </a>
         </li>
         <li>
           <a onclick="abrirInventario()" id="nav-inventario" class="active">
-            <!-- Icone Inventario -->
             <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
             <span>Inventário</span>
           </a>
         </li>
         <li>
           <a onclick="abrirDashboard()" id="nav-dashboard">
-            <!-- Icone Relatórios -->
             <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 9l-5 5-4-4-3 3"/></svg>
             <span>Relatórios</span>
           </a>
         </li>
         <li>
           <a onclick="baixarExcel()" id="nav-excel">
-            <!-- Icone Histórico -->
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
             <span>Histórico</span>
           </a>
@@ -453,7 +438,6 @@
       </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <div class="main-wrapper">
 
       <header class="top-header">
@@ -468,7 +452,6 @@
 
       <main class="content-area">
 
-        <!-- TELA 1: INÍCIO -->
         <section id="inicio" class="app-page">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
             <div>
@@ -483,27 +466,26 @@
             <div class="card" style="margin-bottom:0;">
               <span style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">EMBALAGENS</span>
               <div style="font-size: 32px; font-weight: 800; color: var(--hyundai-navy); margin: 8px 0;">1.248</div>
-              <a onclick="abrirDia()" style="font-size: 13px; color: var(--hyundai-active-blue); font-weight: 600; text-decoration: none; cursor: pointer;">Ver detalhes →</a>
+              <a onclick="abrirDia()" style="font-size: 13px; color: #0D66B2; font-weight: 600; text-decoration: none; cursor: pointer;">Ver detalhes →</a>
             </div>
             <div class="card" style="margin-bottom:0;">
               <span style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">INVENTÁRIO</span>
               <div style="font-size: 32px; font-weight: 800; color: var(--hyundai-navy); margin: 8px 0;">50</div>
-              <a onclick="abrirInventario()" style="font-size: 13px; color: var(--hyundai-active-blue); font-weight: 600; text-decoration: none; cursor: pointer;">Ver detalhes →</a>
+              <a onclick="abrirInventario()" style="font-size: 13px; color: #0D66B2; font-weight: 600; text-decoration: none; cursor: pointer;">Ver detalhes →</a>
             </div>
             <div class="card" style="margin-bottom:0;">
               <span style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">CATEGORIAS</span>
               <div style="font-size: 32px; font-weight: 800; color: var(--hyundai-navy); margin: 8px 0;">5</div>
-              <a onclick="abrirInventario()" style="font-size: 13px; color: var(--hyundai-active-blue); font-weight: 600; text-decoration: none; cursor: pointer;">Ver detalhes →</a>
+              <a onclick="abrirInventario()" style="font-size: 13px; color: #0D66B2; font-weight: 600; text-decoration: none; cursor: pointer;">Ver detalhes →</a>
             </div>
             <div class="card" style="margin-bottom:0;">
               <span style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">ITENS ZERADOS</span>
               <div style="font-size: 32px; font-weight: 800; color: var(--hyundai-navy); margin: 8px 0;">8</div>
-              <a onclick="abrirInventario()" style="font-size: 13px; color: var(--hyundai-active-blue); font-weight: 600; text-decoration: none; cursor: pointer;">Ver detalhes →</a>
+              <a onclick="abrirInventario()" style="font-size: 13px; color: #0D66B2; font-weight: 600; text-decoration: none; cursor: pointer;">Ver detalhes →</a>
             </div>
           </div>
         </section>
 
-        <!-- TELA 2: CONTAGEM DE EMBALAGENS -->
         <section id="contagem" class="app-page">
           <div>
             <h2 id="titulo" style="color: var(--hyundai-navy);"></h2>
@@ -519,7 +501,6 @@
           </div>
         </section>
 
-        <!-- TELA 3: NOTAS -->
         <section id="nota" class="app-page">
           <div>
             <h2 style="color: var(--hyundai-navy);">Entrada de Notas Fiscais</h2>
@@ -536,7 +517,6 @@
           </div>
         </section>
 
-        <!-- TELA 4: RESUMO -->
         <section id="resumo" class="app-page">
           <div>
             <h2 style="color: var(--hyundai-navy);">Resumo da Conferência</h2>
@@ -554,7 +534,6 @@
           </div>
         </section>
 
-        <!-- TELA 5: INVENTÁRIO (TELA ATIVA INICIALMENTE) -->
         <section id="inventario" class="app-page" style="display: block;">
           <div>
             <h2 style="color: var(--hyundai-navy);">Inventário de Materiais</h2>
@@ -572,7 +551,6 @@
           </div>
         </section>
 
-        <!-- TELA 6: RELATÓRIOS/DASHBOARD -->
         <section id="dashboard" class="app-page">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
             <h2 style="color: var(--hyundai-navy);">Painel Analítico</h2>
@@ -591,7 +569,6 @@
     </div>
   </div>
 
-  <!-- BOTTOM BAR MOBILE -->
   <div class="mobile-bottom-nav">
     <a onclick="navegarPara('inicio')">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
@@ -953,7 +930,7 @@
           datasets: [{
             label: "Divergências",
             data: [12, 8, 5, 4, 2],
-            backgroundColor: "#1B64DA",
+            backgroundColor: "#0D66B2",
             borderRadius: 6
           }]
         },

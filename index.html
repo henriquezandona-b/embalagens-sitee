@@ -43,7 +43,7 @@
       min-height: 100vh;
     }
 
-    /* SIDEBAR COM AZUL VIBRANTE DA FOTO */
+    /* SIDEBAR APENAS COM A LOGO BRANCA */
     .sidebar {
       width: var(--sidebar-width);
       background: linear-gradient(180deg, #0D66B2 0%, #084C8A 50%, #033261 100%);
@@ -63,13 +63,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 10px 12px 28px 12px;
+      padding: 10px 12px 32px 12px;
     }
 
     .sidebar-brand img {
-      max-width: 160px;
+      max-width: 150px;
       height: auto;
-      filter: brightness(0) invert(1); /* Deixa a imagem totalmente branca */
+      filter: brightness(0) invert(1); /* Torna o logo totalmente branco */
     }
 
     .sidebar-menu {
@@ -166,6 +166,7 @@
       min-width: 0;
     }
 
+    /* HEADER COM A LOGO DA HYUNDAI E O TÍTULO DA PÁGINA */
     .top-header {
       height: 70px;
       background-color: #FFFFFF;
@@ -176,8 +177,26 @@
       padding: 0 40px;
     }
 
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .header-logo {
+      height: 28px;
+      width: auto;
+      display: block;
+    }
+
+    .header-divider {
+      height: 24px;
+      width: 1px;
+      background-color: var(--hyundai-card-border);
+    }
+
     .page-title-header {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
       color: var(--text-primary);
     }
@@ -337,6 +356,11 @@
       color: #FFFFFF;
     }
 
+    .mobile-header img {
+      height: 22px;
+      filter: brightness(0) invert(1);
+    }
+
     .mobile-bottom-nav {
       display: none;
       position: fixed;
@@ -385,15 +409,17 @@
 </head>
 <body>
 
+  <!-- MOBILE HEADER -->
   <div class="mobile-header">
-    <span style="font-size: 18px; font-weight: bold; letter-spacing: 1px;">HYUNDAI</span>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg" alt="Hyundai Logo">
   </div>
 
   <div class="app-container">
 
+    <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-brand">
-        <!-- Logo Hyundai Oficial Puxado por Imagem -->
+        <!-- Logo Hyundai Oficial em Branco na Sidebar -->
         <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg" alt="Hyundai Logo">
       </div>
 
@@ -440,8 +466,13 @@
 
     <div class="main-wrapper">
 
+      <!-- TOP HEADER COM LOGO E TÍTULO -->
       <header class="top-header">
-        <div class="page-title-header" id="header-title">Inventário</div>
+        <div class="header-left">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg" alt="Hyundai Logo" class="header-logo">
+          <div class="header-divider"></div>
+          <div class="page-title-header" id="header-title">Inventário</div>
+        </div>
         <div class="header-actions">
           <button class="btn-notificacao">
             <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>

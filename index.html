@@ -8,10 +8,10 @@
   <!-- LIBs Externas -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <style>
     :root {
+      /* COR OFICIAL HYUNDAI (Hyundai Blue: #002C6C) */
       --hyundai-navy: #002C6C;
       --hyundai-blue: #002C6C;
       --hyundai-accent: #00AAD2;
@@ -22,7 +22,6 @@
       --text-secondary: #64748B;
       --status-danger: #DC2626;
       --status-success: #16A34A;
-      --status-warning: #D97706;
       
       --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       --sidebar-width: 250px;
@@ -331,26 +330,6 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
 
-    /* BADGES DE STATUS */
-    .badge-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-    .badge-pending {
-      background-color: #FEF3C7;
-      color: #D97706;
-    }
-    .badge-done {
-      background-color: #DCFCE7;
-      color: #16A34A;
-    }
-
     /* ESTILOS DAS AÇÕES RÁPIDAS (BOTOES INICIAL) */
     .actions-grid {
       display: grid;
@@ -596,75 +575,6 @@
       stroke-width: 2;
     }
 
-    /* MODAL DE SELEÇÃO E NAVEGAÇÃO */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; 
-      width: 100%; height: 100%;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(4px);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
-
-    .modal-card {
-      background: #FFFFFF;
-      width: 90%;
-      max-width: 500px;
-      border-radius: 16px;
-      padding: 32px;
-      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-
-    .selection-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 20px;
-    }
-
-    .option-card {
-      border: 2px solid var(--hyundai-card-border);
-      border-radius: 12px;
-      padding: 24px 16px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      background: #FAFAFA;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .option-card:hover {
-      border-color: var(--hyundai-blue);
-      background: #F0F6FF;
-      transform: translateY(-2px);
-    }
-
-    .view-section { display: none; }
-    .view-section.active { display: block; }
-
-    /* ESTOQUE CRÍTICO LIST */
-    .alert-list {
-      list-style: none;
-      margin-top: 10px;
-    }
-    .alert-list li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 0;
-      border-bottom: 1px dashed var(--hyundai-card-border);
-      font-size: 13px;
-    }
-    .alert-list li:last-child {
-      border-bottom: none;
-    }
-
     @media (max-width: 900px) {
       .sidebar { display: none; }
       .main-wrapper { margin-left: 0; }
@@ -696,7 +606,7 @@
         <li>
           <a onclick="navegarPara('inicio')" id="nav-inicio" class="active">
             <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
-            <span>Início</span>
+            <span>Dashboard</span>
           </a>
         </li>
         <li>
@@ -711,25 +621,11 @@
             <span>Inventário</span>
           </a>
         </li>
-
-        <!-- RELATÓRIOS SUBMENU DROPDOWN -->
-        <li class="dropdown" id="dropdown-relatorios">
-          <a onclick="toggleDropdownRelatorios()" id="nav-relatorios">
+        <li>
+          <a onclick="abrirDashboard()" id="nav-dashboard">
             <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 9l-5 5-4-4-3 3"/></svg>
             <span>Relatórios</span>
-            <svg class="dropdown-arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
           </a>
-          
-          <ul class="submenu">
-            <li class="submenu-item" onclick="abrirDashboard('embalagens')">
-              <svg viewBox="0 0 24 24"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-              <span>Embalagens</span>
-            </li>
-            <li class="submenu-item" onclick="abrirDashboard('inventario')">
-              <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
-              <span>Inventário</span>
-            </li>
-          </ul>
         </li>
 
         <!-- EXPORTAR EXCEL SUBMENU DROPDOWN -->
@@ -742,7 +638,7 @@
           
           <ul class="submenu">
             <li class="submenu-item" onclick="solicitarExportacao('embalagens')">
-              <svg viewBox="0 0 24 24"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              <svg viewBox="0 0 24 24"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
               <span>Embalagens</span>
             </li>
             <li class="submenu-item" onclick="solicitarExportacao('inventario')">
@@ -781,9 +677,6 @@
         </div>
 
         <div class="header-right">
-          <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px; color: #fff; background: rgba(255,255,255,0.15); border: none;" onclick="openSelector()">
-            <i class="ph ph-arrows-down-up" style="margin-right: 6px;"></i> Alternar Módulo
-          </button>
           <div class="user-profile-badge">
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             <span>Operação Hyundai</span>
@@ -793,7 +686,7 @@
 
       <main class="content-area">
 
-        <!-- TELA INICIAL / DASHBOARD GENERAL -->
+        <!-- TELA INICIAL / DASHBOARD -->
         <section id="inicio" class="app-page" style="display: block;">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
             <div>
@@ -804,99 +697,62 @@
             </div>
           </div>
 
-          <!-- CARDS DE KPIS E INFORMAÇÕES RELEVANTES -->
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 32px;">
-            
-            <!-- STATUS DA CONTAGEM -->
+          <!-- CARDS DE RESUMO LOGÍSTICO -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px;">
             <div class="card" style="margin-bottom:0;">
-              <span style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">CONTAGEM DE HOJE</span>
-              <div style="margin: 12px 0;">
-                <span class="badge-status badge-pending" id="statusContagemBadge">
-                  <i class="ph ph-clock"></i> PENDENTE
-                </span>
-              </div>
-              <a onclick="abrirDia()" style="font-size: 13px; color: var(--hyundai-blue); font-weight: 600; text-decoration: none; cursor: pointer;">Iniciar contagem →</a>
+              <span style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">EMBALAGENS HOJE</span>
+              <div style="font-size: 32px; font-weight: 800; color: var(--hyundai-blue); margin: 8px 0;">1.248</div>
+              <a onclick="abrirDia()" style="font-size: 13px; color: var(--hyundai-blue); font-weight: 600; text-decoration: none; cursor: pointer;">Ver detalhes →</a>
             </div>
-
-            <!-- KPI DIVERGÊNCIAS CRÍTICAS -->
+            <div class="card" style="margin-bottom:0;">
+              <span style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">INVENTÁRIO TOTAL</span>
+              <div style="font-size: 32px; font-weight: 800; color: var(--hyundai-blue); margin: 8px 0;">50</div>
+              <a onclick="abrirInventario()" style="font-size: 13px; color: var(--hyundai-blue); font-weight: 600; text-decoration: none; cursor: pointer;">Ver detalhes →</a>
+            </div>
             <div class="card" style="margin-bottom:0;">
               <span style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">DIVERGÊNCIAS (SEMANA)</span>
-              <div style="font-size: 32px; font-weight: 800; color: var(--status-danger); margin: 4px 0;">3 itens</div>
-              <a onclick="abrirDashboard('embalagens')" style="font-size: 13px; color: var(--status-danger); font-weight: 600; text-decoration: none; cursor: pointer;">Ver fornecedores →</a>
+              <div style="font-size: 32px; font-weight: 800; color: var(--status-danger); margin: 8px 0;">3</div>
+              <a onclick="abrirDashboard()" style="font-size: 13px; color: var(--status-danger); font-weight: 600; text-decoration: none; cursor: pointer;">Analisar gráfico →</a>
             </div>
-
-            <!-- ALERTAS DE ESTOQUE BAIXO (PONTO DE PEDIDO) -->
             <div class="card" style="margin-bottom:0;">
-              <span style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">ALERTA DE RECOMPRA (PONTO DE PEDIDO)</span>
-              <ul class="alert-list">
-                <li><span>Fita Amarela Fina</span> <strong style="color: var(--status-danger);">3 un (mín. 10)</strong></li>
-                <li><span>Etiqueta 100x40 Amarela</span> <strong style="color: var(--status-warning);">8 un (mín. 10)</strong></li>
-              </ul>
+              <span style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">ITENS EM ALERTA</span>
+              <div style="font-size: 32px; font-weight: 800; color: #D97706; margin: 8px 0;">2</div>
+              <a onclick="abrirInventario()" style="font-size: 13px; color: #D97706; font-weight: 600; text-decoration: none; cursor: pointer;">Repor estoque →</a>
+            </div>
+          </div>
+
+          <!-- GRÁFICOS SOLICITADOS NA IMAGEM -->
+          <div class="charts-grid">
+            
+            <!-- Gráfico 1: Embalagens por Tipo -->
+            <div class="chart-card">
+              <div class="chart-card-header">
+                <h3>Embalagens por tipo</h3>
+                <p>Quantidade total</p>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="chartEmbalagensTipo"></canvas>
+              </div>
             </div>
 
-            <!-- ACURACIDADE GLOBAL DA OPERAÇÃO -->
-            <div class="card" style="margin-bottom:0;">
-              <span style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">ACURACIDADE LOGÍSTICA</span>
-              <div style="font-size: 32px; font-weight: 800; color: var(--status-success); margin: 4px 0;">98.2%</div>
-              <span style="font-size: 12px; color: var(--text-secondary);">Meta: 98.0%</span>
+            <!-- Gráfico 2: Inventário por Categoria -->
+            <div class="chart-card">
+              <div class="chart-card-header">
+                <h3>Inventário por categoria</h3>
+                <p>Quantidade total</p>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="chartInventarioCategoria"></canvas>
+              </div>
             </div>
 
           </div>
 
-          <!-- MÓDULO 1: GRÁFICOS DE EMBALAGENS NA TELA INICIAL -->
-          <div id="viewEmbalagens" class="view-section active">
-            <div class="charts-grid">
-              <div class="chart-card">
-                <div class="chart-card-header">
-                  <h3>Embalagens por tipo</h3>
-                  <p>Quantidade total em estoque físico</p>
-                </div>
-                <div class="chart-wrapper">
-                  <canvas id="chartEmbalagensTipo"></canvas>
-                </div>
-              </div>
-
-              <div class="chart-card">
-                <div class="chart-card-header">
-                  <h3>Evolução Semanal de Acuracidade / Avarias</h3>
-                  <p>Índice de precisão física vs Nota Fiscal (%)</p>
-                </div>
-                <div class="chart-wrapper">
-                  <canvas id="chartEvolucaoAcuracidade"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- MÓDULO 2: GRÁFICOS DE INVENTÁRIO NA TELA INICIAL -->
-          <div id="viewInventario" class="view-section">
-            <div class="charts-grid">
-              <div class="chart-card">
-                <div class="chart-card-header">
-                  <h3>Saldo Atual por Item / Insumo</h3>
-                  <p>Comparativo entre Estoque Atual x Mínimo Exigido</p>
-                </div>
-                <div class="chart-wrapper">
-                  <canvas id="chartInventarioItens"></canvas>
-                </div>
-              </div>
-
-              <div class="chart-card">
-                <div class="chart-card-header">
-                  <h3>Inventário por Categoria</h3>
-                  <p>Distribuição percentual de suprimentos</p>
-                </div>
-                <div class="chart-wrapper">
-                  <canvas id="chartInventarioCategoria"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- AÇÕES RÁPIDAS -->
+          <!-- AÇÕES RÁPIDAS (IMAGE BOTTOM SECTION) -->
           <div style="margin-bottom: 24px;">
             <h2 style="font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px;">Ações rápidas</h2>
             <div class="actions-grid">
+              
               <div class="action-card action-card-dark" onclick="abrirDia()">
                 <div class="action-card-info">
                   <h3>Contagem de Embalagens</h3>
@@ -908,23 +764,24 @@
               <div class="action-card action-card-blue" onclick="abrirInventario()">
                 <div class="action-card-info">
                   <h3>Inventário</h3>
-                  <p>Gerenciar suprimentos e materiais</p>
+                  <p>Gerenciar itens</p>
                 </div>
                 <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
               </div>
 
-              <div class="action-card action-card-gray" onclick="toggleDropdownRelatorios()">
+              <div class="action-card action-card-gray" onclick="toggleDropdownExcel()">
                 <div class="action-card-info">
-                  <h3>Painel de Relatórios</h3>
-                  <p>Consultar métricas e gráficos</p>
+                  <h3>Gerar Relatório</h3>
+                  <p>Exportar dados</p>
                 </div>
-                <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 9l-5 5-4-4-3 3"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
               </div>
+
             </div>
           </div>
         </section>
 
-        <!-- TELA DE CONTAGEM DIÁRIA DE EMBALAGENS -->
+        <!-- TELA DE CONTAGEM DIÁRIA -->
         <section id="contagem" class="app-page">
           <div>
             <h2 id="titulo" style="color: var(--hyundai-blue);"></h2>
@@ -934,7 +791,9 @@
           <div class="grid-cards" id="campos"></div>
 
           <div class="page-footer-actions">
-            <button class="btn btn-accent" onclick="abrirNota()">NOTAS FISCAIS</button>
+            <button class="btn btn-accent" onclick="abrirNota()">
+              NOTAS FISCAIS 
+            </button>
           </div>
         </section>
 
@@ -949,11 +808,13 @@
 
           <div class="page-footer-actions">
             <button class="btn btn-secondary" onclick="voltarContagem()">Voltar</button>
-            <button class="btn btn-accent" onclick="mostrarResumo()">CONFERIR RESULTADO</button>
+            <button class="btn btn-accent" onclick="mostrarResumo()">
+              CONFERIR RESULTADO 
+            </button>
           </div>
         </section>
 
-        <!-- TELA DE RESUMO DE EMBALAGENS -->
+        <!-- TELA DE RESUMO -->
         <section id="resumo" class="app-page">
           <div>
             <h2 style="color: var(--hyundai-blue);">Resumo da Conferência</h2>
@@ -965,108 +826,46 @@
           <div class="page-footer-actions">
             <button class="btn btn-secondary" onclick="voltarContagem()">Voltar</button>
             <button class="btn btn-secondary" onclick="solicitarExportacao('embalagens')">Gerar Excel</button>
-            <button class="btn btn-primary" id="btnFinalizar" onclick="finalizarDia()">FINALIZAR DIA</button>
+            <button class="btn btn-primary" id="btnFinalizar" onclick="finalizarDia()">
+              FINALIZAR DIA
+            </button>
           </div>
         </section>
 
         <!-- TELA DE INVENTÁRIO -->
         <section id="inventario" class="app-page">
           <div>
-            <h2 style="color: var(--hyundai-blue);">Inventário de Materiais e Insumos</h2>
-            <p style="color: var(--text-secondary); font-size: 14px;">Controle geral de escritório e insumos operacionais</p>
+            <h2 style="color: var(--hyundai-blue);">Inventário de Materiais</h2>
+            <p style="color: var(--text-secondary); font-size: 14px;">Controle geral de materiais e suprimentos</p>
           </div>
 
           <div id="camposInventario"></div>
 
           <div class="page-footer-actions">
-            <button class="btn btn-secondary" onclick="navegarPara('inicio')">Voltar</button>
+            <button class="btn btn-secondary" onclick="voltarInicioInventario()">Voltar</button>
             <button class="btn btn-secondary" onclick="solicitarExportacao('inventario')">Baixar Excel</button>
-            <button class="btn btn-accent" onclick="finalizarInventario()">SALVAR INVENTÁRIO</button>
+            <button class="btn btn-accent" onclick="finalizarInventario()">
+              SALVAR INVENTÁRIO
+            </button>
           </div>
         </section>
 
-        <!-- TELA DE DASHBOARD DE RELATÓRIOS (EMBALAGENS & INVENTÁRIO) -->
+        <!-- TELA DE RELATÓRIOS ANALÍTICOS -->
         <section id="dashboard" class="app-page">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-            <div>
-              <h2 id="dashboardTitulo" style="color: var(--hyundai-blue);">Painel Analítico de Embalagens</h2>
-              <p style="color: var(--text-secondary); font-size: 14px;" id="dashboardSubtitulo">Métricas de divergências e fornecedores</p>
-            </div>
-            <button class="btn btn-secondary" onclick="navegarPara('inicio')">Voltar ao Início</button>
+            <h2 style="color: var(--hyundai-blue);">Painel Analítico Avançado</h2>
+            <button class="btn btn-secondary" onclick="fecharDashboard()">Voltar</button>
           </div>
 
-          <!-- DASHBOARD RELATÓRIO DE EMBALAGENS -->
-          <div id="relatorioEmbalagensView" class="view-section active">
-            <div class="charts-grid">
-              <div class="chart-card">
-                <div class="chart-card-header">
-                  <h3>Top 5 Divergências por Item / Fornecedor</h3>
-                  <p>Ocorrências acumuladas na semana</p>
-                </div>
-                <div class="chart-wrapper">
-                  <canvas id="graficoTop5Embalagens"></canvas>
-                </div>
-              </div>
-
-              <div class="chart-card">
-                <div class="chart-card-header">
-                  <h3>Comparativo Semanal NF vs Físico</h3>
-                  <p>Volume total conferido por dia</p>
-                </div>
-                <div class="chart-wrapper">
-                  <canvas id="graficoFluxoSemanal"></canvas>
-                </div>
-              </div>
+          <div class="card">
+            <h3 style="color: var(--hyundai-blue); margin-bottom: 16px;">Top 5 Divergências por Item</h3>
+            <div style="height: 300px;">
+              <canvas id="graficoTop5"></canvas>
             </div>
           </div>
-
-          <!-- DASHBOARD RELATÓRIO DE INVENTÁRIO -->
-          <div id="relatorioInventarioView" class="view-section">
-            <div class="charts-grid">
-              <div class="chart-card">
-                <div class="chart-card-header">
-                  <h3>Itens em Alerta de Ponto de Pedido</h3>
-                  <p>Saldo atual vs Limite Mínimo</p>
-                </div>
-                <div class="chart-wrapper">
-                  <canvas id="graficoAlertasInventario"></canvas>
-                </div>
-              </div>
-
-              <div class="chart-card">
-                <div class="chart-card-header">
-                  <h3>Consumo Estimado de Insumos (Mensal)</h3>
-                  <p>Projeção de utilização dos materiais</p>
-                </div>
-                <div class="chart-wrapper">
-                  <canvas id="graficoConsumoInventario"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </section>
 
       </main>
-    </div>
-  </div>
-
-  <!-- MODAL DE SELEÇÃO DE MÓDULOS NA HEADER -->
-  <div class="modal-overlay" id="selectionModal">
-    <div class="modal-card">
-      <h2>Selecione o Módulo</h2>
-      <p>Escolha qual visualização de dados deseja exibir no painel principal:</p>
-      
-      <div class="selection-grid">
-        <div class="option-card" onclick="selectModule('embalagens')">
-          <i class="ph ph-package" style="font-size: 36px; color: var(--hyundai-navy);"></i>
-          <span style="font-weight:700;">Embalagens</span>
-        </div>
-        <div class="option-card" onclick="selectModule('inventario')">
-          <i class="ph ph-clipboard-text" style="font-size: 36px; color: var(--hyundai-navy);"></i>
-          <span style="font-weight:700;">Inventário</span>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -1074,7 +873,7 @@
   <div class="mobile-bottom-nav">
     <a onclick="navegarPara('inicio')" class="active" id="mb-inicio">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
-      Início
+      Dashboard
     </a>
     <a onclick="abrirDia()" id="mb-embalagens">
       <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
@@ -1084,21 +883,43 @@
       <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
       Inventário
     </a>
-    <a onclick="toggleDropdownRelatorios()">
-      <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 9l-5 5-4-4-3 3"/></svg>
-      Relatórios
+    <a onclick="solicitarExportacao('embalagens')">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+      Excel
     </a>
   </div>
 
   <script>
-    // VARIÁVEIS GLOBAIS DE GRÁFICOS
-    let chartTop5Embalagens = null;
-    let chartFluxoSemanal = null;
-    let chartAlertasInventario = null;
-    let chartConsumoInventario = null;
-    let inventarioChartsRendered = false;
+    let graficoTop5 = null;
+    let chartEmbalagensInstance = null;
+    let chartInventarioInstance = null;
 
-    // DATASETS DA OPERAÇÃO
+    function toggleSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      const mainWrapper = document.querySelector('.main-wrapper');
+
+      sidebar.classList.toggle('collapsed');
+      mainWrapper.classList.toggle('full-width');
+    }
+
+    function toggleDropdownExcel() {
+      const dropdown = document.getElementById("dropdown-excel");
+      dropdown.classList.toggle("open");
+    }
+
+    function solicitarExportacao(tipo) {
+      const nomeRelatorio = tipo === 'embalagens' ? 'Embalagens' : 'Inventário';
+      const confirmou = confirm(`Deseja exportar a planilha de ${nomeRelatorio} para Excel?`);
+      
+      if (confirmou) {
+        if (tipo === 'embalagens') {
+          baixarExcel();
+        } else if (tipo === 'inventario') {
+          baixarExcelInventario();
+        }
+      }
+    }
+
     const dias = {
       1: {
         nome: "SEGUNDA-FEIRA",
@@ -1171,253 +992,362 @@
     if (dia === 0 || dia === 6) dia = 1;
 
     const diasNome = { 1: "Segunda-feira", 2: "Terça-feira", 3: "Quarta-feira", 4: "Quinta-feira", 5: "Sexta-feira" };
+    const notasSalvas = [];
 
-    // INICIALIZAÇÃO DA PÁGINA
-    document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById('data').innerText = `${diasNome[dia] || 'Segunda-feira'}, ${hoje.toLocaleDateString('pt-BR')}`;
+    window.addEventListener("DOMContentLoaded", () => {
+      const hora = hoje.getHours();
+      let textoSaudacao = "Olá!";
       
-      const hr = hoje.getHours();
-      let saudacaoTexto = "Boa noite";
-      if (hr >= 5 && hr < 12) saudacaoTexto = "Bom dia";
-      else if (hr >= 12 && hr < 18) saudacaoTexto = "Boa tarde";
-      
-      document.getElementById('saudacao').innerText = `${saudacaoTexto}, Operação Hyundai!`;
+      if (hora >= 5 && hora < 12) {
+        textoSaudacao = "Bom dia 👋";
+      } else if (hora >= 12 && hora < 18) {
+        textoSaudacao = "Boa tarde 👋";
+      } else {
+        textoSaudacao = "Boa noite 👋";
+      }
 
-      initEmbalagensDashboardCharts();
+      document.getElementById("saudacao").textContent = textoSaudacao;
+      
+      const opcoesData = { day: 'numeric', month: 'long', year: 'numeric' };
+      document.getElementById("data").innerHTML = diasNome[dia] + ", " + hoje.toLocaleDateString("pt-BR", opcoesData);
+      
+      renderizarCamposInventario();
+      renderizarGraficosInicio();
     });
 
-    // NAVIGATION
-    function navegarPara(pageId) {
-      document.querySelectorAll('.app-page').forEach(page => page.style.display = 'none');
-      document.getElementById(pageId).style.display = 'block';
+    /* RENDERIZAR GRÁFICOS SOLICITADOS NA IMAGEM */
+    function renderizarGraficosInicio() {
+      // 1. Gráfico de Embalagens por tipo (Barras)
+      const ctxEmbalagens = document.getElementById('chartEmbalagensTipo').getContext('2d');
+      if (chartEmbalagensInstance) chartEmbalagensInstance.destroy();
 
-      document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
-      const activeNav = document.getElementById(`nav-${pageId}`);
-      if(activeNav) activeNav.classList.add('active');
-    }
-
-    // SIDEBAR & DROPDOWNS
-    function toggleSidebar() {
-      document.querySelector('.sidebar').classList.toggle('collapsed');
-      document.querySelector('.main-wrapper').classList.toggle('full-width');
-    }
-
-    function toggleDropdownExcel() {
-      document.getElementById("dropdown-excel").classList.toggle("open");
-    }
-
-    function toggleDropdownRelatorios() {
-      document.getElementById("dropdown-relatorios").classList.toggle("open");
-    }
-
-    // CONTROLE DE MÓDULOS NA HOME
-    function openSelector() {
-      document.getElementById('selectionModal').style.display = 'flex';
-    }
-
-    function selectModule(moduleName) {
-      document.getElementById('selectionModal').style.display = 'none';
-      document.querySelectorAll('#inicio .view-section').forEach(sec => sec.classList.remove('active'));
-
-      if (moduleName === 'embalagens') {
-        document.getElementById('viewEmbalagens').classList.add('active');
-      } else if (moduleName === 'inventario') {
-        document.getElementById('viewInventario').classList.add('active');
-        if (!inventarioChartsRendered) {
-          initInventarioHomeCharts();
-          inventarioChartsRendered = true;
-        }
-      }
-    }
-
-    // CARREGAMENTO DOS GRÁFICOS INICIAIS
-    function initEmbalagensDashboardCharts() {
-      new Chart(document.getElementById('chartEmbalagensTipo'), {
+      chartEmbalagensInstance = new Chart(ctxEmbalagens, {
         type: 'bar',
         data: {
-          labels: ['CIEE Azul', 'CIEE Cinza', 'Mubeia', 'Nighterra', 'Bleistahl', 'Purem'],
+          labels: ['CIEE Azul', 'CIEE Cinza', 'Mubeia', "Nighterra", 'Outros'],
           datasets: [{
-            label: 'Total Físico',
-            data: [500, 350, 240, 100, 85, 60],
+            data: [500, 350, 240, 100, 45],
             backgroundColor: '#002C6C',
-            borderRadius: 6
+            borderRadius: 6,
+            barThickness: 32
           }]
         },
-        options: { responsive: true, maintainAspectRatio: false }
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 600,
+              grid: { borderDash: [4, 4], color: '#E2E8F0' },
+              ticks: { stepSize: 200 }
+            },
+            x: {
+              grid: { display: false }
+            }
+          }
+        }
       });
 
-      new Chart(document.getElementById('chartEvolucaoAcuracidade'), {
-        type: 'line',
-        data: {
-          labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'],
-          datasets: [
-            { label: 'Acuracidade (%)', data: [98.5, 99.1, 97.8, 98.6, 99.0], borderColor: '#16A34A', backgroundColor: 'rgba(22, 163, 74, 0.1)', fill: true, tension: 0.3 },
-            { label: 'Meta (%)', data: [98, 98, 98, 98, 98], borderColor: '#DC2626', borderDash: [5, 5], pointRadius: 0 }
-          ]
-        },
-        options: { responsive: true, maintainAspectRatio: false }
-      });
-    }
+      // 2. Gráfico de Inventário por categoria (Rosca / Donut)
+      const ctxInventario = document.getElementById('chartInventarioCategoria').getContext('2d');
+      if (chartInventarioInstance) chartInventarioInstance.destroy();
 
-    function initInventarioHomeCharts() {
-      new Chart(document.getElementById('chartInventarioItens'), {
-        type: 'bar',
-        data: {
-          labels: ['Fita Amarela', 'Etiqueta 100x40', 'Papel A4', 'Fita Crepe', 'Filme PVC'],
-          datasets: [
-            { label: 'Estoque Atual', data: [3, 8, 120, 45, 80], backgroundColor: '#002C6C', borderRadius: 4 },
-            { label: 'Mínimo Exigido', data: [10, 10, 30, 20, 25], backgroundColor: '#DC2626', borderRadius: 4 }
-          ]
-        },
-        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false }
-      });
-
-      new Chart(document.getElementById('chartInventarioCategoria'), {
+      chartInventarioInstance = new Chart(ctxInventario, {
         type: 'doughnut',
         data: {
           labels: ['Fitas', 'Etiquetas', 'Escritório', 'Limpeza', 'Outros'],
           datasets: [{
-            data: [35, 25, 20, 10, 10],
-            backgroundColor: ['#002C6C', '#0050B3', '#00AAD2', '#CBD5E1', '#64748B']
+            data: [40, 25, 20, 10, 5],
+            backgroundColor: [
+              '#002C6C',
+              '#1D4ED8',
+              '#64748B',
+              '#94A3B8',
+              '#CBD5E1'
+            ],
+            borderWidth: 2,
+            borderColor: '#FFFFFF'
           }]
         },
-        options: { responsive: true, maintainAspectRatio: false }
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: {
+                boxWidth: 12,
+                padding: 14,
+                font: { size: 13, weight: '500' }
+              }
+            }
+          },
+          cutout: '68%'
+        }
       });
     }
 
-    // AÇÕES DE RELATÓRIOS (DASHBOARD ESPECÍFICO)
-    function abrirDashboard(tipo) {
-      navegarPara('dashboard');
-      document.querySelectorAll('#dashboard .view-section').forEach(sec => sec.classList.remove('active'));
+    function navegarPara(idTela) {
+      document.querySelectorAll(".app-page").forEach(p => p.style.display = "none");
+      const telaAlvo = document.getElementById(idTela);
+      if (telaAlvo) telaAlvo.style.display = "block";
 
-      if (tipo === 'embalagens') {
-        document.getElementById('dashboardTitulo').innerText = 'Painel Analítico de Embalagens';
-        document.getElementById('dashboardSubtitulo').innerText = 'Divergências por fornecedores e acompanhamento de nota fiscal';
-        document.getElementById('relatorioEmbalagensView').classList.add('active');
+      document.querySelectorAll(".sidebar-menu a").forEach(a => a.classList.remove("active"));
+      const activeNav = document.getElementById("nav-" + idTela);
+      if (activeNav) activeNav.classList.add("active");
 
-        if (!chartTop5Embalagens) {
-          chartTop5Embalagens = new Chart(document.getElementById('graficoTop5Embalagens'), {
-            type: 'bar',
-            data: {
-              labels: ['CIEE AZUL - BANDEIJA', 'BLEISTAHL - CAIXA', 'MUBEIA - PALLET', 'PUREM - BANDEIJA', 'VETORE - TAMPA'],
-              datasets: [{ label: 'Qtd. Divergências', data: [12, 8, 5, 4, 2], backgroundColor: '#DC2626', borderRadius: 4 }]
-            },
-            options: { responsive: true, maintainAspectRatio: false }
-          });
-
-          chartFluxoSemanal = new Chart(document.getElementById('graficoFluxoSemanal'), {
-            type: 'bar',
-            data: {
-              labels: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'],
-              datasets: [
-                { label: 'Volume NF', data: [1400, 1250, 1310, 1500, 1100], backgroundColor: '#002C6C' },
-                { label: 'Volume Físico', data: [1395, 1250, 1300, 1498, 1100], backgroundColor: '#00AAD2' }
-              ]
-            },
-            options: { responsive: true, maintainAspectRatio: false }
-          });
-        }
-      } else if (tipo === 'inventario') {
-        document.getElementById('dashboardTitulo').innerText = 'Painel Analítico de Inventário e Suprimentos';
-        document.getElementById('dashboardSubtitulo').innerText = 'Níveis de estoque crítico e taxa de utilização mensal';
-        document.getElementById('relatorioInventarioView').classList.add('active');
-
-        if (!chartAlertasInventario) {
-          chartAlertasInventario = new Chart(document.getElementById('graficoAlertasInventario'), {
-            type: 'bar',
-            data: {
-              labels: ['Fita Amarela Fina', 'Etiqueta 100x40', 'Papel A4', 'Pano Limpeza', 'Canetão Preto'],
-              datasets: [
-                { label: 'Saldo Atual', data: [3, 8, 12, 5, 2], backgroundColor: '#D97706' },
-                { label: 'Ponto de Pedido', data: [10, 10, 15, 10, 5], backgroundColor: '#64748B' }
-              ]
-            },
-            options: { responsive: true, maintainAspectRatio: false }
-          });
-
-          chartConsumoInventario = new Chart(document.getElementById('graficoConsumoInventario'), {
-            type: 'line',
-            data: {
-              labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
-              datasets: [{ label: 'Consumo Médio (Unidades)', data: [150, 220, 180, 240], borderColor: '#00AAD2', fill: true, backgroundColor: 'rgba(0,170,210,0.1)', tension: 0.3 }]
-            },
-            options: { responsive: true, maintainAspectRatio: false }
-          });
-        }
-      }
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
-    // CONTAGEM DIÁRIA E PROCESSOS
-    function abrirDia() {
-      navegarPara('contagem');
-      const container = document.getElementById('campos');
-      container.innerHTML = '';
-      const infoDia = dias[dia] || dias[1];
-      document.getElementById('titulo').innerText = `Contagem - ${infoDia.nome}`;
+    function soma(valor) {
+      if (!valor) return 0;
+      return valor.split("+").reduce((total, parte) => total + (Number(parte.trim()) || 0), 0);
+    }
 
-      infoDia.campos.forEach((campo, index) => {
-        container.innerHTML += `
+    function abrirDia() {
+      navegarPara("contagem");
+      document.getElementById("titulo").textContent = dias[dia].nome;
+
+      let html = "";
+      dias[dia].campos.forEach((item, i) => {
+        html += `
           <div class="item-card">
-            <label>${campo}</label>
-            <input type="text" id="campo_${index}" placeholder="Ex: 5+5" oninput="calcularTotal(${index})">
+            <label for="c${i}">${i + 1}. ${item}</label>
+            <input id="c${i}" type="tel" inputmode="numeric" placeholder="Ex: 2+4+7" oninput="calcular(${i})">
             <div class="total-badge">
               <span>TOTAL</span>
-              <span id="total_${index}">0</span>
+              <span id="t${i}">0</span>
             </div>
           </div>
         `;
       });
+      document.getElementById("campos").innerHTML = html;
     }
 
-    function calcularTotal(index) {
-      const valor = document.getElementById(`campo_${index}`).value;
-      try {
-        const total = valor.split('+').reduce((acc, curr) => acc + (parseFloat(curr) || 0), 0);
-        document.getElementById(`total_${index}`).innerText = total;
-      } catch (e) {
-        document.getElementById(`total_${index}`).innerText = 0;
-      }
+    function calcular(i) {
+      const valor = soma(document.getElementById("c" + i).value);
+      document.getElementById("t" + i).textContent = valor;
     }
 
-    function abrirNota() { navegarPara('nota'); }
-    function voltarContagem() { navegarPara('contagem'); }
-    function mostrarResumo() { navegarPara('resumo'); }
-    
-    function finalizarDia() { 
-      const badge = document.getElementById('statusContagemBadge');
-      badge.className = "badge-status badge-done";
-      badge.innerHTML = `<i class="ph ph-check-circle"></i> CONCLUÍDA`;
-      alert('Contagem diária finalizada com sucesso!'); 
-      navegarPara('inicio'); 
-    }
-
-    function abrirInventario() {
-      navegarPara('inventario');
-      const container = document.getElementById('camposInventario');
-      container.innerHTML = '';
-
-      categoriasInventario.forEach(cat => {
-        let itemsHtml = cat.itens.map(item => `
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #E2E8F0;">
-            <span style="font-size: 14px; font-weight: 500;">${item}</span>
-            <input type="number" style="width: 100px; padding: 6px; border-radius: 6px; border: 1px solid #CBD5E1;" placeholder="Qtd">
-          </div>
-        `).join('');
-
-        container.innerHTML += `
-          <div class="card" style="margin-top: 16px;">
-            <h3 style="color: var(--hyundai-blue); font-size: 16px; margin-bottom: 12px;">${cat.categoria}</h3>
-            ${itemsHtml}
+    function abrirNota() {
+      navegarPara("nota");
+      let html = "";
+      dias[dia].campos.forEach((item, i) => {
+        html += `
+          <div class="item-card">
+            <label for="n${i}">${item} - NOTA</label>
+            <input id="n${i}" type="tel" inputmode="numeric" placeholder="Ex: 50+40+20" value="${notasSalvas[i] || ""}" oninput="calcularNota(${i})">
+            <div class="total-badge">
+              <span>TOTAL NOTA</span>
+              <span id="tn${i}">${soma(notasSalvas[i] || "")}</span>
+            </div>
           </div>
         `;
       });
+      document.getElementById("camposNota").innerHTML = html;
     }
 
-    function finalizarInventario() { alert('Inventário salvo com sucesso!'); navegarPara('inicio'); }
-
-    function solicitarExportacao(tipo) {
-      alert(`Exportação do relatório em Excel de ${tipo.toUpperCase()} iniciada!`);
+    function calcularNota(i) {
+      const valor = document.getElementById("n" + i).value;
+      notasSalvas[i] = valor;
+      const el = document.getElementById("tn" + i);
+      if (el) el.textContent = soma(valor);
     }
+
+    function montarDadosDia() {
+      return dias[dia].campos.map((item, i) => {
+        const contagem = soma(document.getElementById("c" + i)?.value || "");
+        const nota = soma(document.getElementById("n" + i)?.value || "");
+        return { item, contagem, nota, diferenca: contagem - nota };
+      });
+    }
+
+    function mostrarResumo() {
+      dias[dia].campos.forEach((_, i) => {
+        notasSalvas[i] = document.getElementById("n" + i)?.value || "";
+      });
+
+      navegarPara("resumo");
+      const dados = montarDadosDia();
+      let html = "";
+
+      dados.forEach(({ item, contagem, nota, diferenca }) => {
+        const ehOk = contagem === nota;
+        const statusText = ehOk ? "CONFERIDO" : "DIVERGÊNCIA";
+        const statusColor = ehOk ? "var(--hyundai-blue)" : "var(--status-danger)";
+
+        html += `
+          <div class="card" style="border-left: 4px solid ${statusColor}; margin-bottom: 0;">
+            <h4 style="color: var(--hyundai-blue); font-size: 14px; margin-bottom: 8px;">${item}</h4>
+            <div style="font-weight: 700; color: ${statusColor}; font-size: 11px; margin-bottom: 10px;">${statusText}</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">
+              <div>Contagem Física: <b>${contagem}</b></div>
+              <div>Nota Fiscal: <b>${nota}</b></div>
+              <div>Diferença: <b>${diferenca}</b></div>
+            </div>
+          </div>
+        `;
+      });
+      document.getElementById("resultado").innerHTML = html;
+    }
+
+    function voltarContagem() { navegarPara("contagem"); }
+
+    async function finalizarDia() {
+      const btn = document.getElementById("btnFinalizar");
+      btn.disabled = true;
+      try {
+        const ultimo = { data: new Date().toLocaleDateString("pt-BR"), itens: montarDadosDia() };
+        const excel = gerarExcelParaEmail(ultimo);
+        await fetch("https://embalagens-api-rho.vercel.app/api/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ data: ultimo.data, itens: ultimo.itens, excel })
+        });
+        alert("Dia Finalizado com sucesso!");
+      } catch (err) {
+        alert("Não foi possível finalizar o dia.");
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    function gerarExcelParaEmail(diaAtual) {
+      const linhas = diaAtual.itens.map(({ item, contagem, diferenca }) => ({
+        Dia: diaAtual.data, Item: item, Contagem: contagem, Diferença: diferenca === 0 ? "" : diferenca
+      }));
+      const ws = XLSX.utils.json_to_sheet(linhas);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Embalagens");
+      return {
+        nome: "embalagens.xlsx",
+        mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        base64: XLSX.write(wb, { bookType: "xlsx", type: "base64" })
+      };
+    }
+
+    async function baixarExcel() {
+      try {
+        const resposta = await fetch("https://embalagens-api-rho.vercel.app/api/export");
+        const blob = await resposta.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "Embalagens.xlsx";
+        a.click();
+      } catch (e) {
+        alert("Erro ao exportar o arquivo Excel.");
+      }
+    }
+
+    function renderizarCamposInventario() {
+      let html = "";
+      categoriasInventario.forEach((categoria, indiceCategoria) => {
+        html += `<h3 style="margin: 24px 0 12px 0; color: var(--hyundai-blue);">${categoria.categoria}</h3><div class="grid-cards">`;
+        categoria.itens.forEach((item, indiceItem) => {
+          const id = `${indiceCategoria}_${indiceItem}`;
+          html += `
+            <div class="item-card">
+              <label>${item}</label>
+              <input id="inv_${id}" type="tel" inputmode="numeric" placeholder="Ex: 2+4" oninput="calcularInventario('${id}')">
+              <div class="total-badge">
+                <span>TOTAL</span>
+                <span id="tinv_${id}">0</span>
+              </div>
+            </div>
+          `;
+        });
+        html += `</div>`;
+      });
+      document.getElementById("camposInventario").innerHTML = html;
+    }
+
+    function abrirInventario() {
+      navegarPara("inventario");
+    }
+
+    function calcularInventario(id) {
+      document.getElementById("tinv_" + id).textContent = soma(document.getElementById("inv_" + id).value);
+    }
+
+    function voltarInicioInventario() { navegarPara("inicio"); }
+
+    async function finalizarInventario() {
+      const inventario = [];
+      categoriasInventario.forEach((categoria, indiceCategoria) => {
+        categoria.itens.forEach((item, indiceItem) => {
+          const id = `${indiceCategoria}_${indiceItem}`;
+          inventario.push({ categoria: categoria.categoria, item, quantidade: soma(document.getElementById("inv_" + id).value) });
+        });
+      });
+
+      try {
+        await fetch("https://embalagens-api-rho.vercel.app/api/inventario", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ data: new Date().toLocaleDateString("pt-BR"), itens: inventario })
+        });
+        alert("Inventário salvo com sucesso!");
+        voltarInicioInventario();
+      } catch {
+        alert("Erro ao salvar o inventário.");
+      }
+    }
+
+    function baixarExcelInventario() {
+      const inventario = [];
+      categoriasInventario.forEach((categoria, indiceCategoria) => {
+        categoria.itens.forEach((item, indiceItem) => {
+          const id = `${indiceCategoria}_${indiceItem}`;
+          inventario.push({
+            Categoria: categoria.categoria,
+            Item: item,
+            Quantidade: soma(document.getElementById("inv_" + id)?.value || "0")
+          });
+        });
+      });
+
+      const ws = XLSX.utils.json_to_sheet(inventario);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Inventário");
+      XLSX.writeFile(wb, "Inventario_Materiais.xlsx");
+    }
+
+    function abrirDashboard() {
+      navegarPara("dashboard");
+      
+      const ctx = document.getElementById("graficoTop5").getContext("2d");
+      if (graficoTop5) graficoTop5.destroy();
+
+      graficoTop5 = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: ["Item A", "Item B", "Item C", "Item D", "Item E"],
+          datasets: [{
+            label: "Divergências",
+            data: [12, 8, 5, 4, 2],
+            backgroundColor: "#002C6C",
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+    }
+
+    function fecharDashboard() { navegarPara("inicio"); }
   </script>
 </body>
 </html>

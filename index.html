@@ -832,12 +832,36 @@
     </a>
   </div>
 
-  <script>
-    let chartTop5Embalagens = null;
-    let chartFluxoSemanal = null;
-    let chartAlertasInventario = null;
-    let chartConsumoInventario = null;
-    let inventarioChartsRendered = false;
+<script>
+    let graficoTop5 = null;
+    let chartEmbalagensInstance = null;
+    let chartInventarioInstance = null;
+
+    function toggleSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      const mainWrapper = document.querySelector('.main-wrapper');
+
+      sidebar.classList.toggle('collapsed');
+      mainWrapper.classList.toggle('full-width');
+    }
+
+    function toggleDropdownExcel() {
+      const dropdown = document.getElementById("dropdown-excel");
+      dropdown.classList.toggle("open");
+    }
+
+    function solicitarExportacao(tipo) {
+      const nomeRelatorio = tipo === 'embalagens' ? 'Embalagens' : 'Inventário';
+      const confirmou = confirm(`Deseja exportar a planilha de ${nomeRelatorio} para Excel?`);
+      
+      if (confirmou) {
+        if (tipo === 'embalagens') {
+          baixarExcel();
+        } else if (tipo === 'inventario') {
+          baixarExcelInventario();
+        }
+      }
+    }
 
     const dias = {
       1: {
@@ -883,303 +907,444 @@
       }
     };
 
-    const listaInventarioFlat = [
-      "FITA AMARELA FINA", "FITA AMARELA LARGA", "FITA DUREX", "FITA VERDE", "FITA AZUL", "FITA VERMELHA", "FITA CREPE", "FITA ZEBRADA GROSSA", "FITA ZEBRADA FINA", "FITA K200 DOURADA", "FITA K200 AZUL",
-      "ETIQUETA 100X40 AMARELA", "ETIQUETA 100X40 AZUL", "ETIQUETA 100X40 BRANCA", "ETIQUETA 100X70 BRANCA", "ETIQUETA 100X70 AMARELA", "ETIQUETA 50X25",
-      "PRANCHETA", "CANETÃO AZUL", "CANETÃO VERMELHO", "CANETÃO PRETO", "COPOS PLÁSTICOS", "TRENA", "MARCA TEXTO ROSA", "MARCA TEXTO AZUL", "MARCA TEXTO AMARELO", "MARCA TEXTO VERDE", "CANETA BIC AZUL", "GRAMPEADOR", "APAGADOR", "GRAMPO 106/8", "CLIPS 8/0", "PAPEL A4", "PASTA AZUL", "TESOURA",
-      "PANO DE LIMPEZA", "DETERGENTE", "VEJA", "BUCHA", "ÁLCOOL EM GEL", "VASSOURA", "FILME PVC", "PAPEL POUCH A4", "ENVELOPE"
+    const categoriasInventario = [
+      {
+        categoria: "FITAS",
+        itens: ["Fita amarela fina", "Fita amarela larga", "Fita durex", "Fita verde", "Fita azul", "Fita vermelha", "Fita crepe", "Fita zebrada grossa", "Fita zebrada fina", "Fita K200 Super Resina dourada", "Fita K200 Super Resina azul"]
+      },
+      {
+        categoria: "ETIQUETAS",
+        itens: ["Etiqueta 100x40 amarela", "Etiqueta 100x40 azul", "Etiqueta 100x40 branca", "Etiqueta 100x70 branca", "Etiqueta 100x70 amarela", "Etiqueta 50x25"]
+      },
+      {
+        categoria: "ESCRITÓRIO",
+        itens: ["Prancheta", "Canetão azul", "Canetão vermelho", "Canetão preto", "Copos plásticos", "Trena", "Marca texto rosa", "Marca texto azul", "Marca texto amarelo", "Marca texto verde", "Marca texto branco", "Marca texto vermelho", "Caneta Bic azul", "Grampeador", "Apagador", "Grampo 106/8", "Grampo 26/6", "Clips 8/0", "Clips 6/0", "Clips 2/0", "Agenda", "Papel A4", "Pasta azul", "Tesoura"]
+      },
+      {
+        categoria: "LIMPEZA",
+        itens: ["Pano", "Detergente", "Veja", "Bucha", "Álcool em gel", "Vassoura"]
+      },
+      {
+        categoria: "OUTROS",
+        itens: ["Filme PVC", "Papel Pouch A4 Transparente", "Envelope"]
+      }
     ];
 
     const hoje = new Date();
     let dia = hoje.getDay();
-    if (dia === 0 || dia === 6) dia = 5;
+    if (dia === 0 || dia === 6) dia = 1;
 
     const diasNome = { 1: "Segunda-feira", 2: "Terça-feira", 3: "Quarta-feira", 4: "Quinta-feira", 5: "Sexta-feira" };
+    const notasSalvas = [];
+    let debounceTimerInventario = null;
 
-    document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById('data').innerText = `${diasNome[dia] || 'Sexta-feira'}, ${hoje.toLocaleDateString('pt-BR')}`;
+    window.addEventListener("DOMContentLoaded", () => {
+      const hora = hoje.getHours();
+      let textoSaudacao = "Olá!";
       
-      const hr = hoje.getHours();
-      let saudacaoTexto = "Boa noite";
-      if (hr >= 5 && hr < 12) saudacaoTexto = "Bom dia";
-      else if (hr >= 12 && hr < 18) saudacaoTexto = "Boa tarde";
-      
-      document.getElementById('saudacao').innerText = `${saudacaoTexto}, Operação Hyundai!`;
+      if (hora >= 5 && hora < 12) {
+        textoSaudacao = "Bom dia 👋";
+      } else if (hora >= 12 && hora < 18) {
+        textoSaudacao = "Boa tarde 👋";
+      } else {
+        textoSaudacao = "Boa noite 👋";
+      }
 
-      initEmbalagensDashboardCharts();
+      document.getElementById("saudacao").textContent = textoSaudacao;
+      
+      const opcoesData = { day: 'numeric', month: 'long', year: 'numeric' };
+      document.getElementById("data").innerHTML = diasNome[dia] + ", " + hoje.toLocaleDateString("pt-BR", opcoesData);
+      
+      renderizarCamposInventario();
+      renderizarGraficosInicio();
     });
 
-    function navegarPara(pageId) {
-      document.querySelectorAll('.app-page').forEach(page => page.style.display = 'none');
-      document.getElementById(pageId).style.display = 'block';
+    /* RENDERIZAR GRÁFICOS */
+    function renderizarGraficosInicio() {
+      const ctxEmbalagens = document.getElementById('chartEmbalagensTipo').getContext('2d');
+      if (chartEmbalagensInstance) chartEmbalagensInstance.destroy();
 
-      document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
-      const activeNav = document.getElementById(`nav-${pageId}`);
-      if(activeNav) activeNav.classList.add('active');
-    }
-
-    function toggleSidebar() {
-      document.querySelector('.sidebar').classList.toggle('collapsed');
-      document.querySelector('.main-wrapper').classList.toggle('full-width');
-    }
-
-    function toggleDropdownExcel() { document.getElementById("dropdown-excel").classList.toggle("open"); }
-    function toggleDropdownRelatorios() { document.getElementById("dropdown-relatorios").classList.toggle("open"); }
-    function openSelector() { document.getElementById('selectionModal').style.display = 'flex'; }
-
-    function selectModule(moduleName) {
-      document.getElementById('selectionModal').style.display = 'none';
-      document.querySelectorAll('#inicio .view-section').forEach(sec => sec.classList.remove('active'));
-
-      if (moduleName === 'embalagens') {
-        document.getElementById('viewEmbalagens').classList.add('active');
-      } else if (moduleName === 'inventario') {
-        document.getElementById('viewInventario').classList.add('active');
-        if (!inventarioChartsRendered) {
-          initInventarioHomeCharts();
-          inventarioChartsRendered = true;
-        }
-      }
-    }
-
-    function abrirDia() {
-      navegarPara('contagem');
-      const container = document.getElementById('campos');
-      container.innerHTML = '';
-      const infoDia = dias[dia] || dias[5];
-      document.getElementById('titulo').innerText = infoDia.nome;
-
-      infoDia.campos.forEach((campo, index) => {
-        const num = index + 1;
-        container.innerHTML += `
-          <div class="counting-card">
-            <div class="counting-card-title">${num}. ${campo}</div>
-            <input type="text" class="counting-card-input" id="campo_${index}" placeholder="Ex: 2+4+7" oninput="calcularTotal('${index}', 'campo_', 'total_')">
-            <div class="counting-card-footer">
-              <span>TOTAL</span>
-              <span class="total-val" id="total_${index}">0</span>
-            </div>
-          </div>
-        `;
-      });
-    }
-
-    function abrirInventario() {
-      navegarPara('inventario');
-      const container = document.getElementById('camposInventario');
-      container.innerHTML = '';
-
-      listaInventarioFlat.forEach((item, index) => {
-        const num = index + 1;
-        container.innerHTML += `
-          <div class="counting-card">
-            <div class="counting-card-title">${num}. ${item}</div>
-            <input type="text" class="counting-card-input" id="inv_campo_${index}" placeholder="Ex: 2+4+7" oninput="calcularTotal('${index}', 'inv_campo_', 'inv_total_')">
-            <div class="counting-card-footer">
-              <span>TOTAL</span>
-              <span class="total-val" id="inv_total_${index}">0</span>
-            </div>
-          </div>
-        `;
-      });
-    }
-
-    function calcularTotal(index, inputPrefix, totalPrefix) {
-      const valor = document.getElementById(`${inputPrefix}${index}`).value;
-      try {
-        const total = valor.split('+').reduce((acc, curr) => acc + (parseFloat(curr) || 0), 0);
-        document.getElementById(`${totalPrefix}${index}`).innerText = total;
-      } catch (e) {
-        document.getElementById(`${totalPrefix}${index}`).innerText = 0;
-      }
-    }
-
-    // ==========================================
-    // EXPORTAÇÃO REAL EM EXCEL (SGI HYUNDAI)
-    // ==========================================
-    function solicitarExportacao(tipo) {
-      try {
-        if (typeof XLSX === 'undefined') {
-          alert('Erro: A biblioteca de exportação Excel não foi carregada corretamente. Verifique sua conexão.');
-          return;
-        }
-
-        let dadosExportar = [];
-        let nomeArquivo = '';
-
-        if (tipo === 'embalagens') {
-          const infoDia = dias[dia] || dias[5];
-          infoDia.campos.forEach((campo, index) => {
-            const inputVal = document.getElementById(`campo_${index}`) ? document.getElementById(`campo_${index}`).value : '';
-            const totalVal = document.getElementById(`total_${index}`) ? document.getElementById(`total_${index}`).innerText : '0';
-
-            dadosExportar.push({
-              "Item N°": index + 1,
-              "Descrição Embalagem": campo,
-              "Expressão Digitada": inputVal || '0',
-              "Total Contado": parseInt(totalVal, 10) || 0,
-              "Data Registro": new Date().toLocaleDateString('pt-BR')
-            });
-          });
-          nomeArquivo = `Hyundai_Contagem_Embalagens_${diasNome[dia] || 'Dia'}.xlsx`;
-
-        } else if (tipo === 'inventario') {
-          listaInventarioFlat.forEach((item, index) => {
-            const inputVal = document.getElementById(`inv_campo_${index}`) ? document.getElementById(`inv_campo_${index}`).value : '';
-            const totalVal = document.getElementById(`inv_total_${index}`) ? document.getElementById(`inv_total_${index}`).innerText : '0';
-
-            dadosExportar.push({
-              "Item N°": index + 1,
-              "Material / Insumo": item,
-              "Expressão Digitada": inputVal || '0',
-              "Total Contado": parseInt(totalVal, 10) || 0,
-              "Data Registro": new Date().toLocaleDateString('pt-BR')
-            });
-          });
-          nomeArquivo = `Hyundai_Inventario_Suprimentos_${new Date().toISOString().slice(0, 10)}.xlsx`;
-        }
-
-        if (dadosExportar.length === 0) {
-          alert("Não há dados carregados para exportar no momento.");
-          return;
-        }
-
-        // Geração do arquivo XLSX
-        const worksheet = XLSX.utils.json_to_sheet(dadosExportar);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, tipo === 'embalagens' ? "Embalagens" : "Inventario");
-
-        XLSX.writeFile(workbook, nomeArquivo);
-
-      } catch (err) {
-        console.error("Erro na exportação do Excel:", err);
-        alert("Ocorreu um erro ao gerar a planilha Excel. Consulte o console (F12) para mais detalhes.");
-      }
-    }
-
-    function initEmbalagensDashboardCharts() {
-      new Chart(document.getElementById('chartEmbalagensTipo'), {
+      chartEmbalagensInstance = new Chart(ctxEmbalagens, {
         type: 'bar',
         data: {
-          labels: ['CIEE Azul', 'CIEE Cinza', 'Mubeia', 'Nighterra', 'Bleistahl', 'Purem'],
-          datasets: [{ label: 'Total Físico', data: [500, 350, 240, 100, 85, 60], backgroundColor: '#002C6C', borderRadius: 6 }]
+          labels: ['CIEE Azul', 'CIEE Cinza', 'Mubeia', "Nighterra", 'Outros'],
+          datasets: [{
+            data: [500, 350, 240, 100, 45],
+            backgroundColor: '#002C6C',
+            borderRadius: 6,
+            barThickness: 32
+          }]
         },
-        options: { responsive: true, maintainAspectRatio: false }
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, max: 600, grid: { borderDash: [4, 4], color: '#E2E8F0' }, ticks: { stepSize: 200 } },
+            x: { grid: { display: false } }
+          }
+        }
       });
 
-      new Chart(document.getElementById('chartEvolucaoAcuracidade'), {
-        type: 'line',
-        data: {
-          labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'],
-          datasets: [
-            { label: 'Acuracidade (%)', data: [98.5, 99.1, 97.8, 98.6, 99.0], borderColor: '#16A34A', backgroundColor: 'rgba(22, 163, 74, 0.1)', fill: true, tension: 0.3 },
-            { label: 'Meta (%)', data: [98, 98, 98, 98, 98], borderColor: '#DC2626', borderDash: [5, 5], pointRadius: 0 }
-          ]
-        },
-        options: { responsive: true, maintainAspectRatio: false }
-      });
-    }
+      const ctxInventario = document.getElementById('chartInventarioCategoria').getContext('2d');
+      if (chartInventarioInstance) chartInventarioInstance.destroy();
 
-    function initInventarioHomeCharts() {
-      new Chart(document.getElementById('chartInventarioItens'), {
-        type: 'bar',
-        data: {
-          labels: ['Fita Amarela', 'Etiqueta 100x40', 'Papel A4', 'Fita Crepe', 'Filme PVC'],
-          datasets: [
-            { label: 'Estoque Atual', data: [3, 8, 120, 45, 80], backgroundColor: '#002C6C', borderRadius: 4 },
-            { label: 'Mínimo Exigido', data: [10, 10, 30, 20, 25], backgroundColor: '#DC2626', borderRadius: 4 }
-          ]
-        },
-        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false }
-      });
-
-      new Chart(document.getElementById('chartInventarioCategoria'), {
+      chartInventarioInstance = new Chart(ctxInventario, {
         type: 'doughnut',
         data: {
           labels: ['Fitas', 'Etiquetas', 'Escritório', 'Limpeza', 'Outros'],
-          datasets: [{ data: [35, 25, 20, 10, 10], backgroundColor: ['#002C6C', '#0050B3', '#00AAD2', '#CBD5E1', '#64748B'] }]
+          datasets: [{
+            data: [40, 25, 20, 10, 5],
+            backgroundColor: ['#002C6C', '#1D4ED8', '#64748B', '#94A3B8', '#CBD5E1'],
+            borderWidth: 2,
+            borderColor: '#FFFFFF'
+          }]
         },
-        options: { responsive: true, maintainAspectRatio: false }
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: { boxWidth: 12, padding: 14, font: { size: 13, weight: '500' } }
+            }
+          },
+          cutout: '68%'
+        }
       });
     }
 
-    function abrirDashboard(tipo) {
-      navegarPara('dashboard');
-      document.querySelectorAll('#dashboard .view-section').forEach(sec => sec.classList.remove('active'));
+    function navegarPara(idTela) {
+      document.querySelectorAll(".app-page").forEach(p => p.style.display = "none");
+      const telaAlvo = document.getElementById(idTela);
+      if (telaAlvo) telaAlvo.style.display = "block";
 
-      if (tipo === 'embalagens') {
-        document.getElementById('dashboardTitulo').innerText = 'Painel Analítico de Embalagens';
-        document.getElementById('dashboardSubtitulo').innerText = 'Divergências por fornecedores e acompanhamento de nota fiscal';
-        document.getElementById('relatorioEmbalagensView').classList.add('active');
+      document.querySelectorAll(".sidebar-menu a").forEach(a => a.classList.remove("active"));
+      const activeNav = document.getElementById("nav-" + idTela);
+      if (activeNav) activeNav.classList.add("active");
 
-        if (!chartTop5Embalagens) {
-          chartTop5Embalagens = new Chart(document.getElementById('graficoTop5Embalagens'), {
-            type: 'bar',
-            data: {
-              labels: ['CIEE AZUL - BANDEIJA', 'BLEISTAHL - CAIXA', 'MUBEIA - PALLET', 'PUREM - BANDEIJA', 'VETORE - TAMPA'],
-              datasets: [{ label: 'Qtd. Divergências', data: [12, 8, 5, 4, 2], backgroundColor: '#DC2626', borderRadius: 4 }]
-            },
-            options: { responsive: true, maintainAspectRatio: false }
-          });
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
 
-          chartFluxoSemanal = new Chart(document.getElementById('graficoFluxoSemanal'), {
-            type: 'bar',
-            data: {
-              labels: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'],
-              datasets: [
-                { label: 'Volume NF', data: [1400, 1250, 1310, 1500, 1100], backgroundColor: '#002C6C' },
-                { label: 'Volume Físico', data: [1395, 1250, 1300, 1498, 1100], backgroundColor: '#00AAD2' }
-              ]
-            },
-            options: { responsive: true, maintainAspectRatio: false }
-          });
-        }
-      } else if (tipo === 'inventario') {
-        document.getElementById('dashboardTitulo').innerText = 'Painel Analítico de Inventário e Suprimentos';
-        document.getElementById('dashboardSubtitulo').innerText = 'Níveis de estoque crítico e taxa de utilização mensal';
-        document.getElementById('relatorioInventarioView').classList.add('active');
+    function soma(valor) {
+      if (!valor) return 0;
+      return String(valor).split("+").reduce((total, parte) => total + (Number(parte.trim()) || 0), 0);
+    }
 
-        if (!chartAlertasInventario) {
-          chartAlertasInventario = new Chart(document.getElementById('graficoAlertasInventario'), {
-            type: 'bar',
-            data: {
-              labels: ['Fita Amarela Fina', 'Etiqueta 100x40', 'Papel A4', 'Pano Limpeza', 'Canetão Preto'],
-              datasets: [
-                { label: 'Saldo Atual', data: [3, 8, 12, 5, 2], backgroundColor: '#D97706' },
-                { label: 'Ponto de Pedido', data: [10, 10, 15, 10, 5], backgroundColor: '#64748B' }
-              ]
-            },
-            options: { responsive: true, maintainAspectRatio: false }
-          });
+    function abrirDia() {
+      navegarPara("contagem");
+      document.getElementById("titulo").textContent = dias[dia].nome;
 
-          chartConsumoInventario = new Chart(document.getElementById('graficoConsumoInventario'), {
-            type: 'line',
-            data: {
-              labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
-              datasets: [{ label: 'Consumo Médio (Unidades)', data: [150, 220, 180, 240], borderColor: '#00AAD2', fill: true, backgroundColor: 'rgba(0,170,210,0.1)', tension: 0.3 }]
-            },
-            options: { responsive: true, maintainAspectRatio: false }
-          });
-        }
+      let html = "";
+      dias[dia].campos.forEach((item, i) => {
+        html += `
+          <div class="item-card">
+            <label for="c${i}">${i + 1}. ${item}</label>
+            <input id="c${i}" type="tel" inputmode="numeric" placeholder="Ex: 2+4+7" oninput="calcular(${i})">
+            <div class="total-badge">
+              <span>TOTAL</span>
+              <span id="t${i}">0</span>
+            </div>
+          </div>
+        `;
+      });
+      document.getElementById("campos").innerHTML = html;
+    }
+
+    function calcular(i) {
+      const valor = soma(document.getElementById("c" + i).value);
+      document.getElementById("t" + i).textContent = valor;
+    }
+
+    function abrirNota() {
+      navegarPara("nota");
+      let html = "";
+      dias[dia].campos.forEach((item, i) => {
+        html += `
+          <div class="item-card">
+            <label for="n${i}">${item} - NOTA</label>
+            <input id="n${i}" type="tel" inputmode="numeric" placeholder="Ex: 50+40+20" value="${notasSalvas[i] || ""}" oninput="calcularNota(${i})">
+            <div class="total-badge">
+              <span>TOTAL NOTA</span>
+              <span id="tn${i}">${soma(notasSalvas[i] || "")}</span>
+            </div>
+          </div>
+        `;
+      });
+      document.getElementById("camposNota").innerHTML = html;
+    }
+
+    function calcularNota(i) {
+      const valor = document.getElementById("n" + i).value;
+      notasSalvas[i] = valor;
+      const el = document.getElementById("tn" + i);
+      if (el) el.textContent = soma(valor);
+    }
+
+    function montarDadosDia() {
+      return dias[dia].campos.map((item, i) => {
+        const contagem = soma(document.getElementById("c" + i)?.value || "");
+        const nota = soma(document.getElementById("n" + i)?.value || "");
+        return { item, contagem, nota, diferenca: contagem - nota };
+      });
+    }
+
+    function mostrarResumo() {
+      dias[dia].campos.forEach((_, i) => {
+        notasSalvas[i] = document.getElementById("n" + i)?.value || "";
+      });
+
+      navegarPara("resumo");
+      const dados = montarDadosDia();
+      let html = "";
+
+      dados.forEach(({ item, contagem, nota, diferenca }) => {
+        const ehOk = contagem === nota;
+        const statusText = ehOk ? "CONFERIDO" : "DIVERGÊNCIA";
+        const statusColor = ehOk ? "var(--hyundai-blue)" : "var(--status-danger)";
+
+        html += `
+          <div class="card" style="border-left: 4px solid ${statusColor}; margin-bottom: 0;">
+            <h4 style="color: var(--hyundai-blue); font-size: 14px; margin-bottom: 8px;">${item}</h4>
+            <div style="font-weight: 700; color: ${statusColor}; font-size: 11px; margin-bottom: 10px;">${statusText}</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">
+              <div>Contagem Física: <b>${contagem}</b></div>
+              <div>Nota Fiscal: <b>${nota}</b></div>
+              <div>Diferença: <b>${diferenca}</b></div>
+            </div>
+          </div>
+        `;
+      });
+      document.getElementById("resultado").innerHTML = html;
+    }
+
+    function voltarContagem() { navegarPara("contagem"); }
+
+    async function finalizarDia() {
+      const btn = document.getElementById("btnFinalizar");
+      btn.disabled = true;
+      try {
+        const ultimo = { data: new Date().toLocaleDateString("pt-BR"), itens: montarDadosDia() };
+        const excel = gerarExcelParaEmail(ultimo);
+        
+        await fetch("https://embalagens-api-rho.vercel.app/api/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ data: ultimo.data, itens: ultimo.itens, excel })
+        });
+        
+        alert("Dia Finalizado com sucesso!");
+      } catch (err) {
+        alert("Não foi possível finalizar o dia.");
+      } finally {
+        btn.disabled = false;
       }
     }
 
-    function abrirNota() { navegarPara('nota'); }
-    function voltarContagem() { navegarPara('contagem'); }
-    function mostrarResumo() { navegarPara('resumo'); }
-    
-    function finalizarDia() { 
-      const badge = document.getElementById('statusContagemBadge');
-      badge.className = "badge-status badge-done";
-      badge.innerHTML = `<i class="ph ph-check-circle"></i> CONCLUÍDA`;
-      alert('Contagem diária de embalagens finalizada com sucesso!'); 
-      navegarPara('inicio'); 
+    function gerarExcelParaEmail(diaAtual) {
+      const linhas = diaAtual.itens.map(({ item, contagem, diferenca }) => ({
+        Dia: diaAtual.data, Item: item, Contagem: contagem, Diferença: diferenca === 0 ? "" : diferenca
+      }));
+      const ws = XLSX.utils.json_to_sheet(linhas);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Embalagens");
+      return {
+        nome: "embalagens.xlsx",
+        mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        base64: XLSX.write(wb, { bookType: "xlsx", type: "base64" })
+      };
     }
 
-    function finalizarInventario() { 
-      alert('Inventário de materiais e insumos salvo com sucesso!'); 
-      navegarPara('inicio'); 
+    // =========================================================
+    // BUSCA O HISTÓRICO COMPLETO NO SUPABASE E MONTA COMO A FOTO
+    // Colunas: ID | Data | Item | Contagem | Nota | Diferença
+    // =========================================================
+    async function baixarExcel() {
+      try {
+        const resposta = await fetch("https://embalagens-api-rho.vercel.app/api/export");
+        
+        if (!resposta.ok) throw new Error("Erro ao consultar API");
+
+        const dadosSupabase = await resposta.json();
+
+        // Se a API retornar um array direto ou um objeto com { data: [...] }
+        const listaRegistros = Array.isArray(dadosSupabase) ? dadosSupabase : (dadosSupabase.data || []);
+
+        if (listaRegistros.length === 0) {
+          alert("Nenhum histórico encontrado no Supabase.");
+          return;
+        }
+
+        // Mapeia exatamente igual ao layout do Excel da imagem fornecida
+        const linhasFormatadas = listaRegistros.map(reg => ({
+          "ID": reg.id || "",
+          "Data": reg.data || reg.created_at || "",
+          "Item": reg.item || "",
+          "Contagem": Number(reg.contagem ?? reg.quantidade ?? 0),
+          "Nota": Number(reg.nota ?? 0),
+          "Diferença": Number(reg.diferenca ?? (Number(reg.contagem || 0) - Number(reg.nota || 0)))
+        }));
+
+        // Gera a planilha Excel
+        const ws = XLSX.utils.json_to_sheet(linhasFormatadas);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Historico_Embalagens");
+
+        // Download do arquivo
+        XLSX.writeFile(wb, "Historico_Embalagens_Completo.xlsx");
+
+      } catch (e) {
+        console.error(e);
+        alert("Erro ao baixar o histórico completo do Supabase.");
+      }
     }
-  </script>
+
+    function renderizarCamposInventario() {
+      let html = "";
+      categoriasInventario.forEach((categoria, indiceCategoria) => {
+        html += `<h3 style="margin: 24px 0 12px 0; color: var(--hyundai-blue);">${categoria.categoria}</h3><div class="grid-cards">`;
+        categoria.itens.forEach((item, indiceItem) => {
+          const id = `${indiceCategoria}_${indiceItem}`;
+          html += `
+            <div class="item-card">
+              <label>${item}</label>
+              <input id="inv_${id}" type="tel" inputmode="numeric" placeholder="Ex: 2+4" oninput="calcularEAutoSalvarInventario('${id}')">
+              <div class="total-badge">
+                <span>TOTAL</span>
+                <span id="tinv_${id}">0</span>
+              </div>
+            </div>
+          `;
+        });
+        html += `</div>`;
+      });
+      document.getElementById("camposInventario").innerHTML = html;
+    }
+
+    async function abrirInventario() {
+      navegarPara("inventario");
+      await carregarInventarioDoSupabase();
+    }
+
+    async function carregarInventarioDoSupabase() {
+      try {
+        const res = await fetch("https://embalagens-api-rho.vercel.app/api/inventario");
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.itens) {
+            categoriasInventario.forEach((categoria, indiceCategoria) => {
+              categoria.itens.forEach((item, indiceItem) => {
+                const itemSalvo = data.itens.find(i => i.item === item);
+                if (itemSalvo) {
+                  const id = `${indiceCategoria}_${indiceItem}`;
+                  const input = document.getElementById("inv_" + id);
+                  if (input) {
+                    input.value = itemSalvo.expressao || itemSalvo.quantidade || "";
+                    calcularInventario(id);
+                  }
+                }
+              });
+            });
+          }
+        }
+      } catch (e) {
+        console.log("Pronto para inserções no inventário.");
+      }
+    }
+
+    function calcularInventario(id) {
+      document.getElementById("tinv_" + id).textContent = soma(document.getElementById("inv_" + id).value);
+    }
+
+    function calcularEAutoSalvarInventario(id) {
+      calcularInventario(id);
+      
+      clearTimeout(debounceTimerInventario);
+      debounceTimerInventario = setTimeout(() => {
+        salvarInventarioNoSupabase(false);
+      }, 1000);
+    }
+
+    function voltarInicioInventario() { navegarPara("inicio"); }
+
+    async function salvarInventarioNoSupabase(mostrarAlerta = true) {
+      const inventario = [];
+      categoriasInventario.forEach((categoria, indiceCategoria) => {
+        categoria.itens.forEach((item, indiceItem) => {
+          const id = `${indiceCategoria}_${indiceItem}`;
+          const rawValue = document.getElementById("inv_" + id)?.value || "";
+          inventario.push({ 
+            categoria: categoria.categoria, 
+            item, 
+            expressao: rawValue,
+            quantidade: soma(rawValue) 
+          });
+        });
+      });
+
+      try {
+        await fetch("https://embalagens-api-rho.vercel.app/api/inventario", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ data: new Date().toLocaleDateString("pt-BR"), itens: inventario })
+        });
+        if (mostrarAlerta) alert("Inventário salvo com sucesso no Supabase!");
+      } catch {
+        if (mostrarAlerta) alert("Erro ao salvar o inventário no Supabase.");
+      }
+    }
+
+    function finalizarInventario() {
+      salvarInventarioNoSupabase(true);
+      voltarInicioInventario();
+    }
+
+    function baixarExcelInventario() {
+      const inventario = [];
+      categoriasInventario.forEach((categoria, indiceCategoria) => {
+        categoria.itens.forEach((item, indiceItem) => {
+          const id = `${indiceCategoria}_${indiceItem}`;
+          inventario.push({
+            Categoria: categoria.categoria,
+            Item: item,
+            Quantidade: soma(document.getElementById("inv_" + id)?.value || "0")
+          });
+        });
+      });
+
+      const ws = XLSX.utils.json_to_sheet(inventario);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Inventário");
+      XLSX.writeFile(wb, "Inventario_Materiais.xlsx");
+    }
+
+    function abrirDashboard() {
+      navegarPara("dashboard");
+      
+      const ctx = document.getElementById("graficoTop5").getContext("2d");
+      if (graficoTop5) graficoTop5.destroy();
+
+      graficoTop5 = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: ["Item A", "Item B", "Item C", "Item D", "Item E"],
+          datasets: [{
+            label: "Divergências",
+            data: [12, 8, 5, 4, 2],
+            backgroundColor: "#002C6C",
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true } }
+        }
+      });
+    }
+
+    function fecharDashboard() { navegarPara("inicio"); }
+</script>
 </body>
 </html>

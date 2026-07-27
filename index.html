@@ -1460,91 +1460,91 @@ function calcularTotal(index) {
 
 }
 
+    function calcularTotalNota(index) {
+  const valor = document.getElementById(`nota_${index}`).value || '';
+  const total = valor
+    .split('+')
+    .reduce((acc, curr) => acc + (parseFloat(curr.trim()) || 0), 0);
+
+  document.getElementById(`total_nota_${index}`).innerText = total;
+}
    function abrirNota() {
+  navegarPara('nota');
 
-    navegarPara("nota");
+  const container = document.getElementById('camposNota');
+  container.innerHTML = '';
 
-    const container = document.getElementById("camposNota");
-    container.innerHTML = "";
+  const infoDia = dias[dia] || dias[1];
 
-    const infoDia = dias[dia] || dias[1];
+  infoDia.campos.forEach((campo, index) => {
+    const totalContagem = document.getElementById(`total_${index}`)?.innerText || '0';
 
-    infoDia.campos.forEach((campo, index) => {
+    container.innerHTML += `
+      <div class="item-card">
+        <label>${campo}</label>
 
-        const total = document.getElementById(`total_${index}`).innerText;
+        <div class="total-badge">
+          <span>CONTAGEM</span>
+          <span>${totalContagem}</span>
+        </div>
 
-        container.innerHTML += `
-            <div class="item-card">
+        <input
+          type="text"
+          id="nota_${index}"
+          placeholder="Ex: 5+5"
+          oninput="calcularTotalNota(${index})">
 
-                <label>${campo}</label>
-
-                <div class="total-badge">
-                    <span>CONTAGEM</span>
-                    <span>${total}</span>
-                </div>
-
-                <input
-                    id="nota_${index}"
-                    type="number"
-                    placeholder="Quantidade da Nota Fiscal">
-
-            </div>
-        `;
-    });
-
+        <div class="total-badge">
+          <span>TOTAL NOTA</span>
+          <span id="total_nota_${index}">0</span>
+        </div>
+      </div>
+    `;
+  });
 }
     function voltarContagem() { navegarPara('contagem'); }
    function mostrarResumo() {
+  navegarPara('resumo');
 
-    navegarPara("resumo");
+  const container = document.getElementById('resultado');
+  container.innerHTML = '';
 
-    const container = document.getElementById("resultado");
-    container.innerHTML = "";
+  const infoDia = dias[dia] || dias[1];
 
-    const infoDia = dias[dia] || dias[1];
+  infoDia.campos.forEach((campo, index) => {
+    const contagem = Number(document.getElementById(`total_${index}`)?.innerText || 0);
+    const nota = Number(document.getElementById(`total_nota_${index}`)?.innerText || 0);
+    const diferenca = contagem - nota;
+    const conferido = diferenca === 0;
 
-    infoDia.campos.forEach((campo, index)=>{
+    container.innerHTML += `
+      <div class="item-card ${conferido ? 'card-ok' : 'card-erro'}">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <strong>${campo}</strong>
+          <span class="badge-status ${conferido ? 'badge-done' : 'badge-error'}">
+            ${conferido ? 'CONFERIDO' : 'DIVERGÊNCIA'}
+          </span>
+        </div>
 
-        const fisico = Number(document.getElementById(`total_${index}`).innerText);
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center;">
+          <div class="total-badge">
+            <span>CONTAGEM</span>
+            <span>${contagem}</span>
+          </div>
 
-        const nota = Number(document.getElementById(`nota_${index}`).value || 0);
+          <div class="total-badge">
+            <span>NOTA</span>
+            <span>${nota}</span>
+          </div>
 
-        const diferenca = fisico - nota;
-
-        const status = diferenca === 0
-            ? "✅ Correto"
-            : "❌ Divergente";
-
-        container.innerHTML += `
-
-            <div class="item-card">
-
-                <label>${campo}</label>
-
-                <div class="linha-resumo">
-                    <span>Contagem</span>
-                    <strong>${fisico}</strong>
-                </div>
-
-                <div class="linha-resumo">
-                    <span>Nota Fiscal</span>
-                    <strong>${nota}</strong>
-                </div>
-
-                <div class="linha-resumo">
-                    <span>Diferença</span>
-                    <strong>${diferenca}</strong>
-                </div>
-
-                <div style="margin-top:10px;font-weight:bold;">
-                    ${status}
-                </div>
-
-            </div>
-
-        `;
-    });
-
+          <div class="total-badge">
+            <span>DIFERENÇA</span>
+            <span>${diferenca}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  });
 }
     
     function finalizarDia() { 

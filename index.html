@@ -544,6 +544,15 @@
       gap: 12px;
     }
 
+    .inventory-category { margin-top: 24px; }
+    .inventory-category:first-child { margin-top: 0; }
+    .inventory-category h3 {
+      color: var(--hyundai-blue);
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
     .item-card label {
       font-size: 13px;
       font-weight: 700;
@@ -775,30 +784,21 @@
           </ul>
         </li>
 
-        <!-- Botão Exportar com Menu Suspenso -->
-<div class="dropdown-container" id="dropdown-excel">
-  <button class="btn btn-secondary" onclick="toggleDropdownExcel()">
-     Exportar ▾
-  </button>
-  
-  <div class="dropdown-menu">
-    <a onclick="baixarExcelContagem(); toggleDropdownExcel();">
-       Embalagens (.xlsx)
-    </a>
-    <a onclick="baixarExcelInventario(); toggleDropdownExcel();">
-      Inventário de Materiais (.xlsx)
-    </a>
-  </div>
-</div>
-          
+        <!-- Exportar: mesmo padrão dos demais itens do menu -->
+        <li class="dropdown" id="dropdown-excel">
+          <a onclick="toggleDropdownExcel()" id="nav-exportar">
+            <svg viewBox="0 0 24 24"><path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M5 21h14"/></svg>
+            <span>Exportar</span>
+            <svg class="dropdown-arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
           <ul class="submenu">
-            <li class="submenu-item" onclick="solicitarExportacao('embalagens')">
+            <li class="submenu-item" onclick="baixarExcelContagem(); toggleDropdownExcel();">
               <svg viewBox="0 0 24 24"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-              <span>Embalagens</span>
+              <span>Embalagens (.xlsx)</span>
             </li>
-            <li class="submenu-item" onclick="solicitarExportacao('inventario')">
+            <li class="submenu-item" onclick="baixarExcelInventario(); toggleDropdownExcel();">
               <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
-              <span>Inventário</span>
+              <span>Inventário (.xlsx)</span>
             </li>
           </ul>
         </li>
@@ -1243,7 +1243,12 @@
       document.getElementById(pageId).style.display = 'block';
 
       document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
-      const activeNav = document.getElementById(`nav-${pageId}`);
+      const menuPage = {
+        contagem: 'embalagens',
+        nota: 'embalagens',
+        resumo: 'embalagens'
+      }[pageId] || pageId;
+      const activeNav = document.getElementById(`nav-${menuPage}`);
       if(activeNav) activeNav.classList.add('active');
     }
 
@@ -1453,80 +1458,76 @@ window.addEventListener("click", function(e) {
     function abrirInventario() {
       navegarPara('inventario');
       const container = document.getElementById('camposInventario');
-      container.innerHTML = '';
 
-      categoriasInventario.forEach(cat => {
-        let itemsHtml = cat.itens.map(item => `
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #E2E8F0;">
-            <span style="font-size: 14px; font-weight: 500;">${item}</span>
-            <input type="number" style="width: 100px; padding: 6px; border-radius: 6px; border: 1px solid #CBD5E1;" placeholder="Qtd">
-          </div>
-        `).join('');
+      container.innerHTML = categoriasInventario.map((cat, categoriaIndex) => {
+        const itens = cat.itens.map((item, itemIndex) => {
+          const id = `${categoriaIndex}_${itemIndex}`;
+          return `
+            <div class="item-card">
+              <label>${item}</label>
+              <input type="text" id="inv_${id}" inputmode="numeric" placeholder="Ex: 2+4+6" oninput="calcularTotalInventario('${id}')">
+              <div class="total-badge">
+                <span>TOTAL</span>
+                <span id="total_inv_${id}">0</span>
+              </div>
+            </div>`;
+        }).join('');
 
-        container.innerHTML += `
-          <div class="card" style="margin-top: 16px;">
-            <h3 style="color: var(--hyundai-blue); font-size: 16px; margin-bottom: 12px;">${cat.categoria}</h3>
-            ${itemsHtml}
-          </div>
-        `;
-      });
+        return `
+          <section class="inventory-category">
+            <h3>${cat.categoria}</h3>
+            <div class="grid-cards">${itens}</div>
+          </section>`;
+      }).join('');
+    }
+
+    function calcularTotalInventario(id) {
+      const campo = document.getElementById(`inv_${id}`);
+      const destino = document.getElementById(`total_inv_${id}`);
+      const total = (campo?.value || '').split('+').reduce((soma, parte) => soma + (Number(parte.trim()) || 0), 0);
+      destino.textContent = total;
     }
 
     function finalizarInventario() { alert('Inventário salvo com sucesso!'); navegarPara('inicio'); }
 
     function solicitarExportacao(tipo) {
-      alert(`Exportação do relatório em Excel de ${tipo.toUpperCase()} iniciada!`);
+      return tipo === 'inventario' ? baixarExcelInventario() : baixarExcelContagem();
     }
+
+    async function baixarArquivoHistorico(endpoint, nomeArquivo) {
+      try {
+        const resposta = await fetch(endpoint);
+        if (!resposta.ok) throw new Error(`Erro ao gerar o arquivo (${resposta.status}).`);
+
+        const blob = await resposta.blob();
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = nomeArquivo;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+      } catch (erro) {
+        console.error(erro);
+        alert('Não foi possível exportar o histórico. Tente novamente.');
+      }
+    }
+
+    // Baixa o histórico completo salvo na API, e não apenas os dados da tela atual.
     function baixarExcelContagem() {
-  const dados = typeof montarDadosDia === 'function' ? montarDadosDia() : [];
+      return baixarArquivoHistorico(
+        'https://embalagens-api-rho.vercel.app/api/export',
+        'Historico_Embalagens.xlsx'
+      );
+    }
 
-  if (!dados || dados.length === 0) {
-    alert("Não há dados de contagem para exportar.");
-    return;
-  }
-
-  const linhas = dados.map(item => ({
-    "Data": new Date().toLocaleDateString("pt-BR"),
-    "Item / Embalagem": item.item,
-    "Contagem Física": item.contagem,
-    "Nota Fiscal": item.nota,
-    "Divergência": item.diferenca
-  }));
-
-  const ws = XLSX.utils.json_to_sheet(linhas);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Contagem_Diaria");
-  XLSX.writeFile(wb, `Contagem_Embalagens_${new Date().toLocaleDateString("pt-BR").replace(/\//g, '-')}.xlsx`);
-}
-
-// 4. Exportar Inventário para Excel
-function baixarExcelInventario() {
-  if (typeof categoriasInventario === 'undefined') {
-    alert("Lista de categorias do inventário não encontrada.");
-    return;
-  }
-
-  const inventario = [];
-
-  categoriasInventario.forEach((categoria, indiceCategoria) => {
-    categoria.itens.forEach((item, indiceItem) => {
-      const id = `${indiceCategoria}_${indiceItem}`;
-      const valorCampo = document.getElementById("inv_" + id)?.value || "";
-      
-      inventario.push({
-        "Data": new Date().toLocaleDateString("pt-BR"),
-        "Categoria": categoria.categoria,
-        "Item / Material": item,
-        "Quantidade Contada": typeof soma === 'function' ? soma(valorCampo) : (Number(valorCampo) || 0)
-      });
-    });
-  });
-
-  const ws = XLSX.utils.json_to_sheet(inventario);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Inventario_Materiais");
-  XLSX.writeFile(wb, `Inventario_Materiais_${new Date().toLocaleDateString("pt-BR").replace(/\//g, '-')}.xlsx`);
-}
+    function baixarExcelInventario() {
+      return baixarArquivoHistorico(
+        'https://embalagens-api-rho.vercel.app/api/exportInventario',
+        'Historico_Inventario.xlsx'
+      );
+    }
   </script>
 </body>
 </html>

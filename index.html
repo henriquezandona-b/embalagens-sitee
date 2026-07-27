@@ -295,7 +295,147 @@
     margin-top:25px;
     margin-bottom:10px;
 }
+.resumo-card{
 
+    background:#fff;
+
+    border-radius:12px;
+
+    padding:18px;
+
+    border-left:6px solid #005BAC;
+
+    box-shadow:0 3px 8px rgba(0,0,0,.08);
+
+}
+
+.resumo-card.ok{
+
+    border-left:6px solid #22c55e;
+
+}
+
+.resumo-card.erro{
+
+    border-left:6px solid #ef4444;
+
+    background:#fff5f5;
+
+}
+
+.resumo-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.titulo-resumo{
+
+    font-size:18px;
+
+    font-weight:700;
+
+    color:#002C6C;
+
+}
+
+.status-ok{
+
+    background:#dcfce7;
+
+    color:#15803d;
+
+    padding:6px 12px;
+
+    border-radius:30px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+}
+
+.status-erro{
+
+    background:#fee2e2;
+
+    color:#b91c1c;
+
+    padding:6px 12px;
+
+    border-radius:30px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+}
+
+.linha-resumo{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+}
+
+.bloco-resumo{
+
+    flex:1;
+
+    text-align:center;
+
+    background:#f8fafc;
+
+    border-radius:10px;
+
+    padding:15px;
+
+}
+
+.rotulo-resumo{
+
+    display:block;
+
+    font-size:11px;
+
+    color:#64748b;
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+}
+
+.numero-resumo{
+
+    font-size:28px;
+
+    font-weight:700;
+
+    color:#002C6C;
+
+}
+
+.numero-ok{
+
+    color:#15803d;
+
+}
+
+.numero-erro{
+
+    color:#dc2626;
+
+}
   </style>
 </head>
 <body>
@@ -841,41 +981,68 @@ const categoriasInventario = [
       });
     }
 
-    function mostrarResumo() {
-      dias[dia].campos.forEach((_, i) => {
-        notasSalvas[i] = document.getElementById("n" + i).value;
-      });
+   function mostrarResumo() {
+  navegarPara('resumo');
 
-      document.getElementById("btnDashboard").style.display = "block";
-      document.getElementById("btnExcel").style.display = "none";
-     document.getElementById("inicio").style.display = "none";
-document.getElementById("contagem").style.display = "none";
-document.getElementById("nota").style.display = "none";
-document.getElementById("resumo").style.display = "block";
+  const container = document.getElementById('resultado');
+  container.innerHTML = '';
 
-      const dados = montarDadosDia();
-      let html = "";
+  const infoDia = dias[dia] || dias[1];
 
-      dados.forEach(({ item, contagem, nota, diferenca }) => {
-        const status = contagem === nota ? "✅ CONFERIDO" : "❌ DIVERGÊNCIA";
+  infoDia.campos.forEach((campo, index) => {
 
-        html += `
-          <div class="card">
-            <b>${item}</b>
-            <br><br>
-            <h2>${status}</h2>
-            Contagem: ${contagem}
-            <br>
-            Nota: ${nota}
-            <br>
-            Diferença: ${diferenca}
-          </div>
-        `;
-      });
+    const contagem = Number(document.getElementById(`total_${index}`)?.innerText || 0);
+    const nota = Number(document.getElementById(`total_nota_${index}`)?.innerText || 0);
+    const diferenca = contagem - nota;
 
-      document.getElementById("resultado").innerHTML = html;
-    }
+    const conferido = diferenca === 0;
 
+    container.innerHTML += `
+
+    <div class="resumo-card ${conferido ? 'ok' : 'erro'}">
+
+        <div class="resumo-header">
+
+            <div class="titulo-resumo">
+                ${campo}
+            </div>
+
+            <div class="${conferido ? 'status-ok' : 'status-erro'}">
+                ${conferido ? '✔ CONFERIDO' : '✖ DIVERGÊNCIA'}
+            </div>
+
+        </div>
+
+        <div class="linha-resumo">
+
+            <div class="bloco-resumo">
+                <span class="rotulo-resumo">CONTAGEM</span>
+                <span class="numero-resumo">${contagem}</span>
+            </div>
+
+            <div class="bloco-resumo">
+                <span class="rotulo-resumo">NOTA FISCAL</span>
+                <span class="numero-resumo">${nota}</span>
+            </div>
+
+            <div class="bloco-resumo">
+                <span class="rotulo-resumo">DIFERENÇA</span>
+
+                <span class="numero-resumo ${conferido ? 'numero-ok' : 'numero-erro'}">
+                    ${diferenca}
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    `;
+
+  });
+
+}
     function voltarContagem() {
 
     document.getElementById("btnDashboard").style.display = "none";

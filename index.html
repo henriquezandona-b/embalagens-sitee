@@ -1460,7 +1460,7 @@ function calcularTotal(index) {
 
 }
 
-    function abrirNota() {
+   function abrirNota() {
 
     navegarPara("nota");
 
@@ -1469,46 +1469,83 @@ function calcularTotal(index) {
 
     const infoDia = dias[dia] || dias[1];
 
-    infoDia.campos.forEach((campo,index)=>{
+    infoDia.campos.forEach((campo, index) => {
 
-        const totalContagem =
-            document.getElementById(`total_${index}`)?.innerText || 0;
+        const total = document.getElementById(`total_${index}`).innerText;
 
         container.innerHTML += `
             <div class="item-card">
 
                 <label>${campo}</label>
 
-                <input
-                    type="text"
-                    id="nota_${index}"
-                    placeholder="Ex: 10+5"
-                    oninput="calcularNota(${index})">
-
                 <div class="total-badge">
-
-                    <span>NOTA</span>
-
-                    <span id="totalNota_${index}">0</span>
-
-                </div>
-
-                <div class="total-badge azul">
-
                     <span>CONTAGEM</span>
-
-                    <span>${totalContagem}</span>
-
+                    <span>${total}</span>
                 </div>
+
+                <input
+                    id="nota_${index}"
+                    type="number"
+                    placeholder="Quantidade da Nota Fiscal">
 
             </div>
         `;
-
     });
 
 }
     function voltarContagem() { navegarPara('contagem'); }
-    function mostrarResumo() { navegarPara('resumo'); }
+   function mostrarResumo() {
+
+    navegarPara("resumo");
+
+    const container = document.getElementById("resultado");
+    container.innerHTML = "";
+
+    const infoDia = dias[dia] || dias[1];
+
+    infoDia.campos.forEach((campo, index)=>{
+
+        const fisico = Number(document.getElementById(`total_${index}`).innerText);
+
+        const nota = Number(document.getElementById(`nota_${index}`).value || 0);
+
+        const diferenca = fisico - nota;
+
+        const status = diferenca === 0
+            ? "✅ Correto"
+            : "❌ Divergente";
+
+        container.innerHTML += `
+
+            <div class="item-card">
+
+                <label>${campo}</label>
+
+                <div class="linha-resumo">
+                    <span>Contagem</span>
+                    <strong>${fisico}</strong>
+                </div>
+
+                <div class="linha-resumo">
+                    <span>Nota Fiscal</span>
+                    <strong>${nota}</strong>
+                </div>
+
+                <div class="linha-resumo">
+                    <span>Diferença</span>
+                    <strong>${diferenca}</strong>
+                </div>
+
+                <div style="margin-top:10px;font-weight:bold;">
+                    ${status}
+                </div>
+
+            </div>
+
+        `;
+    });
+
+}
     
     function finalizarDia() { 
       const badge = document.getElementById('statusContagemBadge');

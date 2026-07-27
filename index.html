@@ -1432,17 +1432,81 @@ window.addEventListener("click", function(e) {
       });
     }
 
-    function calcularTotal(index) {
-      const valor = document.getElementById(`campo_${index}`).value;
-      try {
-        const total = valor.split('+').reduce((acc, curr) => acc + (parseFloat(curr) || 0), 0);
+   // Guarda todos os totais da contagem
+let totaisContagem = [];
+
+function calcularTotal(index) {
+
+    const valor = document.getElementById(`campo_${index}`).value;
+
+    try{
+
+        const total = valor
+            .split("+")
+            .reduce((acc,curr)=>acc + (parseFloat(curr)||0),0);
+
         document.getElementById(`total_${index}`).innerText = total;
-      } catch (e) {
+
+        // salva o total
+        totaisContagem[index] = total;
+
+    }
+    catch(e){
+
         document.getElementById(`total_${index}`).innerText = 0;
-      }
+        totaisContagem[index] = 0;
+
     }
 
-    function abrirNota() { navegarPara('nota'); }
+}
+
+    function abrirNota() {
+
+    navegarPara("nota");
+
+    const container = document.getElementById("camposNota");
+    container.innerHTML = "";
+
+    const infoDia = dias[dia] || dias[1];
+
+    infoDia.campos.forEach((campo,index)=>{
+
+        const totalContagem =
+            document.getElementById(`total_${index}`)?.innerText || 0;
+
+        container.innerHTML += `
+            <div class="item-card">
+
+                <label>${campo}</label>
+
+                <input
+                    type="text"
+                    id="nota_${index}"
+                    placeholder="Ex: 10+5"
+                    oninput="calcularNota(${index})">
+
+                <div class="total-badge">
+
+                    <span>NOTA</span>
+
+                    <span id="totalNota_${index}">0</span>
+
+                </div>
+
+                <div class="total-badge azul">
+
+                    <span>CONTAGEM</span>
+
+                    <span>${totalContagem}</span>
+
+                </div>
+
+            </div>
+        `;
+
+    });
+
+}
     function voltarContagem() { navegarPara('contagem'); }
     function mostrarResumo() { navegarPara('resumo'); }
     

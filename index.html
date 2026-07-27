@@ -1750,7 +1750,72 @@ function calcularTotal(index) {
       destino.textContent = total;
     }
 
-    function finalizarInventario() { alert('Inventário salvo com sucesso!'); navegarPara('inicio'); }
+    async function finalizarInventario() {
+
+    const inventario = [];
+
+    categoriasInventario.forEach((categoria, indiceCategoria) => {
+
+        categoria.itens.forEach((item, indiceItem) => {
+
+            const id = `${indiceCategoria}_${indiceItem}`;
+
+            inventario.push({
+
+               categoria: categoria.categoria,
+                item,
+                quantidade: soma(
+                    document.getElementById("inv_" + id).value
+                )
+
+            });
+
+        });
+
+    });
+
+    try{
+
+        const resposta = await fetch(
+            "https://embalagens-api-rho.vercel.app/api/inventario",
+            {
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+
+                    data:new Date().toLocaleDateString("pt-BR"),
+
+                    itens:inventario
+
+                })
+
+            }
+        );
+
+        if(!resposta.ok){
+
+            throw new Error();
+
+        }
+
+        alert("Inventário salvo com sucesso!");
+
+        voltarInicioInventario();
+
+    }
+
+    catch{
+
+        alert("Erro ao salvar o inventário.");
+
+    }
+
+}
 
     function solicitarExportacao(tipo) {
       return tipo === 'inventario' ? baixarExcelInventario() : baixarExcelContagem();

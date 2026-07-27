@@ -837,7 +837,7 @@
           </button>
           <div class="user-profile-badge">
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span>Operação Hyundai</span>
+            <span>Controle de Produção</span>
           </div>
         </div>
       </header>
@@ -979,7 +979,7 @@
         <section id="contagem" class="app-page">
           <div>
             <h2 id="titulo" style="color: var(--hyundai-blue);"></h2>
-            <p style="color: var(--text-secondary); font-size: 14px;">Digite os valores da contagem física (Ex: 2+4+7)</p>
+            <p style="color: var(--text-secondary); font-size: 14px;">Contagem de Embalagens de Fornecedores</p>
           </div>
 
           <div class="grid-cards" id="campos"></div>
@@ -1030,8 +1030,7 @@
           <div id="camposInventario"></div>
 
           <div class="page-footer-actions">
-            <button class="btn btn-secondary" onclick="navegarPara('inicio')">Voltar</button>
-            <button class="btn btn-secondary" onclick="solicitarExportacao('inventario')">Baixar Excel</button>
+  
             <button class="btn btn-accent" onclick="finalizarInventario()">SALVAR INVENTÁRIO</button>
           </div>
         </section>
@@ -1155,32 +1154,32 @@
         nome: "SEGUNDA-FEIRA",
         campos: [
           "MUBEIA - CAIXA", "MUBEIA - PALLET", "MUBEIA - TAMPA", "NIGTERRA - CAIXA",
-          "NIGTERRA - PALLET", "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA",
-          "CIEE AZUL - BANDEIJA (6)", "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
+          "NIGTERRA - PALLET", "CIE AZUL - PALLET", "CIE AZUL - TAMPA",
+          "CIE AZUL - BANDEIJA (6)", "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
         ]
       },
       2: {
         nome: "TERÇA-FEIRA",
         campos: [
           "BLEISTAHL - CAIXA", "BLEISTAHL - PALLET", "BLEISTAHL - TAMPA", "PUREM - CAIXA",
-          "PUREM - BANDEIJA (4)", "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA",
-          "CIEE AZUL - BANDEIJA (6)", "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
+          "PUREM - BANDEIJA (4)", "CIE AZUL - PALLET", "CIE AZUL - TAMPA",
+          "CIE AZUL - BANDEIJA (6)", "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
         ]
       },
       3: {
         nome: "QUARTA-FEIRA",
         campos: [
           "CESTARI - CAIXA", "CESTARI - BANDEIJA (13)", "MALHE - CAIXA", "PROMETAL - CAIXA",
-          "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA", "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
+          "CIE AZUL - PALLET", "CIE AZUL - TAMPA", "CIE AZUL - BANDEIJA (6)",
+          "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
         ]
       },
       4: {
         nome: "QUINTA-FEIRA",
         campos: [
           "PINHA - CAIXA", "MUVIC - CAIXA", "MUVIC - PALLET", "MUVIC - BANDEIJA",
-          "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA", "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
+          "CIE AZUL - PALLET", "CIE AZUL - TAMPA", "CIE AZUL - BANDEIJA (6)",
+          "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
         ]
       },
       5: {
@@ -1188,8 +1187,8 @@
         campos: [
           "BIELA - CAIXA", "BIELA - TAMPA", "BIELA - PALLET", "BIELA - BANDEIJA (2)",
           "VETORE - CAIXA", "VETORE - PALLET", "VETORE - TAMPA", "VETORE - BANDEIJA (5)",
-          "VALEO - CAIXA", "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA", "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
+          "VALEO - CAIXA", "CIE AZUL - PALLET", "CIE AZUL - TAMPA", "CIE AZUL - BANDEIJA (6)",
+          "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
         ]
       }
     };
@@ -1232,7 +1231,7 @@
       if (hr >= 5 && hr < 12) saudacaoTexto = "Bom dia";
       else if (hr >= 12 && hr < 18) saudacaoTexto = "Boa tarde";
       
-      document.getElementById('saudacao').innerText = `${saudacaoTexto}, Operação Hyundai!`;
+      document.getElementById('saudacao').innerText = `${saudacaoTexto} Controle de Produção!`;
 
       initEmbalagensDashboardCharts();
     });
@@ -1299,7 +1298,7 @@ window.addEventListener("click", function(e) {
       new Chart(document.getElementById('chartEmbalagensTipo'), {
         type: 'bar',
         data: {
-          labels: ['CIEE Azul', 'CIEE Cinza', 'Mubeia', 'Nighterra', 'Bleistahl', 'Purem'],
+          labels: ['CIE Azul', 'CIE Cinza', 'Mubeia', 'Nighterra', 'Bleistahl', 'Purem'],
           datasets: [{
             label: 'Total Físico',
             data: [500, 350, 240, 100, 85, 60],
@@ -1363,7 +1362,7 @@ window.addEventListener("click", function(e) {
           chartTop5Embalagens = new Chart(document.getElementById('graficoTop5Embalagens'), {
             type: 'bar',
             data: {
-              labels: ['CIEE AZUL - BANDEIJA', 'BLEISTAHL - CAIXA', 'MUBEIA - PALLET', 'PUREM - BANDEIJA', 'VETORE - TAMPA'],
+              labels: ['CIE AZUL - BANDEIJA', 'BLEISTAHL - CAIXA', 'MUBEIA - PALLET', 'PUREM - BANDEIJA', 'VETORE - TAMPA'],
               datasets: [{ label: 'Qtd. Divergências', data: [12, 8, 5, 4, 2], backgroundColor: '#DC2626', borderRadius: 4 }]
             },
             options: { responsive: true, maintainAspectRatio: false }

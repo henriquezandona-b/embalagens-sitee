@@ -544,6 +544,15 @@
       gap: 12px;
     }
 
+    .inventory-category { margin-top: 24px; }
+    .inventory-category:first-child { margin-top: 0; }
+    .inventory-category h3 {
+      color: var(--hyundai-blue);
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
     .item-card label {
       font-size: 13px;
       font-weight: 700;
@@ -1518,23 +1527,27 @@ window.addEventListener("click", function(e) {
     function abrirInventario() {
       navegarPara('inventario');
       const container = document.getElementById('camposInventario');
-      container.innerHTML = '';
+      container.innerHTML = categoriasInventario.map((categoria, categoriaIndex) => {
+        const itens = categoria.itens.map((item, itemIndex) => {
+          const id = `${categoriaIndex}_${itemIndex}`;
+          return `
+            <div class="item-card">
+              <label>${item}</label>
+              <input type="text" id="inv_${id}" inputmode="numeric" placeholder="Ex: 2+4+6" oninput="calcularTotalInventario('${id}')">
+              <div class="total-badge">
+                <span>TOTAL</span>
+                <span id="total_inv_${id}">0</span>
+              </div>
+            </div>`;
+        }).join('');
+        return `<section class="inventory-category"><h3>${categoria.categoria}</h3><div class="grid-cards">${itens}</div></section>`;
+      }).join('');
+    }
 
-      categoriasInventario.forEach((cat, categoriaIndex) => {
-        let itemsHtml = cat.itens.map((item, itemIndex) => `
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #E2E8F0;">
-            <span style="font-size: 14px; font-weight: 500;">${item}</span>
-            <input type="text" id="inv_${categoriaIndex}_${itemIndex}" inputmode="numeric" style="width: 100px; padding: 6px; border-radius: 6px; border: 1px solid #CBD5E1;" placeholder="Ex: 2+4">
-          </div>
-        `).join('');
-
-        container.innerHTML += `
-          <div class="card" style="margin-top: 16px;">
-            <h3 style="color: var(--hyundai-blue); font-size: 16px; margin-bottom: 12px;">${cat.categoria}</h3>
-            ${itemsHtml}
-          </div>
-        `;
-      });
+    function calcularTotalInventario(id) {
+      const campo = document.getElementById(`inv_${id}`);
+      const total = soma(campo?.value);
+      document.getElementById(`total_inv_${id}`).textContent = total;
     }
 
     async function finalizarInventario() {

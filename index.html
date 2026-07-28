@@ -1738,71 +1738,68 @@
     }
 
     // Função de salvar/finalizar inventário
-    async function finalizarInventario() {
-      const inventario = [];
+   async function finalizarInventario() {
+  console.log("-> Botão de salvar clicado!");
 
-      categoriasInventario.forEach((categoria, indiceCategoria) => {
-        categoria.itens.forEach((item, indiceItem) => {
-          const id = `${indiceCategoria}_${indiceItem}`;
-          const inputEl = document.getElementById("inv_" + id);
-          const valorCampo = inputEl ? inputEl.value : "";
+  // 1. Validação defensiva: verifica se categoriasInventario existe
+  if (typeof categoriasInventario === 'undefined' || !Array.isArray(categoriasInventario)) {
+    alert("Erro crítico: A variável 'categoriasInventario' não foi encontrada!");
+    return;
+  }
 
-          inventario.push({
-            categoria: categoria.categoria,
-            item: item,
-            quantidade: soma(valorCampo)
-          });
-        });
+  const inventario = [];
+
+  // 2. Coleta de dados
+  categoriasInventario.forEach((categoria, indiceCategoria) => {
+    categoria.itens.forEach((item, indiceItem) => {
+      const id = `${indiceCategoria}_${indiceItem}`;
+      const inputEl = document.getElementById("inv_" + id);
+      const valorCampo = inputEl ? inputEl.value : "";
+
+      inventario.push({
+        categoria: categoria.categoria,
+        item: item,
+        quantidade: typeof soma === 'function' ? soma(valorCampo) : Number(valorCampo) || 0
       });
+    });
+  });
 
-      try {
-        const resposta = await fetch(
-          "https://embalagens-api-rho.vercel.app/api/inventario",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              data: new Date().toLocaleDateString("pt-BR"),
-              itens: inventario
-            })
-          }
-        );
+  const payload = {
+    data: new Date().toLocaleDateString("pt-BR"),
+    itens: inventario
+  };
 
-        if (!resposta.ok) {
-          throw new Error(`Erro na API: ${resposta.status}`);
-        }
+  console.log("-> Payload pronto para envio:", payload);
 
-        alert("Inventário salvo com sucesso!");
-        navegarPara('inicio');
-
-      } catch (erro) {
-        console.error("Erro ao salvar inventário:", erro);
-        alert("Erro ao salvar o inventário.");
+  // 3. Envio para a API
+  try {
+    const resposta = await fetch(
+      "https://embalagens-api-rho.vercel.app/api/inventario",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
       }
+    );
+
+    console.log("-> Status da resposta da API:", resposta.status);
+
+    if (!resposta.ok) {
+      const textoErro = await resposta.text();
+      alert(`A API recusou o envio (Status ${resposta.status}).\n\nDetalhe do servidor: ${textoErro}`);
+      return;
     }
 
-    // Função para download de arquivos de histórico da API
-    async function baixarArquivoHistorico(endpoint, nomeArquivo) {
-      try {
-        const resposta = await fetch(endpoint);
-        if (!resposta.ok) throw new Error(`Erro API: ${resposta.status}`);
+    alert("Inventário salvo com sucesso!");
+    navegarPara('inicio');
 
-        const blob = await resposta.blob();
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = nomeArquivo;
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        URL.revokeObjectURL(url);
-      } catch (erro) {
-        console.error(erro);
-        alert('Não foi possível exportar o arquivo. Tente novamente.');
-      }
-    }
+  } catch (erro) {
+    console.error("-> Erro na chamada Fetch:", erro);
+    alert(`Erro de conexão/CORS ao tentar salvar.\n\nDetalhes: ${erro.message}`);
+  }
+}
 
     function baixarExcelContagem() {
       return baixarArquivoHistorico(

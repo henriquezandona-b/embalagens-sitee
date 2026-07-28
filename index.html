@@ -1381,7 +1381,8 @@
     // NAVIGATION
     function navegarPara(pageId) {
       document.querySelectorAll('.app-page').forEach(page => page.style.display = 'none');
-      document.getElementById(pageId).style.display = 'block';
+      const target = document.getElementById(pageId);
+      if (target) target.style.display = 'block';
 
       document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
       const menuPage = {
@@ -1400,19 +1401,22 @@
     }
 
     function toggleDropdownExcel() {
-  const dropdown = document.getElementById("dropdown-excel");
-  if (dropdown) {
-    dropdown.classList.toggle("open");
-  }
-}
-window.addEventListener("click", function(e) {
-  const dropdown = document.getElementById("dropdown-excel");
-  if (dropdown && !dropdown.contains(e.target)) {
-    dropdown.classList.remove("open");
-  }
-});
+      const dropdown = document.getElementById("dropdown-excel");
+      if (dropdown) {
+        dropdown.classList.toggle("open");
+      }
+    }
+
+    window.addEventListener("click", function(e) {
+      const dropdown = document.getElementById("dropdown-excel");
+      if (dropdown && !dropdown.contains(e.target)) {
+        dropdown.classList.remove("open");
+      }
+    });
+
     function toggleDropdownRelatorios() {
-      document.getElementById("dropdown-relatorios").classList.toggle("open");
+      const dropdown = document.getElementById("dropdown-relatorios");
+      if (dropdown) dropdown.classList.toggle("open");
     }
 
     // CONTROLE DE MÓDULOS NA HOME
@@ -1437,57 +1441,69 @@ window.addEventListener("click", function(e) {
 
     // CARREGAMENTO DOS GRÁFICOS INICIAIS
     function initEmbalagensDashboardCharts() {
-      new Chart(document.getElementById('chartEmbalagensTipo'), {
-        type: 'bar',
-        data: {
-          labels: ['CIE Azul', 'CIE Cinza', 'Mubeia', 'Nighterra', 'Bleistahl', 'Purem'],
-          datasets: [{
-            label: 'Total Físico',
-            data: [500, 350, 240, 100, 85, 60],
-            backgroundColor: '#002C6C',
-            borderRadius: 6
-          }]
-        },
-        options: { responsive: true, maintainAspectRatio: false }
-      });
+      const el1 = document.getElementById('chartEmbalagensTipo');
+      if (el1) {
+        new Chart(el1, {
+          type: 'bar',
+          data: {
+            labels: ['CIE Azul', 'CIE Cinza', 'Mubeia', 'Nighterra', 'Bleistahl', 'Purem'],
+            datasets: [{
+              label: 'Total Físico',
+              data: [500, 350, 240, 100, 85, 60],
+              backgroundColor: '#002C6C',
+              borderRadius: 6
+            }]
+          },
+          options: { responsive: true, maintainAspectRatio: false }
+        });
+      }
 
-      new Chart(document.getElementById('chartEvolucaoAcuracidade'), {
-        type: 'line',
-        data: {
-          labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'],
-          datasets: [
-            { label: 'Acuracidade (%)', data: [98.5, 99.1, 97.8, 98.6, 99.0], borderColor: '#16A34A', backgroundColor: 'rgba(22, 163, 74, 0.1)', fill: true, tension: 0.3 },
-            { label: 'Meta (%)', data: [98, 98, 98, 98, 98], borderColor: '#DC2626', borderDash: [5, 5], pointRadius: 0 }
-          ]
-        },
-        options: { responsive: true, maintainAspectRatio: false }
-      });
+      const el2 = document.getElementById('chartEvolucaoAcuracidade');
+      if (el2) {
+        new Chart(el2, {
+          type: 'line',
+          data: {
+            labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'],
+            datasets: [
+              { label: 'Acuracidade (%)', data: [98.5, 99.1, 97.8, 98.6, 99.0], borderColor: '#16A34A', backgroundColor: 'rgba(22, 163, 74, 0.1)', fill: true, tension: 0.3 },
+              { label: 'Meta (%)', data: [98, 98, 98, 98, 98], borderColor: '#DC2626', borderDash: [5, 5], pointRadius: 0 }
+            ]
+          },
+          options: { responsive: true, maintainAspectRatio: false }
+        });
+      }
     }
 
     function initInventarioHomeCharts() {
-      new Chart(document.getElementById('chartInventarioItens'), {
-        type: 'bar',
-        data: {
-          labels: ['Fita Amarela', 'Etiqueta 100x40', 'Papel A4', 'Fita Crepe', 'Filme PVC'],
-          datasets: [
-            { label: 'Estoque Atual', data: [3, 8, 120, 45, 80], backgroundColor: '#002C6C', borderRadius: 4 },
-            { label: 'Mínimo Exigido', data: [10, 10, 30, 20, 25], backgroundColor: '#DC2626', borderRadius: 4 }
-          ]
-        },
-        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false }
-      });
+      const el1 = document.getElementById('chartInventarioItens');
+      if (el1) {
+        new Chart(el1, {
+          type: 'bar',
+          data: {
+            labels: ['Fita Amarela', 'Etiqueta 100x40', 'Papel A4', 'Fita Crepe', 'Filme PVC'],
+            datasets: [
+              { label: 'Estoque Atual', data: [3, 8, 120, 45, 80], backgroundColor: '#002C6C', borderRadius: 4 },
+              { label: 'Mínimo Exigido', data: [10, 10, 30, 20, 25], backgroundColor: '#DC2626', borderRadius: 4 }
+            ]
+          },
+          options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false }
+        });
+      }
 
-      new Chart(document.getElementById('chartInventarioCategoria'), {
-        type: 'doughnut',
-        data: {
-          labels: ['Fitas', 'Etiquetas', 'Escritório', 'Limpeza', 'Outros'],
-          datasets: [{
-            data: [35, 25, 20, 10, 10],
-            backgroundColor: ['#002C6C', '#0050B3', '#00AAD2', '#CBD5E1', '#64748B']
-          }]
-        },
-        options: { responsive: true, maintainAspectRatio: false }
-      });
+      const el2 = document.getElementById('chartInventarioCategoria');
+      if (el2) {
+        new Chart(el2, {
+          type: 'doughnut',
+          data: {
+            labels: ['Fitas', 'Etiquetas', 'Escritório', 'Limpeza', 'Outros'],
+            datasets: [{
+              data: [35, 25, 20, 10, 10],
+              backgroundColor: ['#002C6C', '#0050B3', '#00AAD2', '#CBD5E1', '#64748B']
+            }]
+          },
+          options: { responsive: true, maintainAspectRatio: false }
+        });
+      }
     }
 
     // AÇÕES DE RELATÓRIOS (DASHBOARD ESPECÍFICO)
@@ -1574,145 +1590,108 @@ window.addEventListener("click", function(e) {
       });
     }
 
-   // Guarda todos os totais da contagem
-let totaisContagem = [];
+    let totaisContagem = [];
 
-function calcularTotal(index) {
+    function calcularTotal(index) {
+      const valor = document.getElementById(`campo_${index}`)?.value || '';
 
-    const valor = document.getElementById(`campo_${index}`).value;
-
-    try{
-
-        const total = valor
-            .split("+")
-            .reduce((acc,curr)=>acc + (parseFloat(curr)||0),0);
-
+      try {
+        const total = soma(valor);
         document.getElementById(`total_${index}`).innerText = total;
-
-        // salva o total
         totaisContagem[index] = total;
-
-    }
-    catch(e){
-
+      } catch(e) {
         document.getElementById(`total_${index}`).innerText = 0;
         totaisContagem[index] = 0;
-
+      }
     }
 
-}
-
     function calcularTotalNota(index) {
-  const valor = document.getElementById(`nota_${index}`).value || '';
-  const total = valor
-    .split('+')
-    .reduce((acc, curr) => acc + (parseFloat(curr.trim()) || 0), 0);
+      const valor = document.getElementById(`nota_${index}`)?.value || '';
+      const total = soma(valor);
+      document.getElementById(`total_nota_${index}`).innerText = total;
+    }
 
-  document.getElementById(`total_nota_${index}`).innerText = total;
-}
-   function abrirNota() {
-  navegarPara('nota');
+    function abrirNota() {
+      navegarPara('nota');
+      const container = document.getElementById('camposNota');
+      container.innerHTML = '';
 
-  const container = document.getElementById('camposNota');
-  container.innerHTML = '';
+      const infoDia = dias[dia] || dias[1];
 
-  const infoDia = dias[dia] || dias[1];
+      infoDia.campos.forEach((campo, index) => {
+        const totalContagem = document.getElementById(`total_${index}`)?.innerText || '0';
 
-  infoDia.campos.forEach((campo, index) => {
-    const totalContagem = document.getElementById(`total_${index}`)?.innerText || '0';
+        container.innerHTML += `
+          <div class="item-card">
+            <label>${campo}</label>
+            <div class="total-badge">
+              <span>CONTAGEM</span>
+              <span>${totalContagem}</span>
+            </div>
+            <input
+              type="text"
+              id="nota_${index}"
+              placeholder="Ex: 5+5"
+              oninput="calcularTotalNota(${index})">
+            <div class="total-badge">
+              <span>TOTAL NOTA</span>
+              <span id="total_nota_${index}">0</span>
+            </div>
+          </div>
+        `;
+      });
+    }
 
-    container.innerHTML += `
-      <div class="item-card">
-        <label>${campo}</label>
-
-        <div class="total-badge">
-          <span>CONTAGEM</span>
-          <span>${totalContagem}</span>
-        </div>
-
-        <input
-          type="text"
-          id="nota_${index}"
-          placeholder="Ex: 5+5"
-          oninput="calcularTotalNota(${index})">
-
-        <div class="total-badge">
-          <span>TOTAL NOTA</span>
-          <span id="total_nota_${index}">0</span>
-        </div>
-      </div>
-    `;
-  });
-}
     function voltarContagem() { navegarPara('contagem'); }
- 
+
     function mostrarResumo() {
-  navegarPara('resumo');
+      navegarPara('resumo');
+      const container = document.getElementById('resultado');
+      container.innerHTML = '';
 
-  const container = document.getElementById('resultado');
-  container.innerHTML = '';
+      const infoDia = dias[dia] || dias[1];
 
-  const infoDia = dias[dia] || dias[1];
+      infoDia.campos.forEach((campo, index) => {
+        const contagem = Number(document.getElementById(`total_${index}`)?.innerText || 0);
+        const nota = Number(document.getElementById(`total_nota_${index}`)?.innerText || 0);
+        const diferenca = contagem - nota;
+        const conferido = diferenca === 0;
 
-  infoDia.campos.forEach((campo, index) => {
-
-    const contagem = Number(document.getElementById(`total_${index}`)?.innerText || 0);
-    const nota = Number(document.getElementById(`total_nota_${index}`)?.innerText || 0);
-    const diferenca = contagem - nota;
-
-    const conferido = diferenca === 0;
-
-    container.innerHTML += `
-
-    <div class="resumo-card ${conferido ? 'ok' : 'erro'}">
-
-        <div class="resumo-header">
-
-            <div class="titulo-resumo">
-                ${campo}
+        container.innerHTML += `
+        <div class="resumo-card ${conferido ? 'ok' : 'erro'}">
+            <div class="resumo-header">
+                <div class="titulo-resumo">${campo}</div>
+                <div class="${conferido ? 'status-ok' : 'status-erro'}">
+                    ${conferido ? '✔ CONFERIDO' : '✖ DIVERGÊNCIA'}
+                </div>
             </div>
-
-            <div class="${conferido ? 'status-ok' : 'status-erro'}">
-                ${conferido ? '✔ CONFERIDO' : '✖ DIVERGÊNCIA'}
+            <div class="linha-resumo">
+                <div class="bloco-resumo">
+                    <span class="rotulo-resumo">CONTAGEM</span>
+                    <span class="numero-resumo">${contagem}</span>
+                </div>
+                <div class="bloco-resumo">
+                    <span class="rotulo-resumo">NOTA FISCAL</span>
+                    <span class="numero-resumo">${nota}</span>
+                </div>
+                <div class="bloco-resumo">
+                    <span class="rotulo-resumo">DIFERENÇA</span>
+                    <span class="numero-resumo ${conferido ? 'numero-ok' : 'numero-erro'}">
+                        ${diferenca}
+                    </span>
+                </div>
             </div>
-
         </div>
+        `;
+      });
+    }
 
-        <div class="linha-resumo">
-
-            <div class="bloco-resumo">
-                <span class="rotulo-resumo">CONTAGEM</span>
-                <span class="numero-resumo">${contagem}</span>
-            </div>
-
-            <div class="bloco-resumo">
-                <span class="rotulo-resumo">NOTA FISCAL</span>
-                <span class="numero-resumo">${nota}</span>
-            </div>
-
-            <div class="bloco-resumo">
-                <span class="rotulo-resumo">DIFERENÇA</span>
-
-                <span class="numero-resumo ${conferido ? 'numero-ok' : 'numero-erro'}">
-                    ${diferenca}
-                </span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    `;
-
-  });
-
-}
-    
     function finalizarDia() { 
       const badge = document.getElementById('statusContagemBadge');
-      badge.className = "badge-status badge-done";
-      badge.innerHTML = `<i class="ph ph-check-circle"></i> CONCLUÍDA`;
+      if (badge) {
+        badge.className = "badge-status badge-done";
+        badge.innerHTML = `<i class="ph ph-check-circle"></i> CONCLUÍDA`;
+      }
       alert('Contagem diária finalizada com sucesso!'); 
       navegarPara('inicio'); 
     }
@@ -1746,85 +1725,69 @@ function calcularTotal(index) {
     function calcularTotalInventario(id) {
       const campo = document.getElementById(`inv_${id}`);
       const destino = document.getElementById(`total_inv_${id}`);
-      const total = (campo?.value || '').split('+').reduce((soma, parte) => soma + (Number(parte.trim()) || 0), 0);
-      destino.textContent = total;
+      const total = soma(campo?.value);
+      if (destino) destino.textContent = total;
     }
 
+    // Função auxiliar para processar somas de expressões ("2+4+6")
+    function soma(expressao) {
+      if (!expressao) return 0;
+      return String(expressao)
+        .split("+")
+        .reduce((acc, curr) => acc + (parseFloat(curr.trim()) || 0), 0);
+    }
+
+    // Função de salvar/finalizar inventário
     async function finalizarInventario() {
+      const inventario = [];
 
-    const inventario = [];
-
-    categoriasInventario.forEach((categoria, indiceCategoria) => {
-
+      categoriasInventario.forEach((categoria, indiceCategoria) => {
         categoria.itens.forEach((item, indiceItem) => {
+          const id = `${indiceCategoria}_${indiceItem}`;
+          const inputEl = document.getElementById("inv_" + id);
+          const valorCampo = inputEl ? inputEl.value : "";
 
-            const id = `${indiceCategoria}_${indiceItem}`;
-
-            inventario.push({
-
-               categoria: categoria.categoria,
-                item,
-                quantidade: soma(
-                    document.getElementById("inv_" + id).value
-                )
-
-            });
-
+          inventario.push({
+            categoria: categoria.categoria,
+            item: item,
+            quantidade: soma(valorCampo)
+          });
         });
+      });
 
-    });
-
-    try{
-
+      try {
         const resposta = await fetch(
-            "https://embalagens-api-rho.vercel.app/api/inventario",
-            {
-
-                method:"POST",
-
-                headers:{
-                    "Content-Type":"application/json"
-                },
-
-                body:JSON.stringify({
-
-                    data:new Date().toLocaleDateString("pt-BR"),
-
-                    itens:inventario
-
-                })
-
-            }
+          "https://embalagens-api-rho.vercel.app/api/inventario",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              data: new Date().toLocaleDateString("pt-BR"),
+              itens: inventario
+            })
+          }
         );
 
-        if(!resposta.ok){
-
-            throw new Error();
-
+        if (!resposta.ok) {
+          throw new Error(`Erro na API: ${resposta.status}`);
         }
 
         alert("Inventário salvo com sucesso!");
+        navegarPara('inicio');
 
-        voltarInicioInventario();
-
-    }
-
-    catch{
-
+      } catch (erro) {
+        console.error("Erro ao salvar inventário:", erro);
         alert("Erro ao salvar o inventário.");
-
+      }
     }
 
-}
-
-    function solicitarExportacao(tipo) {
-      return tipo === 'inventario' ? baixarExcelInventario() : baixarExcelContagem();
-    }
-
+    // Função para download de arquivos de histórico da API
     async function baixarArquivoHistorico(endpoint, nomeArquivo) {
       try {
         const resposta = await fetch(endpoint);
-        if (!resposta.ok) throw new Error(`Erro ao gerar o arquivo (${resposta.status}).`);
+        if (!resposta.ok) throw new Error(`Erro API: ${resposta.status}`);
 
         const blob = await resposta.blob();
         const url = URL.createObjectURL(blob);
@@ -1837,11 +1800,10 @@ function calcularTotal(index) {
         URL.revokeObjectURL(url);
       } catch (erro) {
         console.error(erro);
-        alert('Não foi possível exportar o histórico. Tente novamente.');
+        alert('Não foi possível exportar o arquivo. Tente novamente.');
       }
     }
 
-    // Baixa o histórico completo salvo na API, e não apenas os dados da tela atual.
     function baixarExcelContagem() {
       return baixarArquivoHistorico(
         'https://embalagens-api-rho.vercel.app/api/export',
@@ -1855,6 +1817,6 @@ function calcularTotal(index) {
         'Historico_Inventario.xlsx'
       );
     }
-  </script>
+</script>
 </body>
 </html>

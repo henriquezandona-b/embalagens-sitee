@@ -1801,17 +1801,13 @@
   }
 }
 
-    function baixarExcelContagem() {
-      return baixarArquivoHistorico(
-        'https://embalagens-api-rho.vercel.app/api/export',
-        'Historico_Embalagens.xlsx'
-      );
-    }
+   function baixarExcelContagem() {
+  window.open('https://embalagens-api-rho.vercel.app/api/export', '_blank');
+}
 
-    function baixarExcelInventario() {
-      return baixarArquivoHistorico(
-        'https://embalagens-api-rho.vercel.app/api/exportInventario',
-        'Historico_Inventario.xlsx'
+function baixarExcelInventario() {
+  window.open('https://embalagens-api-rho.vercel.app/api/exportInventario', '_blank');
+}
       );
     }
 </script>

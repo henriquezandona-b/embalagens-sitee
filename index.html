@@ -726,6 +726,31 @@
       .content-area { padding: 20px; margin-bottom: 70px; }
       .charts-grid { grid-template-columns: 1fr; }
     }
+
+    .btn-plus {
+  background-color: #002C6C;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  width: 46px;
+  height: 46px;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.btn-plus:hover {
+  background-color: #001E4B;
+}
+
+.btn-plus:active {
+  transform: scale(0.95);
+}
   </style>
 </head>
 <body>
@@ -1438,13 +1463,21 @@ window.addEventListener("click", function(e) {
     container.innerHTML += `
       <div class="item-card">
         <label>${campo}</label>
-        <input 
-          type="text" 
-          id="campo_${index}" 
-          inputmode="decimal" 
-          pattern="[0-9+*-/]*" 
-          placeholder="Ex: 5+5" 
-          oninput="calcularTotal(${index})">
+        
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <input 
+            type="text" 
+            id="campo_${index}" 
+            inputmode="decimal" 
+            placeholder="Ex: 5+5" 
+            oninput="calcularTotal(${index})">
+          
+          <button 
+            type="button" 
+            class="btn-plus" 
+            onclick="inserirSinalMais('campo_${index}', ${index})">+</button>
+        </div>
+
         <div class="total-badge">
           <span>TOTAL</span>
           <span id="total_${index}">0</span>
@@ -1558,13 +1591,21 @@ window.addEventListener("click", function(e) {
       return `
         <div class="item-card">
           <label>${item}</label>
-          <input 
-            type="text" 
-            id="inv_${id}" 
-            inputmode="decimal" 
-            pattern="[0-9+*-/]*" 
-            placeholder="Ex: 2+4+6" 
-            oninput="calcularTotalInventario('${id}')">
+          
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <input 
+              type="text" 
+              id="inv_${id}" 
+              inputmode="decimal" 
+              placeholder="Ex: 2+4+6" 
+              oninput="calcularTotalInventario('${id}')">
+            
+            <button 
+              type="button" 
+              class="btn-plus" 
+              onclick="inserirSinalMais('inv_${id}', '${id}', true)">+</button>
+          </div>
+
           <div class="total-badge">
             <span>TOTAL</span>
             <span id="total_inv_${id}">0</span>
@@ -1573,6 +1614,25 @@ window.addEventListener("click", function(e) {
     }).join('');
     return `<section class="inventory-category"><h3>${categoria.categoria}</h3><div class="grid-cards">${itens}</div></section>`;
   }).join('');
+}
+
+function inserirSinalMais(inputId, idCalculo, isInventario = false) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+
+  const valor = input.value.trim();
+  // Só adiciona o '+' se o campo não estiver vazio e se já não terminar com '+'
+  if (valor !== '' && !valor.endsWith('+')) {
+    input.value = valor + '+';
+  }
+  input.focus();
+
+  // Recalcular
+  if (isInventario) {
+    calcularTotalInventario(idCalculo);
+  } else {
+    calcularTotal(idCalculo);
+  }
 }
 
     function calcularTotalInventario(id) {

@@ -1513,16 +1513,38 @@ window.addEventListener("click", function(e) {
     }
 
     function abrirNota() {
-      const infoDia = dias[dia] || dias[1];
-      const container = document.getElementById('camposNota');
-      container.innerHTML = infoDia.campos.map((campo, index) => `
-        <div class="item-card">
-          <label>${campo} · Nota fiscal</label>
-          <input type="text" id="nota_${index}" inputmode="numeric" placeholder="Ex: 5+5" value="${notasSalvas[index] || ''}" oninput="calcularNota(${index})">
-          <div class="total-badge"><span>TOTAL NOTA</span><span id="total_nota_${index}">${soma(notasSalvas[index])}</span></div>
-        </div>`).join('');
-      navegarPara('nota');
-    }
+  navegarPara('nota');
+  const container = document.getElementById('camposNota'); // Certifique-se de que o ID do container é este
+  if (!container) return;
+  
+  container.innerHTML = '';
+  const infoDia = dias[dia] || dias[1];
+  document.getElementById('tituloNota').innerText = `Notas - ${infoDia.nome}`;
+
+  infoDia.campos.forEach((campo, index) => {
+    container.innerHTML += `
+      <div class="item-card">
+        <label>${campo}</label>
+        <div class="input-calc-group">
+          <input 
+            type="text" 
+            id="nota_campo_${index}" 
+            inputmode="tel" 
+            placeholder="Ex: 5+5" 
+            oninput="calcularTotalNota(${index})">
+          <button 
+            type="button" 
+            class="btn-mais" 
+            onclick="adicionarSinalMais('nota_campo_${index}', ${index}, false, 'nota')">+</button>
+        </div>
+        <div class="total-badge">
+          <span>TOTAL</span>
+          <span id="total_nota_${index}">0</span>
+        </div>
+      </div>
+    `;
+  });
+}
 
     function calcularNota(index) {
       const valor = document.getElementById(`nota_${index}`).value;
@@ -1611,7 +1633,7 @@ window.addEventListener("click", function(e) {
     return `<section class="inventory-category"><h3>${categoria.categoria}</h3><div class="grid-cards">${itens}</div></section>`;
   }).join('');
 }
-function adicionarSinalMais(inputId, idCalculo, isInventario = false) {
+function adicionarSinalMais(inputId, idCalculo, isInventario = false, tipo = 'contagem') {
   const input = document.getElementById(inputId);
   if (!input) return;
 
@@ -1621,10 +1643,13 @@ function adicionarSinalMais(inputId, idCalculo, isInventario = false) {
   }
   input.focus();
 
-  if (isInventario) {
-    calcularTotalInventario(idCalculo);
+  // Executa o cálculo correto dependendo da tela
+  if (tipo === 'nota') {
+    if (typeof calcularTotalNota === 'function') calcularTotalNota(idCalculo);
+  } else if (isInventario) {
+    if (typeof calcularTotalInventario === 'function') calcularTotalInventario(idCalculo);
   } else {
-    calcularTotal(idCalculo);
+    if (typeof calcularTotal === 'function') calcularTotal(idCalculo);
   }
 }
     function calcularTotalInventario(id) {

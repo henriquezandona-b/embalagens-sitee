@@ -1230,23 +1230,42 @@
       
       const hr = hoje.getHours();
       let saudacaoTexto = "Boa noite";
-      if (hr >= 5 && hr < 12) saudacaoTexto = "Bom dia";
-      else if (hr >= 12 && hr < 18) saudacaoTexto = "Boa tarde";
+      if (hr >= 5 && hr < 12) saudacaoTexto = "Bom dia!";
+      else if (hr >= 12 && hr < 18) saudacaoTexto = "Boa tarde!";
       
-      document.getElementById('saudacao').innerText = `${saudacaoTexto}, Operação Hyundai!`;
+      document.getElementById('saudacao').innerText = `${saudacaoTexto}`;
 
       initEmbalagensDashboardCharts();
     });
 
     // NAVIGATION
     function navegarPara(pageId) {
-      document.querySelectorAll('.app-page').forEach(page => page.style.display = 'none');
-      document.getElementById(pageId).style.display = 'block';
+  // 1. Esconde todas as páginas e exibe a tela selecionada
+  document.querySelectorAll('.app-page').forEach(page => page.style.display = 'none');
+  const target = document.getElementById(pageId);
+  if (target) target.style.display = 'block';
 
-      document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
-      const activeNav = document.getElementById(`nav-${pageId}`);
-      if(activeNav) activeNav.classList.add('active');
-    }
+  // 2. Remove a classe 'active' de TODOS os botões da barra lateral
+  document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+
+  // 3. Mapeamento de telas para o botão correspondente da barra lateral
+  const mapNav = {
+    'inicio': 'nav-inicio',
+    'embalagens': 'nav-embalagens',
+    'contagem': 'nav-embalagens',
+    'nota': 'nav-embalagens',
+    'resumo': 'nav-embalagens',
+    'inventario': 'nav-inventario',
+    'dashboard': 'nav-relatorios'
+  };
+
+  const activeId = mapNav[pageId] || `nav-${pageId}`;
+  const activeNav = document.getElementById(activeId);
+  
+  if (activeNav) {
+    activeNav.classList.add('active');
+  }
+}
 
     // SIDEBAR & DROPDOWNS
     function toggleSidebar() {
@@ -1408,26 +1427,32 @@ window.addEventListener("click", function(e) {
     }
 
     // CONTAGEM DIÁRIA E PROCESSOS
-    function abrirDia() {
-      navegarPara('contagem');
-      const container = document.getElementById('campos');
-      container.innerHTML = '';
-      const infoDia = dias[dia] || dias[1];
-      document.getElementById('titulo').innerText = `Contagem - ${infoDia.nome}`;
+   function abrirDia() {
+  navegarPara('contagem');
+  const container = document.getElementById('campos');
+  container.innerHTML = '';
+  const infoDia = dias[dia] || dias[1];
+  document.getElementById('titulo').innerText = `Contagem - ${infoDia.nome}`;
 
-      infoDia.campos.forEach((campo, index) => {
-        container.innerHTML += `
-          <div class="item-card">
-            <label>${campo}</label>
-            <input type="text" id="campo_${index}" placeholder="Ex: 5+5" oninput="calcularTotal(${index})">
-            <div class="total-badge">
-              <span>TOTAL</span>
-              <span id="total_${index}">0</span>
-            </div>
-          </div>
-        `;
-      });
-    }
+  infoDia.campos.forEach((campo, index) => {
+    container.innerHTML += `
+      <div class="item-card">
+        <label>${campo}</label>
+        <input 
+          type="text" 
+          id="campo_${index}" 
+          inputmode="decimal" 
+          pattern="[0-9+*-/]*" 
+          placeholder="Ex: 5+5" 
+          oninput="calcularTotal(${index})">
+        <div class="total-badge">
+          <span>TOTAL</span>
+          <span id="total_${index}">0</span>
+        </div>
+      </div>
+    `;
+  });
+}
 
     function calcularTotal(index) {
       const valor = document.getElementById(`campo_${index}`).value;
@@ -1525,24 +1550,30 @@ window.addEventListener("click", function(e) {
     }
 
     function abrirInventario() {
-      navegarPara('inventario');
-      const container = document.getElementById('camposInventario');
-      container.innerHTML = categoriasInventario.map((categoria, categoriaIndex) => {
-        const itens = categoria.itens.map((item, itemIndex) => {
-          const id = `${categoriaIndex}_${itemIndex}`;
-          return `
-            <div class="item-card">
-              <label>${item}</label>
-              <input type="text" id="inv_${id}" inputmode="numeric" placeholder="Ex: 2+4+6" oninput="calcularTotalInventario('${id}')">
-              <div class="total-badge">
-                <span>TOTAL</span>
-                <span id="total_inv_${id}">0</span>
-              </div>
-            </div>`;
-        }).join('');
-        return `<section class="inventory-category"><h3>${categoria.categoria}</h3><div class="grid-cards">${itens}</div></section>`;
-      }).join('');
-    }
+  navegarPara('inventario');
+  const container = document.getElementById('camposInventario');
+  container.innerHTML = categoriasInventario.map((categoria, categoriaIndex) => {
+    const itens = categoria.itens.map((item, itemIndex) => {
+      const id = `${categoriaIndex}_${itemIndex}`;
+      return `
+        <div class="item-card">
+          <label>${item}</label>
+          <input 
+            type="text" 
+            id="inv_${id}" 
+            inputmode="decimal" 
+            pattern="[0-9+*-/]*" 
+            placeholder="Ex: 2+4+6" 
+            oninput="calcularTotalInventario('${id}')">
+          <div class="total-badge">
+            <span>TOTAL</span>
+            <span id="total_inv_${id}">0</span>
+          </div>
+        </div>`;
+    }).join('');
+    return `<section class="inventory-category"><h3>${categoria.categoria}</h3><div class="grid-cards">${itens}</div></section>`;
+  }).join('');
+}
 
     function calcularTotalInventario(id) {
       const campo = document.getElementById(`inv_${id}`);

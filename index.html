@@ -1514,12 +1514,17 @@ window.addEventListener("click", function(e) {
 
     function abrirNota() {
   navegarPara('nota');
-  const container = document.getElementById('camposNota'); // Certifique-se de que o ID do container é este
-  if (!container) return;
   
+  // Tenta encontrar o container de notas (verifica os IDs mais comuns)
+  const container = document.getElementById('camposNota') || document.getElementById('campos');
+  if (!container) return;
+
   container.innerHTML = '';
   const infoDia = dias[dia] || dias[1];
-  document.getElementById('tituloNota').innerText = `Notas - ${infoDia.nome}`;
+
+  // Atualiza o título se o elemento existir
+  const tituloEl = document.getElementById('tituloNota') || document.getElementById('titulo');
+  if (tituloEl) tituloEl.innerText = `Notas - ${infoDia.nome}`;
 
   infoDia.campos.forEach((campo, index) => {
     container.innerHTML += `
@@ -1535,7 +1540,7 @@ window.addEventListener("click", function(e) {
           <button 
             type="button" 
             class="btn-mais" 
-            onclick="adicionarSinalMais('nota_campo_${index}', ${index}, false, 'nota')">+</button>
+            onclick="adicionarSinalMaisNota('nota_campo_${index}', ${index})">+</button>
         </div>
         <div class="total-badge">
           <span>TOTAL</span>
@@ -1715,6 +1720,24 @@ function adicionarSinalMais(inputId, idCalculo, isInventario = false, tipo = 'co
         'Historico_Inventario.xlsx'
       );
     }
+    
+    function adicionarSinalMaisNota(inputId, index) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+
+  const val = input.value.trim();
+  if (val !== '' && !val.endsWith('+')) {
+    input.value = val + '+';
+  }
+  input.focus();
+
+  // Executa o seu cálculo original de notas
+  if (typeof calcularTotalNota === 'function') {
+    calcularTotalNota(index);
+  } else if (typeof calcularTotal === 'function') {
+    calcularTotal(index);
+  }
+}
   </script>
 </body>
 </html>

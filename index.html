@@ -1010,7 +1010,7 @@
         <section id="contagem" class="app-page">
           <div>
             <h2 id="titulo" style="color: var(--hyundai-blue);"></h2>
-            <p style="color: var(--text-secondary); font-size: 14px;">Digite os valores da contagem física</p>
+            <p style="color: var(--text-secondary); font-size: 14px;">Digite os valores da contagem física (Ex: 2+4+7)</p>
           </div>
 
           <div class="grid-cards" id="campos"></div>
@@ -1061,6 +1061,8 @@
           <div id="camposInventario"></div>
 
           <div class="page-footer-actions">
+            <button class="btn btn-secondary" onclick="navegarPara('inicio')">Voltar</button>
+            <button class="btn btn-secondary" onclick="solicitarExportacao('inventario')">Baixar Excel</button>
             <button class="btn btn-accent" onclick="finalizarInventario()">SALVAR INVENTÁRIO</button>
           </div>
         </section>
@@ -1072,6 +1074,7 @@
               <h2 id="dashboardTitulo" style="color: var(--hyundai-blue);">Painel Analítico de Embalagens</h2>
               <p style="color: var(--text-secondary); font-size: 14px;" id="dashboardSubtitulo">Métricas de divergências e fornecedores</p>
             </div>
+            <button class="btn btn-secondary" onclick="navegarPara('inicio')">Voltar ao Início</button>
           </div>
 
           <!-- DASHBOARD RELATÓRIO DE EMBALAGENS -->
@@ -1183,32 +1186,32 @@
         nome: "SEGUNDA-FEIRA",
         campos: [
           "MUBEIA - CAIXA", "MUBEIA - PALLET", "MUBEIA - TAMPA", "NIGTERRA - CAIXA",
-          "NIGTERRA - PALLET", "CEE AZUL - PALLET", "CIE AZUL - TAMPA",
-          "CIE AZUL - BANDEIJA (6)", "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
+          "NIGTERRA - PALLET", "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA",
+          "CIEE AZUL - BANDEIJA (6)", "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
         ]
       },
       2: {
         nome: "TERÇA-FEIRA",
         campos: [
           "BLEISTAHL - CAIXA", "BLEISTAHL - PALLET", "BLEISTAHL - TAMPA", "PUREM - CAIXA",
-          "PUREM - BANDEIJA (4)", "CIE AZUL - PALLET", "CIE AZUL - TAMPA",
-          "CIE AZUL - BANDEIJA (6)", "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
+          "PUREM - BANDEIJA (4)", "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA",
+          "CIEE AZUL - BANDEIJA (6)", "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
         ]
       },
       3: {
         nome: "QUARTA-FEIRA",
         campos: [
           "CESTARI - CAIXA", "CESTARI - BANDEIJA (13)", "MALHE - CAIXA", "PROMETAL - CAIXA",
-          "CIE AZUL - PALLET", "CIE AZUL - TAMPA", "CIE AZUL - BANDEIJA (6)",
-          "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
+          "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA", "CIEE AZUL - BANDEIJA (6)",
+          "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
         ]
       },
       4: {
         nome: "QUINTA-FEIRA",
         campos: [
           "PINHA - CAIXA", "MUVIC - CAIXA", "MUVIC - PALLET", "MUVIC - BANDEIJA",
-          "CIE AZUL - PALLET", "CIE AZUL - TAMPA", "CIE AZUL - BANDEIJA (6)",
-          "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
+          "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA", "CIEE AZUL - BANDEIJA (6)",
+          "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
         ]
       },
       5: {
@@ -1216,8 +1219,8 @@
         campos: [
           "BIELA - CAIXA", "BIELA - TAMPA", "BIELA - PALLET", "BIELA - BANDEIJA (2)",
           "VETORE - CAIXA", "VETORE - PALLET", "VETORE - TAMPA", "VETORE - BANDEIJA (5)",
-          "VALEO - CAIXA", "CIE AZUL - PALLET", "CIE AZUL - TAMPA", "CIE AZUL - BANDEIJA (6)",
-          "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
+          "VALEO - CAIXA", "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA", "CIEE AZUL - BANDEIJA (6)",
+          "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
         ]
       }
     };
@@ -1267,31 +1270,29 @@
     });
 
     // NAVIGATION
-   function navegarPara(pageId) {
-  // 1. Esconde todas as páginas
+    function navegarPara(pageId) {
+  // 1. Esconde todas as telas
   document.querySelectorAll('.app-page').forEach(page => page.style.display = 'none');
   
-  // 2. Exibe a página atual
+  // 2. Exibe a tela selecionada
   const target = document.getElementById(pageId);
   if (target) target.style.display = 'block';
 
-  // 3. Remove 'active' de TODOS os links da sidebar
+  // 3. Remove a classe 'active' de TODOS os itens do menu da sidebar
   document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
 
-  // 4. Mapeia a página para o ID do item no menu
+  // 4. Mapeia qual botão do menu deve ficar ativo dependendo da página
   const mapNav = {
     'inicio': 'nav-inicio',
     'embalagens': 'nav-embalagens',
-    'contagem': 'nav-embalagens',
-    'nota': 'nav-embalagens',
-    'resumo': 'nav-embalagens',
+    'contagem': 'nav-embalagens',   // Sub-tela de Embalagens mantém o menu Embalagens ativo
+    'nota': 'nav-embalagens',       // Sub-tela de Embalagens mantém o menu Embalagens ativo
+    'resumo': 'nav-embalagens',     // Sub-tela de Embalagens mantém o menu Embalagens ativo
     'inventario': 'nav-inventario',
-    'relatorios': 'nav-relatorios',      // Tela principal de relatórios
-    'dashboard': 'nav-relatorios',       // Se tiver sub-tela
-    'relatorio-embalagens': 'nav-rel-embalagens',
-    'relatorio-inventario': 'nav-rel-inventario'
+    'dashboard': 'nav-relatorios'
   };
 
+  // 5. Adiciona a classe 'active' no elemento correto
   const activeId = mapNav[pageId] || `nav-${pageId}`;
   const activeNav = document.getElementById(activeId);
   
@@ -1347,7 +1348,7 @@ window.addEventListener("click", function(e) {
       new Chart(document.getElementById('chartEmbalagensTipo'), {
         type: 'bar',
         data: {
-          labels: ['CIE Azul', 'CIE Cinza', 'Mubeia', 'Nighterra', 'Bleistahl', 'Purem'],
+          labels: ['CIEE Azul', 'CIEE Cinza', 'Mubeia', 'Nighterra', 'Bleistahl', 'Purem'],
           datasets: [{
             label: 'Total Físico',
             data: [500, 350, 240, 100, 85, 60],
@@ -1411,7 +1412,7 @@ window.addEventListener("click", function(e) {
           chartTop5Embalagens = new Chart(document.getElementById('graficoTop5Embalagens'), {
             type: 'bar',
             data: {
-              labels: ['CIE AZUL - BANDEIJA', 'BLEISTAHL - CAIXA', 'MUBEIA - PALLET', 'PUREM - BANDEIJA', 'VETORE - TAMPA'],
+              labels: ['CIEE AZUL - BANDEIJA', 'BLEISTAHL - CAIXA', 'MUBEIA - PALLET', 'PUREM - BANDEIJA', 'VETORE - TAMPA'],
               datasets: [{ label: 'Qtd. Divergências', data: [12, 8, 5, 4, 2], backgroundColor: '#DC2626', borderRadius: 4 }]
             },
             options: { responsive: true, maintainAspectRatio: false }
@@ -1513,43 +1514,16 @@ window.addEventListener("click", function(e) {
     }
 
     function abrirNota() {
-  navegarPara('nota');
-  
-  // Tenta encontrar o container de notas (verifica os IDs mais comuns)
-  const container = document.getElementById('camposNota') || document.getElementById('campos');
-  if (!container) return;
-
-  container.innerHTML = '';
-  const infoDia = dias[dia] || dias[1];
-
-  // Atualiza o título se o elemento existir
-  const tituloEl = document.getElementById('tituloNota') || document.getElementById('titulo');
-  if (tituloEl) tituloEl.innerText = `Notas - ${infoDia.nome}`;
-
-  infoDia.campos.forEach((campo, index) => {
-    container.innerHTML += `
-      <div class="item-card">
-        <label>${campo}</label>
-        <div class="input-calc-group">
-          <input 
-            type="text" 
-            id="nota_campo_${index}" 
-            inputmode="tel" 
-            placeholder="Ex: 5+5" 
-            oninput="calcularTotalNota(${index})">
-          <button 
-            type="button" 
-            class="btn-mais" 
-            onclick="adicionarSinalMaisNota('nota_campo_${index}', ${index})">+</button>
-        </div>
-        <div class="total-badge">
-          <span>TOTAL</span>
-          <span id="total_nota_${index}">0</span>
-        </div>
-      </div>
-    `;
-  });
-}
+      const infoDia = dias[dia] || dias[1];
+      const container = document.getElementById('camposNota');
+      container.innerHTML = infoDia.campos.map((campo, index) => `
+        <div class="item-card">
+          <label>${campo} · Nota fiscal</label>
+          <input type="text" id="nota_${index}" inputmode="numeric" placeholder="Ex: 5+5" value="${notasSalvas[index] || ''}" oninput="calcularNota(${index})">
+          <div class="total-badge"><span>TOTAL NOTA</span><span id="total_nota_${index}">${soma(notasSalvas[index])}</span></div>
+        </div>`).join('');
+      navegarPara('nota');
+    }
 
     function calcularNota(index) {
       const valor = document.getElementById(`nota_${index}`).value;
@@ -1638,7 +1612,7 @@ window.addEventListener("click", function(e) {
     return `<section class="inventory-category"><h3>${categoria.categoria}</h3><div class="grid-cards">${itens}</div></section>`;
   }).join('');
 }
-function adicionarSinalMais(inputId, idCalculo, isInventario = false, tipo = 'contagem') {
+function adicionarSinalMais(inputId, idCalculo, isInventario = false) {
   const input = document.getElementById(inputId);
   if (!input) return;
 
@@ -1648,13 +1622,10 @@ function adicionarSinalMais(inputId, idCalculo, isInventario = false, tipo = 'co
   }
   input.focus();
 
-  // Executa o cálculo correto dependendo da tela
-  if (tipo === 'nota') {
-    if (typeof calcularTotalNota === 'function') calcularTotalNota(idCalculo);
-  } else if (isInventario) {
-    if (typeof calcularTotalInventario === 'function') calcularTotalInventario(idCalculo);
+  if (isInventario) {
+    calcularTotalInventario(idCalculo);
   } else {
-    if (typeof calcularTotal === 'function') calcularTotal(idCalculo);
+    calcularTotal(idCalculo);
   }
 }
     function calcularTotalInventario(id) {
@@ -1720,24 +1691,6 @@ function adicionarSinalMais(inputId, idCalculo, isInventario = false, tipo = 'co
         'Historico_Inventario.xlsx'
       );
     }
-    
-    function adicionarSinalMaisNota(inputId, index) {
-  const input = document.getElementById(inputId);
-  if (!input) return;
-
-  const val = input.value.trim();
-  if (val !== '' && !val.endsWith('+')) {
-    input.value = val + '+';
-  }
-  input.focus();
-
-  // Executa o seu cálculo original de notas
-  if (typeof calcularTotalNota === 'function') {
-    calcularTotalNota(index);
-  } else if (typeof calcularTotal === 'function') {
-    calcularTotal(index);
-  }
-}
   </script>
 </body>
 </html>

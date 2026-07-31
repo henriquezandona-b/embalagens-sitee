@@ -1513,44 +1513,77 @@ window.addEventListener("click", function(e) {
       });
     }
 
-    function abrirNota() {
-      const infoDia = dias[dia] || dias[1];
-      const container = document.getElementById('camposNota');
-      container.innerHTML = infoDia.campos.map((campo, index) => `
-        <div class="item-card">
-          <label>${campo} · Nota fiscal</label>
-          <input type="text" id="nota_${index}" inputmode="numeric" placeholder="Ex: 5+5" value="${notasSalvas[index] || ''}" oninput="calcularNota(${index})">
-          <div class="total-badge"><span>TOTAL NOTA</span><span id="total_nota_${index}">${soma(notasSalvas[index])}</span></div>
-        </div>`).join('');
-      navegarPara('nota');
-    }
+   function abrirNota() {
+  // Salva os valores digitados na tela de Contagem antes de ir para Notas
+  const infoDia = dias[dia] || dias[1];
+  infoDia.campos.forEach((_, index) => {
+    const campoContagem = document.getElementById(`campo_${index}`);
+    if (campoContagem) contagensSalvas[index] = campoContagem.value;
+  });
 
-    function calcularNota(index) {
-      const valor = document.getElementById(`nota_${index}`).value;
-      notasSalvas[index] = valor;
-      document.getElementById(`total_nota_${index}`).textContent = soma(valor);
-    }
+  const container = document.getElementById('camposNota');
+  container.innerHTML = infoDia.campos.map((campo, index) => `
+    <div class="item-card">
+      <label>${campo} · Nota fiscal</label>
+      <input type="text" id="nota_${index}" inputmode="numeric" placeholder="Ex: 5+5" value="${notasSalvas[index] || ''}" oninput="calcularNota(${index})">
+      <div class="total-badge"><span>TOTAL NOTA</span><span id="total_nota_${index}">${soma(notasSalvas[index])}</span></div>
+    </div>`).join('');
+  navegarPara('nota');
+}
+
+    function montarDadosDia() {
+  const infoDia = dias[dia] || dias[1];
+  return infoDia.campos.map((item, index) => {
+    // Busca do input se existi no DOM ou resgata do array salvo
+    const valContagem = document.getElementById(`campo_${index}`)?.value ?? contagensSalvas[index] ?? '';
+    const valNota = document.getElementById(`nota_${index}`)?.value ?? notasSalvas[index] ?? '';
+
+    const contagem = soma(valContagem);
+    const nota = soma(valNota);
+
+    return { item, contagem, nota, diferenca: contagem - nota };
+  });
+}
+    // Armazena as expressões da contagem física para não perder ao navegar
+const contagensSalvas = [];
+
+function calcularNota(index) {
+  const campo = document.getElementById(`nota_${index}`);
+  if (!campo) return;
+  
+  // 1. Salva o texto da nota no array notasSalvas em tempo real
+  notasSalvas[index] = campo.value;
+  
+  // 2. Atualiza o total exibido na tela da nota
+  const totalEl = document.getElementById(`total_nota_${index}`);
+  if (totalEl) {
+    totalEl.textContent = soma(campo.value);
+  }
+}
 
     function voltarContagem() { navegarPara('contagem'); }
 
     function mostrarResumo() {
-      const infoDia = dias[dia] || dias[1];
-      infoDia.campos.forEach((_, index) => {
-        const campo = document.getElementById(`nota_${index}`);
-        if (campo) notasSalvas[index] = campo.value;
-      });
-      const dados = montarDadosDia();
-      document.getElementById('resultado').innerHTML = dados.map(({ item, contagem, nota, diferenca }) => `
-        <div class="item-card">
-          <label>${item}</label>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px;">
-            <div><small>CONTAGEM</small><strong style="display:block;font-size:18px;">${contagem}</strong></div>
-            <div><small>NOTA FISCAL</small><strong style="display:block;font-size:18px;">${nota}</strong></div>
-            <div><small>DIFERENÇA</small><strong style="display:block;font-size:18px;color:${diferenca === 0 ? 'var(--status-success)' : 'var(--status-danger)'};">${diferenca > 0 ? '+' : ''}${diferenca}</strong></div>
-          </div>
-        </div>`).join('');
-      navegarPara('resumo');
-    }
+  const infoDia = dias[dia] || dias[1];
+  
+  // Atualiza as notas salvas antes de montar o resumo
+  infoDia.campos.forEach((_, index) => {
+    const campo = document.getElementById(`nota_${index}`);
+    if (campo) notasSalvas[index] = campo.value;
+  });
+
+  const dados = montarDadosDia();
+  document.getElementById('resultado').innerHTML = dados.map(({ item, contagem, nota, diferenca }) => `
+    <div class="item-card">
+      <label>${item}</label>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px;">
+        <div><small>CONTAGEM</small><strong style="display:block;font-size:18px;">${contagem}</strong></div>
+        <div><small>NOTA FISCAL</small><strong style="display:block;font-size:18px;">${nota}</strong></div>
+        <div><small>DIFERENÇA</small><strong style="display:block;font-size:18px;color:${diferenca === 0 ? 'var(--status-success)' : 'var(--status-danger)'};">${diferenca > 0 ? '+' : ''}${diferenca}</strong></div>
+      </div>
+    </div>`).join('');
+  navegarPara('resumo');
+}
 
     function gerarExcelParaEmail(diaAtual) {
       if (!window.XLSX) throw new Error('Biblioteca Excel ainda não carregou.');

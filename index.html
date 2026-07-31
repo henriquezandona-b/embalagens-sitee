@@ -1010,7 +1010,7 @@
         <section id="contagem" class="app-page">
           <div>
             <h2 id="titulo" style="color: var(--hyundai-blue);"></h2>
-            <p style="color: var(--text-secondary); font-size: 14px;">Digite os valores da contagem física (Ex: 2+4+7)</p>
+            <p style="color: var(--text-secondary); font-size: 14px;">Digite os valores da contagem física</p>
           </div>
 
           <div class="grid-cards" id="campos"></div>
@@ -1061,8 +1061,6 @@
           <div id="camposInventario"></div>
 
           <div class="page-footer-actions">
-            <button class="btn btn-secondary" onclick="navegarPara('inicio')">Voltar</button>
-            <button class="btn btn-secondary" onclick="solicitarExportacao('inventario')">Baixar Excel</button>
             <button class="btn btn-accent" onclick="finalizarInventario()">SALVAR INVENTÁRIO</button>
           </div>
         </section>
@@ -1074,7 +1072,6 @@
               <h2 id="dashboardTitulo" style="color: var(--hyundai-blue);">Painel Analítico de Embalagens</h2>
               <p style="color: var(--text-secondary); font-size: 14px;" id="dashboardSubtitulo">Métricas de divergências e fornecedores</p>
             </div>
-            <button class="btn btn-secondary" onclick="navegarPara('inicio')">Voltar ao Início</button>
           </div>
 
           <!-- DASHBOARD RELATÓRIO DE EMBALAGENS -->
@@ -1186,32 +1183,32 @@
         nome: "SEGUNDA-FEIRA",
         campos: [
           "MUBEIA - CAIXA", "MUBEIA - PALLET", "MUBEIA - TAMPA", "NIGTERRA - CAIXA",
-          "NIGTERRA - PALLET", "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA",
-          "CIEE AZUL - BANDEIJA (6)", "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
+          "NIGTERRA - PALLET", "CEE AZUL - PALLET", "CIE AZUL - TAMPA",
+          "CIE AZUL - BANDEIJA (6)", "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
         ]
       },
       2: {
         nome: "TERÇA-FEIRA",
         campos: [
           "BLEISTAHL - CAIXA", "BLEISTAHL - PALLET", "BLEISTAHL - TAMPA", "PUREM - CAIXA",
-          "PUREM - BANDEIJA (4)", "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA",
-          "CIEE AZUL - BANDEIJA (6)", "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
+          "PUREM - BANDEIJA (4)", "CIE AZUL - PALLET", "CIE AZUL - TAMPA",
+          "CIE AZUL - BANDEIJA (6)", "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
         ]
       },
       3: {
         nome: "QUARTA-FEIRA",
         campos: [
           "CESTARI - CAIXA", "CESTARI - BANDEIJA (13)", "MALHE - CAIXA", "PROMETAL - CAIXA",
-          "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA", "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
+          "CIE AZUL - PALLET", "CIE AZUL - TAMPA", "CIE AZUL - BANDEIJA (6)",
+          "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
         ]
       },
       4: {
         nome: "QUINTA-FEIRA",
         campos: [
           "PINHA - CAIXA", "MUVIC - CAIXA", "MUVIC - PALLET", "MUVIC - BANDEIJA",
-          "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA", "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
+          "CIE AZUL - PALLET", "CIE AZUL - TAMPA", "CIE AZUL - BANDEIJA (6)",
+          "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
         ]
       },
       5: {
@@ -1219,8 +1216,8 @@
         campos: [
           "BIELA - CAIXA", "BIELA - TAMPA", "BIELA - PALLET", "BIELA - BANDEIJA (2)",
           "VETORE - CAIXA", "VETORE - PALLET", "VETORE - TAMPA", "VETORE - BANDEIJA (5)",
-          "VALEO - CAIXA", "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA", "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
+          "VALEO - CAIXA", "CIE AZUL - PALLET", "CIE AZUL - TAMPA", "CIE AZUL - BANDEIJA (6)",
+          "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
         ]
       }
     };
@@ -1270,14 +1267,38 @@
     });
 
     // NAVIGATION
-    function navegarPara(pageId) {
-      document.querySelectorAll('.app-page').forEach(page => page.style.display = 'none');
-      document.getElementById(pageId).style.display = 'block';
+   function navegarPara(pageId) {
+  // 1. Esconde todas as páginas
+  document.querySelectorAll('.app-page').forEach(page => page.style.display = 'none');
+  
+  // 2. Exibe a página atual
+  const target = document.getElementById(pageId);
+  if (target) target.style.display = 'block';
 
-      document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
-      const activeNav = document.getElementById(`nav-${pageId}`);
-      if(activeNav) activeNav.classList.add('active');
-    }
+  // 3. Remove 'active' de TODOS os links da sidebar
+  document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+
+  // 4. Mapeia a página para o ID do item no menu
+  const mapNav = {
+    'inicio': 'nav-inicio',
+    'embalagens': 'nav-embalagens',
+    'contagem': 'nav-embalagens',
+    'nota': 'nav-embalagens',
+    'resumo': 'nav-embalagens',
+    'inventario': 'nav-inventario',
+    'relatorios': 'nav-relatorios',      // Tela principal de relatórios
+    'dashboard': 'nav-relatorios',       // Se tiver sub-tela
+    'relatorio-embalagens': 'nav-rel-embalagens',
+    'relatorio-inventario': 'nav-rel-inventario'
+  };
+
+  const activeId = mapNav[pageId] || `nav-${pageId}`;
+  const activeNav = document.getElementById(activeId);
+  
+  if (activeNav) {
+    activeNav.classList.add('active');
+  }
+}
 
     // SIDEBAR & DROPDOWNS
     function toggleSidebar() {
@@ -1326,7 +1347,7 @@ window.addEventListener("click", function(e) {
       new Chart(document.getElementById('chartEmbalagensTipo'), {
         type: 'bar',
         data: {
-          labels: ['CIEE Azul', 'CIEE Cinza', 'Mubeia', 'Nighterra', 'Bleistahl', 'Purem'],
+          labels: ['CIE Azul', 'CIE Cinza', 'Mubeia', 'Nighterra', 'Bleistahl', 'Purem'],
           datasets: [{
             label: 'Total Físico',
             data: [500, 350, 240, 100, 85, 60],
@@ -1390,7 +1411,7 @@ window.addEventListener("click", function(e) {
           chartTop5Embalagens = new Chart(document.getElementById('graficoTop5Embalagens'), {
             type: 'bar',
             data: {
-              labels: ['CIEE AZUL - BANDEIJA', 'BLEISTAHL - CAIXA', 'MUBEIA - PALLET', 'PUREM - BANDEIJA', 'VETORE - TAMPA'],
+              labels: ['CIE AZUL - BANDEIJA', 'BLEISTAHL - CAIXA', 'MUBEIA - PALLET', 'PUREM - BANDEIJA', 'VETORE - TAMPA'],
               datasets: [{ label: 'Qtd. Divergências', data: [12, 8, 5, 4, 2], backgroundColor: '#DC2626', borderRadius: 4 }]
             },
             options: { responsive: true, maintainAspectRatio: false }

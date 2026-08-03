@@ -1182,41 +1182,41 @@
         nome: "SEGUNDA-FEIRA",
         campos: [
           "MUBEIA - CAIXA", "MUBEIA - PALLET", "MUBEIA - TAMPA", "NIGTERRA - CAIXA",
-          "NIGTERRA - PALLET", "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA",
-          "CIEE AZUL - BANDEIJA (6)", "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
+          "NIGTERRA - PALLET", "CIE AZUL - PALLET", "CIE AZUL - TAMPA",
+          "CIE AZUL - BANDEIJA (6)", "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
         ]
       },
       2: {
         nome: "TERÇA-FEIRA",
         campos: [
           "BLEISTAHL - CAIXA", "BLEISTAHL - PALLET", "BLEISTAHL - TAMPA", "PUREM - CAIXA",
-          "PUREM - BANDEIJA (4)", "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA",
-          "CIEE AZUL - BANDEIJA (6)", "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
+          "PUREM - BANDEIJA (4)", "CIE AZUL - PALLET", "CIE AZUL - TAMPA",
+          "CIE AZUL - BANDEIJA (6)", "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
         ]
       },
       3: {
         nome: "QUARTA-FEIRA",
         campos: [
           "CESTARI - CAIXA", "CESTARI - BANDEIJA (13)", "MALHE - CAIXA", "PROMETAL - CAIXA",
-          "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA", "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
+          "CIE AZUL - PALLET", "CIE AZUL - TAMPA", "CIE AZUL - BANDEIJA (6)",
+          "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
         ]
       },
       4: {
         nome: "QUINTA-FEIRA",
         campos: [
           "PINHA - CAIXA", "MUVIC - CAIXA", "MUVIC - PALLET", "MUVIC - BANDEIJA",
-          "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA", "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
+          "CIE AZUL - PALLET", "CIE AZUL - TAMPA", "CIE AZUL - BANDEIJA (6)",
+          "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
         ]
       },
       5: {
         nome: "SEXTA-FEIRA",
         campos: [
           "BIELA - CAIXA", "BIELA - TAMPA", "BIELA - PALLET", "BIELA - BANDEIJA (2)",
-          "VETORE - CAIXA", "VETORE - PALLET", "VETORE - TAMPA", "VETORE - BANDEIJA (5)",
-          "VALEO - CAIXA", "CIEE AZUL - PALLET", "CIEE AZUL - TAMPA", "CIEE AZUL - BANDEIJA (6)",
-          "CIEE CINZA - PALLET", "CIEE CINZA - TAMPA", "CIEE CINZA - BANDEIJA (7)"
+          "VETORE - CAIXA", "VETORE - TAMPA", "VETORE - BANDEIJA (5)",
+          "VALEO - CAIXA", "CIE AZUL - PALLET", "CIE AZUL - TAMPA", "CIE AZUL - BANDEIJA (6)",
+          "CIE CINZA - PALLET", "CIE CINZA - TAMPA", "CIE CINZA - BANDEIJA (7)"
         ]
       }
     };
@@ -1344,7 +1344,7 @@ window.addEventListener("click", function(e) {
       new Chart(document.getElementById('chartEmbalagensTipo'), {
         type: 'bar',
         data: {
-          labels: ['CIEE Azul', 'CIEE Cinza', 'Mubeia', 'Nighterra', 'Bleistahl', 'Purem'],
+          labels: ['CIE Azul', 'CIE Cinza', 'Mubeia', 'Nighterra', 'Bleistahl', 'Purem'],
           datasets: [{
             label: 'Total Físico',
             data: [500, 350, 240, 100, 85, 60],
@@ -1408,7 +1408,7 @@ window.addEventListener("click", function(e) {
           chartTop5Embalagens = new Chart(document.getElementById('graficoTop5Embalagens'), {
             type: 'bar',
             data: {
-              labels: ['CIEE AZUL - BANDEIJA', 'BLEISTAHL - CAIXA', 'MUBEIA - PALLET', 'PUREM - BANDEIJA', 'VETORE - TAMPA'],
+              labels: ['CIE AZUL - BANDEIJA', 'BLEISTAHL - CAIXA', 'MUBEIA - PALLET', 'PUREM - BANDEIJA', 'VETORE - TAMPA'],
               datasets: [{ label: 'Qtd. Divergências', data: [12, 8, 5, 4, 2], backgroundColor: '#DC2626', borderRadius: 4 }]
             },
             options: { responsive: true, maintainAspectRatio: false }

@@ -757,6 +757,51 @@
   background-color: #001E4B;
   transform: scale(0.96);
 }
+.inventario-kpis{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
+  margin-bottom:24px;
+}
+
+.kpi-card{
+  background:#fff;
+  border:1px solid #E2E8F0;
+  border-radius:12px;
+  padding:24px;
+}
+
+.kpi-card h4{
+  font-size:13px;
+  color:#64748B;
+  margin-bottom:8px;
+}
+
+.kpi-card span{
+  font-size:32px;
+  font-weight:800;
+  color:#002C6C;
+}
+
+table th{
+  padding:12px;
+  text-align:left;
+  border-bottom:1px solid #E2E8F0;
+}
+
+table td{
+  padding:12px;
+  border-bottom:1px solid #E2E8F0;
+}
+.inventario-toolbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+.btn-novo-item{
+  margin-left:auto;
+}
   </style>
 </head>
 <body>
@@ -1097,38 +1142,74 @@
               </div>
             </div>
           </div>
+<div id="relatorioInventarioView" class="view-section">
+<div class="inventario-kpis">
 
-          <!-- DASHBOARD RELATÓRIO DE INVENTÁRIO -->
-          <div id="relatorioInventarioView" class="view-section">
-            <div class="charts-grid">
-              <div class="chart-card">
-                <div class="chart-card-header">
-                  <h3>Itens em Alerta de Ponto de Pedido</h3>
-                  <p>Saldo atual vs Limite Mínimo</p>
-                </div>
-                <div class="chart-wrapper">
-                  <canvas id="graficoAlertasInventario"></canvas>
-                </div>
-              </div>
-
-              <div class="chart-card">
-                <div class="chart-card-header">
-                  <h3>Consumo Estimado de Insumos (Mensal)</h3>
-                  <p>Projeção de utilização dos materiais</p>
-                </div>
-                <div class="chart-wrapper">
-                  <canvas id="graficoConsumoInventario"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </section>
-
-      </main>
-    </div>
+  <div class="kpi-card">
+    <h4>Total de Itens</h4>
+    <span id="totalItensInventario">0</span>
   </div>
 
+  <div class="kpi-card">
+    <h4>Total em Estoque</h4>
+    <span id="totalUnidadesInventario">0</span>
+  </div>
+
+  <div class="kpi-card">
+    <h4>Média Consumo</h4>
+    <span id="mediaConsumoInventario">0</span>
+  </div>
+
+  <div class="kpi-card">
+    <h4>Itens em Alerta</h4>
+    <span id="itensAlertaInventario">0</span>
+  </div>
+
+</div>
+
+<div class="card">
+
+  <div class="inventario-toolbar">
+
+    <input
+      type="text"
+      id="pesquisaInventario"
+      placeholder="Pesquisar item..."
+      onkeyup="filtrarTabelaInventario()"
+      style="
+        width:300px;
+        padding:10px 14px;
+        border:1px solid #E2E8F0;
+        border-radius:8px;
+      "
+    >
+
+    <button
+      class="btn btn-primary"
+      onclick="abrirModalNovoItem()"
+    >
+       Adicionar Item
+    </button>
+
+  </div>
+
+  <table style="width:100%;border-collapse:collapse;">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Categoria</th>
+        <th>Quantidade</th>
+        <th>Status</th>
+        <th>Data</th>
+      </tr>
+    </thead>
+
+    <tbody id="tabelaInventarioBody"></tbody>
+
+  </table>
+
+</div>
+</div>
   <!-- MODAL DE SELEÇÃO DE MÓDULOS NA HEADER -->
   <div class="modal-overlay" id="selectionModal">
     <div class="modal-card">
@@ -1396,66 +1477,43 @@ window.addEventListener("click", function(e) {
 
     // AÇÕES DE RELATÓRIOS (DASHBOARD ESPECÍFICO)
     function abrirDashboard(tipo) {
-      navegarPara('dashboard');
-      document.querySelectorAll('#dashboard .view-section').forEach(sec => sec.classList.remove('active'));
 
-      if (tipo === 'embalagens') {
-        document.getElementById('dashboardTitulo').innerText = 'Painel Analítico de Embalagens';
-        document.getElementById('dashboardSubtitulo').innerText = 'Divergências por fornecedores e acompanhamento de nota fiscal';
-        document.getElementById('relatorioEmbalagensView').classList.add('active');
+  navegarPara('dashboard');
 
-        if (!chartTop5Embalagens) {
-          chartTop5Embalagens = new Chart(document.getElementById('graficoTop5Embalagens'), {
-            type: 'bar',
-            data: {
-              labels: ['CIE AZUL - BANDEIJA', 'BLEISTAHL - CAIXA', 'MUBEIA - PALLET', 'PUREM - BANDEIJA', 'VETORE - TAMPA'],
-              datasets: [{ label: 'Qtd. Divergências', data: [12, 8, 5, 4, 2], backgroundColor: '#DC2626', borderRadius: 4 }]
-            },
-            options: { responsive: true, maintainAspectRatio: false }
-          });
+  document
+    .querySelectorAll('#dashboard .view-section')
+    .forEach(sec => sec.classList.remove('active'));
 
-          chartFluxoSemanal = new Chart(document.getElementById('graficoFluxoSemanal'), {
-            type: 'bar',
-            data: {
-              labels: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'],
-              datasets: [
-                { label: 'Volume NF', data: [1400, 1250, 1310, 1500, 1100], backgroundColor: '#002C6C' },
-                { label: 'Volume Físico', data: [1395, 1250, 1300, 1498, 1100], backgroundColor: '#00AAD2' }
-              ]
-            },
-            options: { responsive: true, maintainAspectRatio: false }
-          });
-        }
-      } else if (tipo === 'inventario') {
-        document.getElementById('dashboardTitulo').innerText = 'Painel Analítico de Inventário e Suprimentos';
-        document.getElementById('dashboardSubtitulo').innerText = 'Níveis de estoque crítico e taxa de utilização mensal';
-        document.getElementById('relatorioInventarioView').classList.add('active');
+  if (tipo === 'embalagens') {
 
-        if (!chartAlertasInventario) {
-          chartAlertasInventario = new Chart(document.getElementById('graficoAlertasInventario'), {
-            type: 'bar',
-            data: {
-              labels: ['Fita Amarela Fina', 'Etiqueta 100x40', 'Papel A4', 'Pano Limpeza', 'Canetão Preto'],
-              datasets: [
-                { label: 'Saldo Atual', data: [3, 8, 12, 5, 2], backgroundColor: '#D97706' },
-                { label: 'Ponto de Pedido', data: [10, 10, 15, 10, 5], backgroundColor: '#64748B' }
-              ]
-            },
-            options: { responsive: true, maintainAspectRatio: false }
-          });
+    document.getElementById('dashboardTitulo').innerText =
+      'Painel Analítico de Embalagens';
 
-          chartConsumoInventario = new Chart(document.getElementById('graficoConsumoInventario'), {
-            type: 'line',
-            data: {
-              labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
-              datasets: [{ label: 'Consumo Médio (Unidades)', data: [150, 220, 180, 240], borderColor: '#00AAD2', fill: true, backgroundColor: 'rgba(0,170,210,0.1)', tension: 0.3 }]
-            },
-            options: { responsive: true, maintainAspectRatio: false }
-          });
-        }
-      }
-    }
+    document.getElementById('dashboardSubtitulo').innerText =
+      'Divergências por fornecedores e acompanhamento de nota fiscal';
 
+    document.getElementById('relatorioEmbalagensView')
+      .classList.add('active');
+
+  }
+
+  else if (tipo === 'inventario') {
+
+  document.getElementById('dashboardTitulo').innerText =
+    'Dashboard de Inventário';
+
+  document.getElementById('dashboardSubtitulo').innerText =
+    'Controle de estoque dos materiais';
+
+  document.getElementById('relatorioInventarioView')
+    .classList.add('active');
+
+  carregarDashboardInventario();
+
+}
+
+
+}
     // CONTAGEM DIÁRIA E PROCESSOS
     function abrirDia() {
   navegarPara('contagem');
@@ -1745,6 +1803,104 @@ function adicionarSinalMais(inputId, idCalculo, isInventario = false) {
         'Historico_Inventario.xlsx'
       );
     }
+    async function carregarDashboardInventario() {
+
+  try {
+
+    const resposta = await fetch(
+      'https://embalagens-api-rho.vercel.app/api/inventarioDashboard'
+    );
+
+    const dados = await resposta.json();
+
+    const itens = dados.itens || [];
+
+    document.getElementById('totalItensInventario')
+      .textContent = itens.length;
+
+    const totalEstoque = itens.reduce(
+      (soma, item) =>
+        soma + Number(item.quantidade || 0),
+      0
+    );
+
+    document.getElementById(
+      'totalUnidadesInventario'
+    ).textContent = totalEstoque;
+
+    document.getElementById(
+      'mediaConsumoInventario'
+    ).textContent = 0;
+
+    document.getElementById(
+      'itensAlertaInventario'
+    ).textContent =
+      itens.filter(x =>
+        Number(x.quantidade || 0) <= 2
+      ).length;
+
+    const tabela =
+      document.getElementById(
+        'tabelaInventarioBody'
+      );
+
+    tabela.innerHTML = itens.map(item => {
+
+      const qtd =
+        Number(item.quantidade || 0);
+
+      let status = 'NORMAL';
+
+      if (qtd <= 2) {
+        status = 'ALERTA';
+      } else if (qtd <= 5) {
+        status = 'ATENÇÃO';
+      }
+
+      return `
+        <tr>
+          <td>${item.item || '-'}</td>
+          <td>${item.categoria || '-'}</td>
+          <td>${qtd}</td>
+          <td>${status}</td>
+          <td>${item.data || '-'}</td>
+        </tr>
+      `;
+    }).join('');
+
+  } catch (erro) {
+
+    console.error(
+      'Erro ao carregar dashboard:',
+      erro
+    );
+
+  }
+
+}
+function filtrarTabelaInventario() {
+
+  const filtro = document
+    .getElementById('pesquisaInventario')
+    .value
+    .toLowerCase();
+
+  const linhas = document.querySelectorAll(
+    '#tabelaInventarioBody tr'
+  );
+
+  linhas.forEach(linha => {
+
+    const texto = linha.innerText.toLowerCase();
+
+    linha.style.display =
+      texto.includes(filtro)
+        ? ''
+        : 'none';
+
+  });
+
+}
   </script>
 </body>
 </html>
